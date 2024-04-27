@@ -54,6 +54,8 @@ export const LoginForm = () => {
 
     form.reset();
   };
+  
+  const inputClass = "bg-neutral-100 border-slate-300";
 
   return (
     <CardWrapper
@@ -74,6 +76,7 @@ export const LoginForm = () => {
                   <FormControl>
                     <Input
                       {...field}
+                      className={inputClass}
                       placeholder="Email"
                       disabled={isPending}
                       type="email"
@@ -92,6 +95,7 @@ export const LoginForm = () => {
                   <FormControl>
                     <Input
                       {...field}
+                      className={inputClass}
                       placeholder="Password"
                       disabled={isPending}
                       type={showPassword ? "text" : "password"}
@@ -115,6 +119,7 @@ export const LoginForm = () => {
 
             <div className="flex items-center space-x-2 my-4">
               <Checkbox
+                className="w-3.5 h-3.5 border-gray-400"
                 id="togglepwd"
                 onCheckedChange={() => {
                   setShowPassword(!showPassword);
@@ -122,7 +127,7 @@ export const LoginForm = () => {
               />
               <label
                 htmlFor="togglepwd"
-                className="text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                className="text-gray-400 ml-1 text-xs font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
                 Show password
               </label>

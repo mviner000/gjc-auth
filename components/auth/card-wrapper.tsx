@@ -15,6 +15,7 @@ import { Header } from "@/components/auth/header";
 import { Social } from "@/components/auth/social";
   
   import { Poppins } from "next/font/google";
+import Image from "next/image";
   
   
   const poppins = Poppins({
@@ -40,14 +41,20 @@ import { Social } from "@/components/auth/social";
     showSocial,
   }: CardWrapperProps) => {
     return (
-      <Card className="mt-12 w-[425px] shadow-md border-8 border-emerald-800">
+      <Card className="mt-12 mb-10 w-[425px] shadow-md border-8 border-emerald-800">
       <CardHeader className="relative">
-              <img className="absolute bottom-24 left-[132px]" width="142" height="142" src="https://i.imgur.com/yyuB3s5.png" alt="gjc_logo"/>    
-              <div className="static inline-block">
-                <h1 className="mt-10 ml-[-8px] text-3xl font-bold mb-2 text-center">{headerTitle}</h1>
-              <Separator className="absolute right-0 bg-green-500 h-[1px] w-full"/>
-              </div>
-            <Header label={headerLabel}/>
+        <Image
+          className="absolute bottom-24 left-[128px]"
+          src="https://i.imgur.com/yyuB3s5.png"
+          width={142}
+          height={142}
+          alt="General De Jesus Logo"
+        />
+        <div className="static inline-block">
+          <h1 className="mt-10 ml-[-8px] text-3xl font-bold mb-2 text-center">{headerTitle}</h1>
+        <Separator className="absolute right-0 bg-green-500 h-[1px] w-full"/>
+        </div>
+        <Header label={headerLabel}/>
       </CardHeader>
       <CardContent>
       {children}

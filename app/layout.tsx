@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="py-5 h-full bg-gradient-to-t from-emerald-600 via-50% to-emerald-700 to-70%">
+    <html lang="en" className="py-5 bg-gradient-to-t from-emerald-600 via-50% to-emerald-700 to-70%">
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
@@ -27,7 +27,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="z-10 absolute top-5 right-5">
-            <ModeToggle />
+            <ModeToggle/>
           </div>
           {children}
         </ThemeProvider>

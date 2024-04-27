@@ -14,9 +14,7 @@ const font = Poppins({
 
 export default function Home() {
   return (
-    <main className="flex h-full flex-col items-center justify-center 
-    bg-gradient-to-t from-emerald-900 via-50% to-emerald-600 to-70%
-    ">
+    <main className="flex h-full flex-col items-center justify-center bg-gradient-to-t from-emerald-600 via-50% to-emerald-700 to-70%">
       <div className="flex">
         <img width="58" height="58" src="https://img.icons8.com/3d-fluency/94/lock-2.png" alt="lock-2"/> 
         

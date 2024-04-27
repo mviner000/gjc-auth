@@ -16,11 +16,10 @@ const AuthLayout = ({
 }) => {
 
   return (
-    <div className="pt-2 pb-5 h-full bg-gradient-to-t from-emerald-600 via-50% to-emerald-700 to-70%">
-      <div className="text-white flex flex-col items-center justify-center ">
-      {/* <img className="border-4 border-double border-white rounded-full" width="128" height="128" src="https://i.imgur.com/yyuB3s5.png" alt="gjc_logo"/> */}
+    <div className="mt-7 h-full bg-gradient-to-t from-emerald-600 via-50% to-emerald-700 to-70%">
+      <div className="text-white flex flex-col items-center justify-center">
       <h1 className={cn(
-          "text-5xl ",
+          "xxs:text-4xl xs:text-4xl sm:text-4xl md:text-5xl lg:text-6xl",
           myFont.className
           )}>General De Jesus College
           </h1>
