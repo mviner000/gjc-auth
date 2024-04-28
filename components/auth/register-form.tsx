@@ -55,7 +55,7 @@ export const RegisterForm = () => {
     form.reset();
   };
 
-  const inputClass = "bg-neutral-100 border-slate-300";
+  const inputClass = "bg-neutral-100 border-slate-300 dark:bg-slate-800";
 
   return (
     <CardWrapper

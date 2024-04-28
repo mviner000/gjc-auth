@@ -16,7 +16,7 @@ const AuthLayout = ({
 }) => {
 
   return (
-    <div className="mt-7 h-full bg-gradient-to-t from-emerald-600 via-50% to-emerald-700 to-70%">
+    <div className="mt-7 h-full ">
       <div className="text-white flex flex-col items-center justify-center">
       <h1 className={cn(
           "xxs:text-4xl xs:text-4xl sm:text-4xl md:text-5xl lg:text-6xl",

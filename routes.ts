@@ -3,14 +3,21 @@
  * These routes do not require authentication
  * @type {string[]}
  */
-export const publicRoutes = ["/"];
+export const publicRoutes = [
+    "/",
+    "/posts",
+];
 
 /**
  * An array of routes that are used for authentication
  * These routes will redirect logged in users to /settings
  * @type {string[]}
  */
-export const authRoutes = ["/auth/login", "/auth/register"];
+export const authRoutes = [
+    "/auth/login", 
+    "/auth/register",
+    "/auth/error"
+];
 
 /**
  * The prefix for API authentication routes
@@ -24,3 +31,10 @@ export const apiAuthPrefix = "/api/auth";
  * @type {string}
  */
 export const DEFAULT_LOGIN_REDIRECT = "/settings";
+
+
+/**
+ * The default redirect path after registered success
+ * @type {string}
+ */
+export const DEFAULT_REGISTER_REDIRECT = "/login";
