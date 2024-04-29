@@ -49,6 +49,7 @@ import Image from "next/image";
           width={142}
           height={142}
           alt="General De Jesus Logo"
+          priority
         />
         <div className="static inline-block">
           <h1 className="mt-10 ml-[-8px] text-3xl font-bold mb-2 text-center">{headerTitle}</h1>

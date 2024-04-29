@@ -16,6 +16,7 @@ export default function Home() {
   return (
     <main className="flex h-full flex-col items-center justify-center bg-gradient-to-t from-emerald-600 via-50% to-emerald-700 to-70%">
       <div className="flex">
+
           <Image 
             width={58}
             height={58}

@@ -52,7 +52,7 @@ export const accounts = pgTable(
 export const verificationTokens = pgTable(
   "verificationToken",
   {
-    id: uuid('id').default(sql`gen_random_uuid()`),
+    id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
     token: text("token").notNull(),
     expires: timestamp("expires", { mode: "date" }).notNull(),
     email: text("email").notNull(),

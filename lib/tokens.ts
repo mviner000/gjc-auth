@@ -14,11 +14,11 @@ export const generateVerificationToken = async (email: string) => {
       await db.delete(verificationTokens).where(eq(verificationTokens.email, email));
     }
   
-    const verificationToken = await db.insert(verificationTokens).values({
+    await db.insert(verificationTokens).values({
       email: email,
       token: token,
       expires: expires,
     });
   
-    return verificationToken; // Return the generated token and expires date
+    return { email, token }; // Return the generated token and expires date
   };
