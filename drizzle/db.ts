@@ -1,5 +1,6 @@
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
+import { tables } from "./schema"; 
 
 import * as dotenv from "dotenv"
 dotenv.config({path: ".env.local"})
@@ -10,6 +11,12 @@ if (!connectionString) {
   console.log("No database connection string was provided.");
 } 
 
+const config = {
+  schema: {
+    tables,
+  },
+};
+
 // for query purposes
 const queryClient = neon(connectionString);
-export const db = drizzle(queryClient, /*{logger: true}*/);
+export const db = drizzle(queryClient, /*{logger: true}*/ config);

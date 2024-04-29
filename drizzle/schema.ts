@@ -3,10 +3,12 @@ import {
   text,
   timestamp,
   pgTable,
+  uniqueIndex,
   uuid,
   primaryKey,
   pgEnum,
 } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 import type { AdapterAccount } from "@auth/core/adapters";
 
 export const roleEnum = pgEnum("role", ["USER", "ADMIN"]);
@@ -50,11 +52,20 @@ export const accounts = pgTable(
 export const verificationTokens = pgTable(
   "verificationToken",
   {
-    identifier: text("identifier").notNull(),
+    id: uuid('id').default(sql`gen_random_uuid()`),
     token: text("token").notNull(),
     expires: timestamp("expires", { mode: "date" }).notNull(),
+    email: text("email").notNull(),
   },
   (vt) => ({
-    compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
+    unique: {
+      emailAndToken: uniqueIndex('email_and_token_unique').on(vt.email, vt.token),
+    },
   })
 )
+
+export const tables = {
+  users,
+  accounts,
+  verificationTokens,
+};

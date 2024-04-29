@@ -33,6 +33,7 @@ export const LoginForm = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
   // const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
 
@@ -46,12 +47,13 @@ export const LoginForm = () => {
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError("");
-    // setSuccess("");
+    setSuccess("");
 
     startTransition(() => {
       login(values).then((data) => {
         if (data) {
         setError(data.error);
+        setSuccess(data.success);
         }
         // setSuccess(data.success);
       });
@@ -122,7 +124,7 @@ export const LoginForm = () => {
               <Link href="/auth/reset">Forgot password?</Link>
             </Button>
 
-            <div className="flex items-center space-x-2 my-4">
+            <div className="flex items-center space-x-2 mt-4 mb-2">
               <Checkbox
                 className="w-3.5 h-3.5 border-gray-400"
                 id="togglepwd"
@@ -140,7 +142,7 @@ export const LoginForm = () => {
           </div>
 
           <FormError message={error || urlError} />
-          {/* <FormSuccess message={success} /> */}
+          <FormSuccess message={success} />
 
           <Button disabled={isPending} type="submit" className="w-full">
             Log in

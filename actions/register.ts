@@ -7,6 +7,7 @@ import { db } from "@/drizzle/db";
 import { users } from "@/drizzle/schema";
 import { RegisterSchema } from "@/schemas/formSchema";
 import { getUserByEmail } from "@/data/user";
+import { sendVerificationEmail } from "@/lib/mail";
 import { generateVerificationToken } from "@/lib/tokens";
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
@@ -18,17 +19,12 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
 
   const { email, password, first_name, last_name } = validatedFields.data;
   const hashedPassword = await bcrypt.hash(password, 10);
-
-  const existingUser = await getUserByEmail(email);
-
-  if (existingUser) {
-    return { error: "Email already in use!" };
-  }
-
+  
   await db.insert(users).values({ first_name, last_name, email, password: hashedPassword });
 
   const verificationToken = await generateVerificationToken(email);
-  // TODO: Send verification token email
 
   return { success: "Confirmation email sent!" };
+
 };
+

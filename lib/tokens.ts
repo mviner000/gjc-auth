@@ -7,20 +7,18 @@ import { eq } from "drizzle-orm/expressions";
 export const generateVerificationToken = async (email: string) => {
     const token = uuidv4();
     const expires = new Date(new Date().getTime() + 3600 * 1000);
-
+  
     const existingToken = await getVerificationTokenByEmail(email);
-
+  
     if (existingToken) {
-        await db.delete(verificationTokens).where(
-            eq(verificationTokens.identifier, email)
-        );
+      await db.delete(verificationTokens).where(eq(verificationTokens.email, email));
     }
-
+  
     const verificationToken = await db.insert(verificationTokens).values({
-        identifier: email,
-        token: token,
-        expires: expires,
+      email: email,
+      token: token,
+      expires: expires,
     });
-
-    return verificationToken;
-};
+  
+    return verificationToken; // Return the generated token and expires date
+  };
