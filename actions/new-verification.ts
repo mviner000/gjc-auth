@@ -2,38 +2,37 @@
 
 import { db } from "@/drizzle/db";
 import { getUserByEmail } from "@/data/user";
-import { users, verificationTokens } from "@/drizzle/schema";
 import { getVerificationTokenByToken } from "@/data/verification-token";
-import { sql } from "drizzle-orm";
+import { users, verificationTokens } from "@/drizzle/schema";
+import { eq } from "drizzle-orm";
 
-export type VerificationResponse = {
-    success?: boolean;
-    error?: string;
+export const newVerification = async (token: string) => {
+  const existingToken = await getVerificationTokenByToken(token);
+
+  if (!existingToken) {
+    return { error: "Token does not exist!" };
+  }
+
+  const hasExpired = new Date(existingToken.expires!) < new Date();
+
+  if (hasExpired) {
+    return { error: "Token has expired!" };
+  }
+
+  const existingUser = await getUserByEmail(existingToken.email!);
+
+  if (!existingUser) {
+    return { error: "Email does not exist!" };
+  }
+
+  await db
+    .update(users)
+    .set({ emailVerified: new Date(), email: existingToken.email! })
+    .where(eq(users.id, existingUser.id));
+
+  await db
+    .delete(verificationTokens)
+    .where(eq(verificationTokens.id, existingToken.id));
+
+    return {success: "Email verified!"}
 };
-
-export const newVerification = async (token: string) => { 
-    const existingToken = await getVerificationTokenByToken(token);
-
-    if (!existingToken || !existingToken[0]) {
-        return { error: "Token is not found in database!" };
-    }
-
-    const hasExpired = new Date(existingToken[0].expires) < new Date();
-
-    if (hasExpired) {
-        return { error: "Token has expired!" };
-      }
-
-    const existingUser = await getUserByEmail(existingToken[0].email);
-
-    if (!existingUser) {
-    return { error: "User with email does not exist!" };
-    }
-
-    await db.update(users).set({
-        emailVerified: new Date(),
-        email: existingToken[0].email,
-      }).where(sql`id = ${existingUser.id}`);
-
-    await db.delete(verificationTokens).where(sql`id = ${existingToken[0].id}`);
-}

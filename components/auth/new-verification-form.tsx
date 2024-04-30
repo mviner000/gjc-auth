@@ -17,31 +17,45 @@ type Data = {
 export const NewVerificationForm = () => {
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
-
   const searchParams = useSearchParams();
 
   const token = searchParams.get("token");
 
-  const onSubmit = useCallback(async () => {
-    if (success || error ) return;
 
+  //   const onSubmit = useCallback(() => {
+  //     if (!token) {
+  //       setError("Missing token!");
+  //       return;
+  //     }
+  //     newVerification(token)
+  //       .then((data) => {
+  //         setSuccess(data.success);
+  //         setError(data.error);
+  //       })
+  //       .catch(() => {
+  //         setError("Something went wrong!");
+  //       });
+  //   }, [token]);
+
+  //   useEffect(() => {
+  //     onSubmit();
+  //   }, [onSubmit]);
+
+  useEffect(() => {
     if (!token) {
       setError("Missing token!");
       return;
     }
-  
-    try {
-      const data: Data = await newVerification(token);
-      setSuccess(data?.success);
-      setSuccess("Email Verified. You can now proceed to login!");
-    } catch (err) {
-      setError("Something went wrong!");
-    }
-  }, [token, success, error]);
+    newVerification(token)
+      .then((data) => {
+        setSuccess(data.success);
+        setError(data.error);
+      })
+      .catch(() => {
+        setError("Something went wrong!");
+      });
+  }, []);
 
-  useEffect(() => {
-    onSubmit();
-  }, [onSubmit]);
 
   return (
     <CardWrapper
@@ -52,11 +66,13 @@ export const NewVerificationForm = () => {
 
   >
     <div className='flex items-center w-full justify-center'>
+
+      
+        <FormSuccess message={success} />
         {!error && !success && <FidgetSpinner />}
 
-        {error && <FormError message={error} />}
+        <FormError message={error} />
 
-        {success && <FormSuccess message={success} />}
 
 
       </div>

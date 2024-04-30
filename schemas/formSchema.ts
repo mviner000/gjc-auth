@@ -9,6 +9,12 @@ export const LoginSchema = z.object({
   }),
 });
 
+export const TokenSchema = z.object({
+  email: z.string().email({
+    message: "Email is required",
+  }),
+  token: z.string(),
+});
 export const RegisterSchema = z
   .object({
     first_name: z.string().min(1, {
