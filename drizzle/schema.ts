@@ -19,6 +19,7 @@ export const users = pgTable("user", {
   last_name: text("last_name"),
   email: text("email").notNull().unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
+  tokenUsedForVerification: text("tokenUsedForVerification").unique(),
   image: text("image"),
   password: text("password"),
   role: roleEnum("role").default("USER"),
