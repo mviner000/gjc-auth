@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import Link from "next/link";
 
 import * as z from "zod";
-import { useForm } from "react-hook-form";
+
 import { useSearchParams } from "next/navigation";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginSchema } from "@/schemas/formSchema";
+import { NewPasswordSchema } from "@/schemas/formSchema";
 
 import {
   Form,
@@ -17,46 +17,40 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 
 import { CardWrapper } from "./card-wrapper";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { login } from "@/actions/login";
-import { FidgetSpinner } from "react-loader-spinner";
+import { newPassword } from "@/actions/new-password";
 
-export const LoginForm = () => {
+export const NewPasswordForm = () => {
   const searchParams = useSearchParams();
-  const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
-    ? "Sign in or register with another email provider"
-    : "";
+  const token = searchParams.get("token");
 
-  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  // const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
+  const [showPassword, setShowPassword] = useState(false);
+  
 
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof NewPasswordSchema>>({
+    resolver: zodResolver(NewPasswordSchema),
     defaultValues: {
-      email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof NewPasswordSchema>) => {
     setError("");
     setSuccess("");
 
     startTransition(() => {
-      login(values).then((data) => {
-        if (data) {
-        setError(data.error);
-        setSuccess(data.success);
-        }
-        // setSuccess(data.success);
+      newPassword(values, token).then((data) => {
+        setError(data?.error);
+        setSuccess(data?.success);
       });
     });
 
@@ -67,43 +61,22 @@ export const LoginForm = () => {
 
   return (
     <CardWrapper
-      headerTitle="Signin"
-      headerLabel="It's quick and easy."
-      backButtonLabel="Don't have an account?"
-      backButtonHref="/auth/register"
-      showSocial
+      headerTitle="Choose a new password"
+      headerLabel=""
+      backButtonLabel="Back to login"
+      backButtonHref="/auth/login"
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-[-10px">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-3">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className={inputClass}
-                      placeholder="Email"
-                      disabled={isPending}
-                      type="email"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
+                    <Input className={inputClass}
                       {...field}
-                      className={inputClass}
                       placeholder="Password"
                       disabled={isPending}
                       type={showPassword ? "text" : "password"}
@@ -113,19 +86,28 @@ export const LoginForm = () => {
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input className={inputClass}
+                      {...field}
+                      placeholder="Confirm Password"
+                      disabled={isPending}
+                      type={showPassword ? "text" : "password"}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
           </div>
 
-          <div className="flex items-center justify-between">
-            <Button
-              variant="link"
-              size="sm"
-              className="h-4 px-0 font-normal text-sm"
-              asChild
-            >
-              <Link href="/auth/reset">Forgot password?</Link>
-            </Button>
-
-            <div className="flex items-center space-x-2 mt-4 mb-2">
+          <div className="flex items-center space-x-2 mt-4 mb-2">
               <Checkbox
                 className="w-3.5 h-3.5 border-gray-400"
                 id="togglepwd"
@@ -140,22 +122,18 @@ export const LoginForm = () => {
                 Show password
               </label>
             </div>
-          </div>
 
-          <FormError message={error || urlError} />
-          <FormSuccess message={success} />
+          <FormError message={error}/>
+          <FormSuccess message={success} link={{ href: "/auth/login"}} />
 
-          {isPending ? (
-            <div className="mb-2 flex justify-center text-center">
-              <FidgetSpinner />
-            </div>
-          ) : (
-            <Button disabled={isPending} type="submit" className="w-full">
-              Log in
-            </Button>
-          )}
-          
+          <Button disabled={isPending} type="submit" className="w-full">
+            Reset password
+          </Button>
         </form>
+
+        <p className="mt-3 text-sm font-normal dark:text-slate-300">
+          Create a new, strong password that you don&apos;t use for other websites
+        </p>
       </Form>
     </CardWrapper>
   );

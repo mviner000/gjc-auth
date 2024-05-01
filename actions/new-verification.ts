@@ -25,10 +25,13 @@ export const newVerification = async (token: string) => {
       if (userWithUsedToken) {
         // Assuming userWithUsedToken.dateOfVerification is a valid date string
         const dateOfVerification = dayjs(userWithUsedToken.dateOfVerification);
-        // Calculate the time elapsed from the verification date to now
-        const timeElapsed = dateOfVerification.fromNow();
-        // console.log(userWithUsedToken.email, `Email was verified ${timeElapsed}`);
-        return { success: `${userWithUsedToken.email} was verified ${timeElapsed}`};
+        const now = dayjs();
+        if (now.isSame(dateOfVerification, 'minute')) {
+          return { success: "Email has been verified. Proceed to Login" };
+        } else {
+          const timeElapsed = now.diff(dateOfVerification, 'minute');
+          return { success: `${userWithUsedToken.email} was verified ${timeElapsed} minute(s) ago` };
+        }
       }
     }
     return { error: "Token does not exist in our database!" };

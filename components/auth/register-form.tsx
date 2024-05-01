@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { FidgetSpinner } from "react-loader-spinner";
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -55,7 +56,7 @@ export const RegisterForm = () => {
     form.reset();
   };
 
-  const inputClass = "bg-neutral-100 border-slate-300 dark:bg-slate-800";
+  const inputClass = "bg-neutral-100 border-slate-300 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-300";
 
   return (
     <CardWrapper
@@ -177,11 +178,17 @@ export const RegisterForm = () => {
           </div>
 
           <FormError message={error} />
-          <FormSuccess message={success} />
+          <FormSuccess message={success} link={{ href: "/auth/login"}} />
 
+          {isPending ? (
+            <div className="mb-2 flex justify-center text-center">
+              <FidgetSpinner />
+            </div>
+          ) : (
          <Button type="submit" className="w-full mt-3" disabled={isPending}>
             Create an account
           </Button>
+         )}
 
           <div className="space-y-1 mt-2 mb-[-10px]">
             <p className="text-xs font-normal">

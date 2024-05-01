@@ -54,7 +54,7 @@ export const NewVerificationForm = () => {
       .catch(() => {
         setError("Something went wrong!");
       });
-  }, []);
+  }, [token]);
 
 
   return (
@@ -66,15 +66,9 @@ export const NewVerificationForm = () => {
 
   >
     <div className='flex items-center w-full justify-center'>
-
-      
-        <FormSuccess message={success} />
+        <FormSuccess message={success} link={{ href: "/auth/login"}} />
         {!error && !success && <FidgetSpinner />}
-
         <FormError message={error} />
-
-
-
       </div>
 </CardWrapper>
   )
