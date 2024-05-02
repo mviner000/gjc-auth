@@ -1,34 +1,129 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios, { AxiosResponse } from 'axios';
+import { PackagePlus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import ReactPaginate from 'react-paginate';
 
-const App = () => {
-  const [count, setCount] = useState(0);
+interface Book {
+  id: number;
+  title: string;
+  author_code: string;
+  author_name: string;
+  subject1_code: string;
+  subject_name: string;
+}
 
-  // Load the count from localStorage on component mount
+const BookPage: React.FC = () => {
+  const [books, setBooks] = useState<Book[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [bookTitles, setBookTitles] = useState<string[]>([]);
+
   useEffect(() => {
-    const storedCount = localStorage.getItem('count');
-    if (storedCount) {
-      setCount(parseInt(storedCount));
-    }
-  }, []); // Empty dependency array means this effect runs once after the first render
+    fetchBooks(currentPage);
+  }, [currentPage]);
+  
 
-  // Update count and store it in localStorage
-  const incrementCount = () => {
-    const newCount = count + 1;
-    setCount(newCount);
-    localStorage.setItem('count', newCount.toString());
+  useEffect(() => {
+    const storedTitlesJSON = localStorage.getItem('bookTitles');
+    if (storedTitlesJSON) {
+      try {
+        const storedTitles = JSON.parse(storedTitlesJSON.trim()); // Trim whitespace characters
+        setBookTitles(storedTitles);
+      } catch (error) {
+        console.error('Error parsing JSON from localStorage:', error);
+      }
+    }
+  }, []);
+
+  const addBookTitleToLocalStorage = (title: string) => {
+    const updatedTitles = [...bookTitles, title];
+    localStorage.setItem('bookTitles', JSON.stringify(updatedTitles));
+    setBookTitles(updatedTitles);
+    alert(`"${title}" added to local storage!`);
+  };
+
+  const fetchBooks = async (page: number): Promise<void> => {
+    try {
+      const response: AxiosResponse<{ count: number; results: Book[] }> = await axios.get(
+        `http://127.0.0.1:8000/api/books/?page=${page}`
+      );
+
+      const { count, results } = response.data;
+      const totalPagesCount: number = Math.ceil(count / 10);
+
+      setBooks(results);
+      setTotalPages(totalPagesCount);
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    }
+  };
+
+  const handlePageClick = (data: { selected: number }): void => {
+    setCurrentPage(data.selected + 1);
   };
 
   return (
-    <div>
-      <h1>Count: {count}</h1>
-      <button onClick={incrementCount}>Increment</button>
-      <button onClick={() => { localStorage.removeItem('count'); setCount(0); }}>
-        Reset
-      </button>
+    <div className="container mx-auto h-full mt-3">
+      <h2 className="text-2xl font-bold mb-4">BookPage</h2>
+
+      <div>
+        <h3 className="text-xl font-bold mb-2">Book Titles from Local Storage:</h3>
+        <ul>
+          {bookTitles.map((title, index) => (
+            <li key={index}>{title}</li>
+          ))}
+        </ul>
+      </div>
+
+      <Button onClick={() => {
+        const storedTitlesJSON = localStorage.getItem('bookTitles');
+        if (storedTitlesJSON) {
+          try {
+            const storedTitles = JSON.parse(storedTitlesJSON);
+            setBookTitles(storedTitles);
+          } catch (error) {
+            console.error('Error parsing JSON from localStorage:', error);
+          }
+        }
+      }}>Show Book Titles from Local Storage</Button>
+
+      <ul>
+        {books.map((book) => (
+          <li key={book.id} className="mb-2">
+            <div className='flex gap-2'>
+              {book.title} {book.author_code} {book.author_name} {book.subject1_code} {book.subject_name}
+              <Button variant="destructive">Delete</Button>
+              <Button variant="outline" size="icon" onClick={() => addBookTitleToLocalStorage(book.title)}>
+                <PackagePlus className="h-[1rem] w-[1rem]" />
+              </Button>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-4 flex justify-left items-center">
+        <ReactPaginate
+          pageCount={totalPages}
+          pageRangeDisplayed={3}
+          marginPagesDisplayed={1}
+          onPageChange={handlePageClick}
+          containerClassName="flex"
+          activeLinkClassName="text-gray-900 group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 transition-all ease-in duration-75 bg-white dark:bg-gray-900 group-hover:bg-opacity-0"
+          pageClassName="mx-1"
+          pageLinkClassName="py-2 px-3 bg-white border border-gray-300 text-gray-500 hover:bg-gray-100"
+          previousLabel="Previous"
+          nextLabel="Next"
+          previousClassName=""
+          previousLinkClassName="py-2 px-3 bg-white border border-gray-300 text-gray-500 hover:bg-gray-100"
+          nextClassName="mx-1"
+          nextLinkClassName="py-2 px-3 bg-white border border-gray-300 text-gray-500 hover:bg-gray-100"
+        />
+      </div>
     </div>
   );
 };
 
-export default App;
+export default BookPage;
