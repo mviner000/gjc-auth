@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { PackagePlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -16,7 +16,9 @@ interface Book {
 }
 
 const BookPage: React.FC = () => {
+  const hasMounted = useRef(false);
   const [books, setBooks] = useState<Book[]>([]);
+  const [bookTitlesCount, setBookTitlesCount] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [bookTitles, setBookTitles] = useState<string[]>([]);
@@ -27,21 +29,32 @@ const BookPage: React.FC = () => {
   
 
   useEffect(() => {
-    const storedTitlesJSON = localStorage.getItem('bookTitles');
-    if (storedTitlesJSON) {
-      try {
-        const storedTitles = JSON.parse(storedTitlesJSON.trim()); // Trim whitespace characters
-        setBookTitles(storedTitles);
-      } catch (error) {
-        console.error('Error parsing JSON from localStorage:', error);
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      // Code that should run only once when the component mounts
+      const storedTitlesJSON = localStorage.getItem('bookTitles');
+      if (storedTitlesJSON) {
+        try {
+          const storedTitles = JSON.parse(storedTitlesJSON.trim()); // Trim whitespace characters
+          setBookTitles(storedTitles);
+          setBookTitlesCount(storedTitles.length);
+        } catch (error) {
+          console.error('Error parsing JSON from localStorage:', error);
+        }
       }
     }
   }, []);
 
   const addBookTitleToLocalStorage = (title: string) => {
+    if (bookTitles.includes(title)) {
+      alert(`"${title}" already added to storage!`);
+      return;
+    }
+  
     const updatedTitles = [...bookTitles, title];
     localStorage.setItem('bookTitles', JSON.stringify(updatedTitles));
     setBookTitles(updatedTitles);
+    setBookTitlesCount(updatedTitles.length);
     alert(`"${title}" added to local storage!`);
   };
 
@@ -70,7 +83,7 @@ const BookPage: React.FC = () => {
       <h2 className="text-2xl font-bold mb-4">BookPage</h2>
 
       <div>
-        <h3 className="text-xl font-bold mb-2">Book Titles from Local Storage:</h3>
+        <h3 className="text-xl font-bold mb-2">Book Titles from Local Storage: {bookTitlesCount}</h3>
         <ul>
           {bookTitles.map((title, index) => (
             <li key={index}>{title}</li>
@@ -78,16 +91,15 @@ const BookPage: React.FC = () => {
         </ul>
       </div>
 
+      <Button variant="destructive" onClick={() => {
+        localStorage.removeItem('bookTitles');
+        setBookTitles([]);
+        setBookTitlesCount(0);
+      }}>Delete All Book Titles</Button>
+
       <Button onClick={() => {
-        const storedTitlesJSON = localStorage.getItem('bookTitles');
-        if (storedTitlesJSON) {
-          try {
-            const storedTitles = JSON.parse(storedTitlesJSON);
-            setBookTitles(storedTitles);
-          } catch (error) {
-            console.error('Error parsing JSON from localStorage:', error);
-          }
-        }
+        const storedTitles = JSON.parse(localStorage.getItem('bookTitles') || '[]');
+        console.log('Book Titles from Local Storage:', storedTitles.map((title: string) => title));
       }}>Show Book Titles from Local Storage</Button>
 
       <ul>
