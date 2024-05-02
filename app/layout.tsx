@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { ModeToggle } from "@/components/mode-toggle";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] });
 import { cn } from "@/lib/utils"
@@ -36,7 +37,7 @@ export default function RootLayout({
           <ModeToggle/>
         </div>
         {children}
-        
+        <Toaster />
     </ThemeProvider>
       </body>
     </html>

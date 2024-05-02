@@ -2,9 +2,24 @@
 
 import { useRef, useState, useEffect } from 'react';
 import axios, { AxiosResponse } from 'axios';
-import { PackagePlus } from 'lucide-react';
+import { BookText, PackagePlus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ReactPaginate from 'react-paginate';
+import { ToastAction } from "@/components/ui/toast"
+import { useToast } from "@/components/ui/use-toast"
+
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import Image from 'next/image';
+import { Separator } from '@/components/ui/separator';
 
 interface Book {
   id: number;
@@ -16,6 +31,7 @@ interface Book {
 }
 
 const BookPage: React.FC = () => {
+  const { toast } = useToast()
   const hasMounted = useRef(false);
   const [books, setBooks] = useState<Book[]>([]);
   const [bookTitlesCount, setBookTitlesCount] = useState<number>(0);
@@ -47,7 +63,13 @@ const BookPage: React.FC = () => {
 
   const addBookTitleToLocalStorage = (title: string) => {
     if (bookTitles.includes(title)) {
-      alert(`"${title}" already added to storage!`);
+      // Display a toast notification
+      toast({
+        title: "Warning!",
+        variant: "destructive",
+        description: `"${title}" already added to storage`,
+        action: <ToastAction altText="Goto schedule to undo">Close</ToastAction>,
+      });
       return;
     }
   
@@ -55,7 +77,18 @@ const BookPage: React.FC = () => {
     localStorage.setItem('bookTitles', JSON.stringify(updatedTitles));
     setBookTitles(updatedTitles);
     setBookTitlesCount(updatedTitles.length);
-    alert(`"${title}" added to local storage!`);
+    toast({
+      title: "Yehey! Congratulations",
+      description: `"${title}" sucessfully added`,
+      action: <ToastAction altText="Goto schedule to undo">Close</ToastAction>,
+    });
+  };
+
+  const handleDeleteBookTitle = (titleToRemove: string) => {
+    const updatedTitles = bookTitles.filter((title) => title !== titleToRemove);
+    localStorage.setItem('bookTitles', JSON.stringify(updatedTitles));
+    setBookTitles(updatedTitles);
+    setBookTitlesCount(updatedTitles.length);
   };
 
   const fetchBooks = async (page: number): Promise<void> => {
@@ -81,36 +114,76 @@ const BookPage: React.FC = () => {
   return (
     <div className="container mx-auto h-full mt-3">
       <h2 className="text-2xl font-bold mb-4">BookPage</h2>
-
-      <div>
-        <h3 className="text-xl font-bold mb-2">Book Titles from Local Storage: {bookTitlesCount}</h3>
-        <ul>
+      <Sheet>
+      <SheetTrigger asChild>
+        <button type="button" className="outline-0 shadow-md relative inline-flex items-center p-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800  focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          <BookText />
+          <span className="sr-only">Notifications</span>
+          <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border border-white rounded-full -top-2 -end-2 dark:border-gray-900">{bookTitlesCount}</div>
+        </button>
+      </SheetTrigger>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>Book Cart {bookTitlesCount}</SheetTitle>
+          <SheetDescription>
+            These are all the books from your wishlist
+          </SheetDescription>
+        </SheetHeader>
+        <ul className='space-y-4 my-3'>
           {bookTitles.map((title, index) => (
-            <li key={index}>{title}</li>
+            <li key={index}>
+              {title}
+              <div className='flex justify-between my-2'>
+              <Image
+                src={`https://via.placeholder.com/64x80/007bff/ffffff?text=Book`}
+                alt="book_image"
+                width={64}
+                height={80}
+                className=" h-auto w-auto object-cover transition-all hover:scale-105"
+              />
+              <Button variant="outline" size="icon" onClick={() => handleDeleteBookTitle(title)}>
+                <X className="h-[1.1rem] w-[1.1rem] text-red-500" />
+              </Button>
+              </div>
+              <Separator />
+            </li>
           ))}
         </ul>
-      </div>
+        
 
-      <Button variant="destructive" onClick={() => {
-        localStorage.removeItem('bookTitles');
-        setBookTitles([]);
-        setBookTitlesCount(0);
-      }}>Delete All Book Titles</Button>
-
-      <Button onClick={() => {
-        const storedTitles = JSON.parse(localStorage.getItem('bookTitles') || '[]');
-        console.log('Book Titles from Local Storage:', storedTitles.map((title: string) => title));
-      }}>Show Book Titles from Local Storage</Button>
+        <SheetFooter className='gap-28'>
+          {bookTitles.length > 0 && ( 
+            <Button variant="destructive" onClick={() => {
+              localStorage.removeItem('bookTitles');
+              setBookTitles([]);
+              setBookTitlesCount(0);
+            }}>Empty BookCart</Button>
+          )}
+          <SheetClose asChild>
+            {bookTitles.length > 0 && ( 
+              <Button type="submit">Proceed</Button>
+            )}
+          </SheetClose>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
 
       <ul>
         {books.map((book) => (
           <li key={book.id} className="mb-2">
             <div className='flex gap-2'>
               {book.title} {book.author_code} {book.author_name} {book.subject1_code} {book.subject_name}
-              <Button variant="destructive">Delete</Button>
-              <Button variant="outline" size="icon" onClick={() => addBookTitleToLocalStorage(book.title)}>
-                <PackagePlus className="h-[1rem] w-[1rem]" />
-              </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => {
+                    addBookTitleToLocalStorage(book.title); // Add book title to local storage
+
+                    
+                  }}
+                >
+                  <PackagePlus className="h-[1rem] w-[1rem]" />
+                </Button>
             </div>
           </li>
         ))}

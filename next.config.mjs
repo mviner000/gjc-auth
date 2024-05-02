@@ -16,6 +16,11 @@ const nextConfig = {
             hostname: 'img.icons8.com',
             pathname: '/**',
           },
+          {
+            protocol: 'https',
+            hostname: 'via.placeholder.com',
+            pathname: '/**',
+          },
         ],
       },
 };
