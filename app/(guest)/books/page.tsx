@@ -2,9 +2,8 @@
 
 import { useRef, useState, useEffect } from 'react';
 import axios, { AxiosResponse } from 'axios';
-import { BookText, PackagePlus, X } from 'lucide-react';
+import { BookText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import ReactPaginate from 'react-paginate';
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
 
@@ -18,8 +17,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import Image from 'next/image';
-import { Separator } from '@/components/ui/separator';
+import BookCart from '@/components/books/book-cart';
+import BookCard from '@/components/books/book-card';
+import Pagination from '@/components/books/pagination';
 
 interface Book {
   id: number;
@@ -61,29 +61,6 @@ const BookPage: React.FC = () => {
     }
   }, []);
 
-  const addBookTitleToLocalStorage = (title: string) => {
-    if (bookTitles.includes(title)) {
-      // Display a toast notification
-      toast({
-        title: "Warning!",
-        variant: "destructive",
-        description: `"${title}" already added to storage`,
-        action: <ToastAction altText="Goto schedule to undo">Close</ToastAction>,
-      });
-      return;
-    }
-  
-    const updatedTitles = [...bookTitles, title];
-    localStorage.setItem('bookTitles', JSON.stringify(updatedTitles));
-    setBookTitles(updatedTitles);
-    setBookTitlesCount(updatedTitles.length);
-    toast({
-      title: "Yehey! Congratulations",
-      description: `"${title}" sucessfully added`,
-      action: <ToastAction altText="Goto schedule to undo">Close</ToastAction>,
-    });
-  };
-
   const handleDeleteBookTitle = (titleToRemove: string) => {
     const updatedTitles = bookTitles.filter((title) => title !== titleToRemove);
     localStorage.setItem('bookTitles', JSON.stringify(updatedTitles));
@@ -106,9 +83,32 @@ const BookPage: React.FC = () => {
       console.error('Error fetching books:', error);
     }
   };
+  
+  const handlePageChange = (selectedPage: number) => {
+    setCurrentPage(selectedPage);
+  };
 
-  const handlePageClick = (data: { selected: number }): void => {
-    setCurrentPage(data.selected + 1);
+  const handleAddToCart = (title: string) => {
+    if (bookTitles.includes(title)) {
+      // Display a toast notification
+      toast({
+        title: "Warning!",
+        variant: "destructive",
+        description: `"${title}" already added to storage`,
+        action: <ToastAction altText="Goto schedule to undo">Close</ToastAction>,
+      });
+      return;
+    }
+  
+    const updatedTitles = [...bookTitles, title];
+    localStorage.setItem('bookTitles', JSON.stringify(updatedTitles));
+    setBookTitles(updatedTitles);
+    setBookTitlesCount(updatedTitles.length);
+    toast({
+      title: "Yehey! Congratulations",
+      description: `"${title}" sucessfully added`,
+      action: <ToastAction altText="Goto schedule to undo">Close</ToastAction>,
+    });
   };
 
   return (
@@ -129,28 +129,7 @@ const BookPage: React.FC = () => {
             These are all the books from your wishlist
           </SheetDescription>
         </SheetHeader>
-        <ul className='space-y-4 my-3'>
-          {bookTitles.map((title, index) => (
-            <li key={index}>
-              {title}
-              <div className='flex justify-between my-2'>
-              <Image
-                src={`https://via.placeholder.com/64x80/007bff/ffffff?text=Book`}
-                alt="book_image"
-                width={64}
-                height={80}
-                className=" h-auto w-auto object-cover transition-all hover:scale-105"
-              />
-              <Button variant="outline" size="icon" onClick={() => handleDeleteBookTitle(title)}>
-                <X className="h-[1.1rem] w-[1.1rem] text-red-500" />
-              </Button>
-              </div>
-              <Separator />
-            </li>
-          ))}
-        </ul>
-        
-
+        <BookCart bookTitles={bookTitles} onDeleteTitle={handleDeleteBookTitle} />
         <SheetFooter className='gap-28'>
           {bookTitles.length > 0 && ( 
             <Button variant="destructive" onClick={() => {
@@ -167,45 +146,13 @@ const BookPage: React.FC = () => {
         </SheetFooter>
       </SheetContent>
     </Sheet>
-
-      <ul>
-        {books.map((book) => (
-          <li key={book.id} className="mb-2">
-            <div className='flex gap-2'>
-              {book.title} {book.author_code} {book.author_name} {book.subject1_code} {book.subject_name}
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => {
-                    addBookTitleToLocalStorage(book.title); // Add book title to local storage
-
-                    
-                  }}
-                >
-                  <PackagePlus className="h-[1rem] w-[1rem]" />
-                </Button>
-            </div>
-          </li>
-        ))}
-      </ul>
-
-      <div className="mt-4 flex justify-left items-center">
-        <ReactPaginate
-          pageCount={totalPages}
-          pageRangeDisplayed={3}
-          marginPagesDisplayed={1}
-          onPageChange={handlePageClick}
-          containerClassName="flex"
-          activeLinkClassName="text-gray-900 group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 transition-all ease-in duration-75 bg-white dark:bg-gray-900 group-hover:bg-opacity-0"
-          pageClassName="mx-1"
-          pageLinkClassName="py-2 px-3 bg-white border border-gray-300 text-gray-500 hover:bg-gray-100"
-          previousLabel="Previous"
-          nextLabel="Next"
-          previousClassName=""
-          previousLinkClassName="py-2 px-3 bg-white border border-gray-300 text-gray-500 hover:bg-gray-100"
-          nextClassName="mx-1"
-          nextLinkClassName="py-2 px-3 bg-white border border-gray-300 text-gray-500 hover:bg-gray-100"
-        />
+    <ul>
+      {books.map((book) => (
+        <BookCard key={book.id} book={book} onAddToCart={handleAddToCart} />
+      ))}
+    </ul>
+      <div className="mt-4 flex justify-left items-center pb-10">
+        <Pagination pageCount={totalPages} onPageChange={handlePageChange} />
       </div>
     </div>
   );
