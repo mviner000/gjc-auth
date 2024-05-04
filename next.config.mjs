@@ -17,8 +17,13 @@ const nextConfig = {
             pathname: '/**',
           },
           {
+            protocol: 'http',
+            hostname: '127.0.0.1',
+            pathname: '/**',
+          },
+          {
             protocol: 'https',
-            hostname: 'via.placeholder.com',
+            hostname: 'gjclibrary.com',
             pathname: '/**',
           },
         ],

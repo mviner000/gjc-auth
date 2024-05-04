@@ -24,10 +24,13 @@ import Pagination from '@/components/books/pagination';
 interface Book {
   id: number;
   title: string;
-  author_code: string;
   author_name: string;
-  subject1_code: string;
   subject_name: string;
+  thumbnail_url: string;
+  publisher: string;
+  pubplace: string;
+  pagination: string;
+  edition: string;
 }
 
 const BookPage: React.FC = () => {
@@ -38,6 +41,7 @@ const BookPage: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [bookTitles, setBookTitles] = useState<string[]>([]);
+  
 
   useEffect(() => {
     fetchBooks(currentPage);
@@ -71,7 +75,7 @@ const BookPage: React.FC = () => {
   const fetchBooks = async (page: number): Promise<void> => {
     try {
       const response: AxiosResponse<{ count: number; results: Book[] }> = await axios.get(
-        `http://127.0.0.1:8000/api/books/?page=${page}`
+        `https://gjclibrary.com/api/books/?page=${page}`
       );
 
       const { count, results } = response.data;
@@ -88,14 +92,14 @@ const BookPage: React.FC = () => {
     setCurrentPage(selectedPage);
   };
 
-  const handleAddToCart = (title: string) => {
+  const handleAddToCart = (title: string, thumbnailUrl: string) => {
     if (bookTitles.includes(title)) {
-      // Display a toast notification
+      // Display a toast notification for duplicate entry
       toast({
         title: "Warning!",
         variant: "destructive",
-        description: `"${title}" already added to storage`,
-        action: <ToastAction altText="Goto schedule to undo">Close</ToastAction>,
+        description: `${title} already added to storage`,
+        action: <ToastAction altText="Go to schedule to undo">Close</ToastAction>,
       });
       return;
     }
@@ -104,10 +108,14 @@ const BookPage: React.FC = () => {
     localStorage.setItem('bookTitles', JSON.stringify(updatedTitles));
     setBookTitles(updatedTitles);
     setBookTitlesCount(updatedTitles.length);
+  
+    // Save thumbnail_url to localStorage
+    localStorage.setItem(`thumbnail_${title}`, thumbnailUrl);
+  
     toast({
       title: "Yehey! Congratulations",
-      description: `"${title}" sucessfully added`,
-      action: <ToastAction altText="Goto schedule to undo">Close</ToastAction>,
+      description: `"${title}" successfully added`,
+      action: <ToastAction altText="Go to schedule to undo">Close</ToastAction>,
     });
   };
 

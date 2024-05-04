@@ -6,6 +6,7 @@ import axios, { AxiosResponse } from 'axios';
 import { Author, AuthorsPageState } from './types';
 import ReactPaginate from 'react-paginate';
 
+
 const AuthorsPage: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
