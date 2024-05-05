@@ -59,17 +59,16 @@ export const NewVerificationForm = () => {
 
   return (
     <CardWrapper
-  headerTitle='GJC Library'
-  headerLabel="Confirming your verification"
-  backButtonLabel='back to login'
-  backButtonHref='/auth/login'
-
-  >
-    <div className='flex items-center w-full justify-center'>
-        <FormSuccess message={success} link={{ href: "/auth/login"}} />
-        {!error && !success && <FidgetSpinner />}
-        <FormError message={error} />
+      headerTitle='GJC Library'
+      headerLabel="Confirming your verification"
+      backButtonLabel='back to login'
+      backButtonHref='/auth/login'
+    >
+      <div className='flex items-center w-full justify-center'>
+          <FormSuccess message={success} link={{ href: "/auth/login"}} />
+          {!error && !success && <FidgetSpinner />}
+          <FormError message={error} />
       </div>
-</CardWrapper>
+    </CardWrapper>
   )
 }
