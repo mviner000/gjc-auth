@@ -8,7 +8,7 @@ import SubjectTag from '@/components/books/subject-tag';
 
 interface BookCardProps {
   book: {
-    id: number;
+    id: string;
     title: string;
     author_name: string;
     subject_name: string;
@@ -24,7 +24,8 @@ interface BookCardProps {
 const BookCard: React.FC<BookCardProps> = ({ book, onAddToCart }) => {
   return (
     <li key={book.id} className="my-4">
-    <div className="grid grid-cols-3 gap-2 md:gap-0 md:grid-cols-1 md:space-y-1">  <Image
+    <span>BookId: </span>{book.id}
+    <div className="mt-1 grid grid-cols-3 gap-2 md:gap-0 md:grid-cols-1 md:space-y-1">  <Image
         src={book.thumbnail_url}
         alt="book_image"
         height={48}

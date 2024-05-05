@@ -22,7 +22,7 @@ import BookCard from '@/components/books/book-card';
 import Pagination from '@/components/books/pagination';
 
 interface Book {
-  id: number;
+  id: string;
   title: string;
   author_name: string;
   subject_name: string;

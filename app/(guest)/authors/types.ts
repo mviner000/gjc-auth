@@ -1,5 +1,5 @@
 export interface Author {
-    id: number;
+    id: string;
     author_name: string;
     author_code: string;
     books: Book[];

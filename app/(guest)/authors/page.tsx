@@ -5,6 +5,8 @@ import React, { useState, useEffect, ChangeEvent, FormEvent, useCallback, useRef
 import axios, { AxiosResponse } from 'axios';
 import { Author, AuthorsPageState } from './types';
 import ReactPaginate from 'react-paginate';
+import AuthorTag from '@/components/books/author-tag';
+import SubjectTag from '@/components/books/subject-tag';
 
 
 const AuthorsPage: React.FC = () => {
@@ -26,7 +28,7 @@ const AuthorsPage: React.FC = () => {
   const fetchAuthors = async (page: number): Promise<void> => {
     try {
       const response: AxiosResponse<{ count: number; results: Author[] }> = await axios.get(
-        `http://127.0.0.1:8000/api/authors/?page=${page}`
+        `https://gjclibrary.com/api/authors/?page=${page}`
       );
 
       const { count, results } = response.data;
@@ -34,6 +36,9 @@ const AuthorsPage: React.FC = () => {
 
       setAuthors(results);
       setTotalPages(totalPagesCount);
+      
+      console.log('Fetched Authors:', results);
+      console.log('Total Pages:', totalPagesCount);
     } catch (error) {
       console.error('Error fetching authors:', error);
     }
@@ -50,7 +55,9 @@ const AuthorsPage: React.FC = () => {
           {authors.map((authors) => (
             <li key={authors.id} className="mb-2">
               <div className='flex gap-2'>
+                <SubjectTag subjectName={authors.id} />
                 {authors.author_name}
+                <AuthorTag authorName={authors.author_code} />
               </div>
             </li>
           ))}
