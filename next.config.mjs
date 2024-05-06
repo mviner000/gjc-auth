@@ -26,6 +26,11 @@ const nextConfig = {
             hostname: 'gjclibrary.com',
             pathname: '/**',
           },
+          {
+            protocol: 'https',
+            hostname: 'via.placeholder.com',
+            pathname: '/**',
+          },
         ],
       },
 };
