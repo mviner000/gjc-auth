@@ -7,6 +7,7 @@ export const LoginSchema = z.object({
   password: z.string().min(6, {
     message: "Password must be at least 6 characters long",
   }),
+  code: z.optional(z.string())
 });
 
 export const TokenSchema = z.object({

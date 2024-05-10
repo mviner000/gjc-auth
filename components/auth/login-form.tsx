@@ -32,6 +32,9 @@ export const LoginForm = () => {
     ? "Sign in or register with another email provider"
     : "";
 
+    
+  const [showTwoFactor, setShowTwoFactor] = useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
@@ -51,16 +54,24 @@ export const LoginForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      login(values).then((data) => {
-        if (data) {
-        setError(data.error);
-        setSuccess(data.success);
-        }
-        // setSuccess(data.success);
-      });
-    });
+      login(values)
+        .then((data) => {
+          if (data?.error) {
+            form.reset();
+            setError(data.error);
+          }
 
-    form.reset();
+          if (data?.success) {
+            form.reset();
+            setSuccess(data.success);
+          }
+
+          if (data?.twoFactor) {
+            setShowTwoFactor(true);
+          }
+        })
+        .catch(() => setError("Something went wrong!"));
+    });
   };
   
   const inputClass = "bg-neutral-100 border-slate-300 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-300";
@@ -75,7 +86,28 @@ export const LoginForm = () => {
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-[-10px">
-          <div className="space-y-3">
+          <div className="space-y-3 mb-3">
+          {showTwoFactor && (
+              <FormField
+                control={form.control}
+                name="code"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Enter 2FA Code"
+                        disabled={isPending}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+{!showTwoFactor && (
+              <>
             <FormField
               control={form.control}
               name="email"
@@ -113,8 +145,11 @@ export const LoginForm = () => {
                 </FormItem>
               )}
             />
+            </>
+           )}
           </div>
 
+          {!showTwoFactor && (
           <div className="flex items-center justify-between">
             <Button
               variant="link"
@@ -141,6 +176,7 @@ export const LoginForm = () => {
               </label>
             </div>
           </div>
+          )}
 
           <FormError message={error || urlError} />
           <FormSuccess message={success} />
@@ -151,7 +187,7 @@ export const LoginForm = () => {
             </div>
           ) : (
             <Button disabled={isPending} type="submit" className="w-full">
-              Log in
+              {showTwoFactor ? "Confirm" : "Log in"}
             </Button>
           )}
           

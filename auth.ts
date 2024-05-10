@@ -1,6 +1,9 @@
 import NextAuth, { type DefaultSession } from "next-auth";
 import { type JWT } from "next-auth/jwt";
 import { authConfig } from "@/auth.config";
+import { sql } from 'drizzle-orm'
+import bcrypt from "bcryptjs";
+import { eq } from "drizzle-orm";
 
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/drizzle/db";
@@ -9,9 +12,9 @@ import Credentials from "next-auth/providers/credentials";
 import { LoginSchema } from "@/schemas/formSchema";
 import { getUserByEmail } from "./data/user";
 import { getUserById } from "./data/user";
-import { users } from "@/drizzle/schema";
-import { sql } from 'drizzle-orm'
-import bcrypt from "bcryptjs";
+import { twoFactorConfirmations, users } from "./drizzle/schema";
+import { getTwoFactorConfirmationByUserId } from "./data/two-factor-confirmation";
+
 
 import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
@@ -55,7 +58,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // Prevent sign in without email verification
       if (!existingUser?.emailVerified) return false;
 
-      // TODO: Add 2FA check
+      if (existingUser.isTwoFactorEnabled) {
+        const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
+          existingUser.id
+        );
+
+        if (!twoFactorConfirmation) return false;
+
+        // Delete two factor confirmation for next sign in
+        await db
+          .delete(twoFactorConfirmations)
+          .where(eq(twoFactorConfirmations.id, twoFactorConfirmation.id));
+      }
 
       return true;
     },
