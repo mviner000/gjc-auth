@@ -3,6 +3,7 @@ export interface Author {
     author_name: string;
     author_code: string;
     books: Book[];
+    book_count: number;
   }
   
   export interface AuthorsPageProps {}

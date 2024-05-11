@@ -3,14 +3,21 @@
 
 import React, { useState, useEffect, ChangeEvent, FormEvent, useCallback, useRef } from 'react';
 import axios, { AxiosResponse } from 'axios';
-import { Author } from './types';
+import { Author, Book } from './types';
 import ReactPaginate from 'react-paginate';
 import AuthorTag from '@/components/books/author-tag';
 import SubjectTag from '@/components/books/subject-tag';
 import { FidgetSpinner } from 'react-loader-spinner';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
+const appUrl = process.env.NEXT_PUBLIC_APP;
 
 const AuthorsPage: React.FC = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
@@ -25,21 +32,18 @@ const AuthorsPage: React.FC = () => {
   }, [currentPage]);
 
   const fetchAuthors = async (page: number): Promise<void> => {
-    setLoading(true); // Set loading state to true before fetching
+    setLoading(true);
     try {
-
-      const response: AxiosResponse<{ count: number; results: Author[] }> = await axios.get(
-        `https://gjclibrary.com/api/authors/?page=${page}`
-      );
-
+      const response = await axios.get(`${appUrl}api/authors/?page=${page}`);
       const { count, results } = response.data;
-      const totalPagesCount: number = Math.ceil(count / 10);
 
+      const totalPagesCount: number = Math.ceil(count / 10);
       setAuthors(results);
       setTotalPages(totalPagesCount);
-      setLoading(false); // Set loading state to false after fetching
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching authors:', error);
+      setLoading(false);
     } finally {
       setLoading(false); // Always set loading state to false after fetching
     }
@@ -74,17 +78,26 @@ const AuthorsPage: React.FC = () => {
         </div>
       ) : (
       <ul>
-          {authors.map((authors) => (
-            <li key={authors.id} className="mb-2">
-              <div className='flex gap-2'>
-                <SubjectTag subjectName={authors.id} />
-                {authors.author_name}
-                <AuthorTag authorName={authors.author_code} />
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+        {authors.map((author: Author) => (
+          <li key={author.id}>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value={`item-${author.id}`}>
+                <AccordionTrigger>
+                  {author.author_name} <span className="text-yellow-200"> {author.books.length} ( book published)</span>
+                </AccordionTrigger>
+                <ul>
+                  {author.books.map((book: Book) => (
+                    <li key={book.id}>
+                      <AccordionContent>{book.title}</AccordionContent>
+                    </li>
+                  ))}
+                </ul>
+              </AccordionItem>
+            </Accordion>
+          </li>
+        ))}
+      </ul>
+          )}
       {/* Pagination */}
       <div className="mt-4 flex justify-left items-center">
         <ReactPaginate

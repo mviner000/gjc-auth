@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/sheet"
 import BookCart from '@/components/books/book-cart';
 import BookCard from '@/components/books/book-card';
-import Pagination from '@/components/books/pagination';
+import Pagination from '@/components/pagination';
 import { Input } from '@/components/ui/input';
 import {
   Breadcrumb,
@@ -40,6 +40,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Sidebar } from '@/components/sidebar';
 import { FidgetSpinner } from 'react-loader-spinner';
+import BreadcrumbComponent from '@/components/breadcrumb';
+import CartSheet from '@/components/cart-sheet';
 
 interface Book {
   id: string;
@@ -52,6 +54,8 @@ interface Book {
   pagination: string;
   edition: string;
 }
+
+const appUrl = process.env.NEXT_PUBLIC_APP;
 
 const BookPage: React.FC = () => {
   const { toast } = useToast()
@@ -94,6 +98,13 @@ const BookPage: React.FC = () => {
     setBookTitlesCount(updatedTitles.length);
   };
 
+  const handleEmptyBookCart = () => {
+    setBookTitles([]);
+    setBookTitlesCount(0);
+    localStorage.removeItem('bookTitles');
+  };
+  
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     const pageNumber = parseInt(inputPage, 10);
@@ -107,7 +118,7 @@ const BookPage: React.FC = () => {
     setLoading(true);
     try {
       const response: AxiosResponse<{ count: number; results: Book[] }> = await axios.get(
-        `https://gjclibrary.com/api/books/?page=${page}`
+        `${appUrl}api/books/?page=${page}`
       );
 
       const { count, results } = response.data;
@@ -158,11 +169,6 @@ const BookPage: React.FC = () => {
     });
   };
 
-  const handlePageClick = (data: { selected: number }): void => {
-    setLoading(true);
-    setCurrentPage(data.selected + 1);
-  };
-
   return (
     <div className='bg-gradient-to-t from-emerald-600 via-50% to-emerald-700 to-70%'>
       <div className="mt-3 h-full ">
@@ -172,68 +178,9 @@ const BookPage: React.FC = () => {
               <div className="col-span-3 lg:col-span-4 lg:border-l">
               <div className="h-full px-4 py-6 lg:px-8">
                 <div className='flex justify-between'>
-                  <Breadcrumb>
-                    <BreadcrumbList>
-                      <BreadcrumbItem>
-                        <BreadcrumbLink className='text-slate-200 dark:text-white' href="/">Home</BreadcrumbLink>
-                      </BreadcrumbItem>
-                      <BreadcrumbSeparator />
-                      <BreadcrumbItem>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger className="flex items-center gap-1">
-                            <BreadcrumbEllipsis className="h-4 w-4 text-slate-200 dark:text-white" />
-                            <span className="sr-only">Toggle menu</span>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent className="text-slate-200 dark:text-white" align="start">
-                            <DropdownMenuItem>Documentation</DropdownMenuItem>
-                            <DropdownMenuItem>Themes</DropdownMenuItem>
-                            <DropdownMenuItem>GitHub</DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </BreadcrumbItem>
-                      <BreadcrumbSeparator />
-                      <BreadcrumbItem>
-                        <BreadcrumbLink href="/docs/components" className='text-slate-200 dark:text-white'>Dashboard</BreadcrumbLink>
-                      </BreadcrumbItem>
-                      <BreadcrumbSeparator />
-                      <BreadcrumbItem>
-                        <BreadcrumbPage className='text-lime-500 font-semibold'>Books</BreadcrumbPage>
-                      </BreadcrumbItem>
-                    </BreadcrumbList>
-                  </Breadcrumb>
+                <BreadcrumbComponent currentPage={currentPage} />
                   <div className='mr-16'>
-                  <Sheet>
-                    <SheetTrigger asChild>
-                      <button type="button" className="outline-0 shadow-md relative inline-flex items-center p-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800  focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        <BookText />
-                        <span className="sr-only">Notifications</span>
-                        <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border border-white rounded-full -top-2 -end-2 dark:border-gray-900">{bookTitlesCount}</div>
-                      </button>
-                    </SheetTrigger>
-                    <SheetContent>
-                      <SheetHeader>
-                        <SheetTitle>Book Cart {bookTitlesCount}</SheetTitle>
-                        <SheetDescription>
-                          These are all the books from your wishlist
-                        </SheetDescription>
-                      </SheetHeader>
-                      <BookCart bookTitles={bookTitles} onDeleteTitle={handleDeleteBookTitle} />
-                      <SheetFooter className='gap-28'>
-                        {bookTitles.length > 0 && ( 
-                          <Button variant="destructive" onClick={() => {
-                            localStorage.removeItem('bookTitles');
-                            setBookTitles([]);
-                            setBookTitlesCount(0);
-                          }}>Empty BookCart</Button>
-                        )}
-                        <SheetClose asChild>
-                          {bookTitles.length > 0 && ( 
-                            <Button type="submit">Proceed</Button>
-                          )}
-                        </SheetClose>
-                      </SheetFooter>
-                    </SheetContent>
-                  </Sheet>
+                  <CartSheet bookTitles={bookTitles} onDeleteTitle={handleDeleteBookTitle} handleEmptyBookCart={handleEmptyBookCart} />
                   </div>
                 </div>
                 <div className="space-y-6 mb-5">
@@ -264,23 +211,11 @@ const BookPage: React.FC = () => {
                         </div>
                       </form>
                       <div className="my-5 flex justify-left items-center">
-                        <ReactPaginate
-                            pageCount={totalPages}
-                            pageRangeDisplayed={3}
-                            marginPagesDisplayed={1}
-                            onPageChange={handlePageClick}
-                            forcePage={currentPage - 1} 
-                            containerClassName="flex"
-                            activeLinkClassName="text-gray-900 group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 transition-all ease-in duration-75 bg-white dark:bg-gray-900 group-hover:bg-opacity-0"
-                            pageClassName="mx-1"
-                            pageLinkClassName="py-2 px-3 bg-white border border-gray-300 text-gray-500 hover:bg-gray-100"
-                            previousLabel="Previous"
-                            nextLabel="Next"
-                            previousClassName=""
-                            previousLinkClassName="py-2 px-3 bg-white border border-gray-300 text-gray-500 hover:bg-gray-100"
-                            nextClassName="mx-1"
-                            nextLinkClassName="py-2 px-3 bg-white border border-gray-300 text-gray-500 hover:bg-gray-100"
-                          />
+                        <Pagination
+                          totalPages={totalPages}
+                          currentPage={currentPage}
+                          onPageChange={handlePageChange}
+                        />
                       </div>
                       <ul>
                         {books.map((book) => (
@@ -293,22 +228,10 @@ const BookPage: React.FC = () => {
                   )}
                 </div>
               <div className="mt-4 flex justify-left items-center">
-              <ReactPaginate
-                pageCount={totalPages}
-                pageRangeDisplayed={3}
-                marginPagesDisplayed={1}
-                onPageChange={handlePageClick}
-                forcePage={currentPage - 1} 
-                containerClassName="flex"
-                activeLinkClassName="text-gray-900 group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-2 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 transition-all ease-in duration-75 bg-white dark:bg-gray-900 group-hover:bg-opacity-0"
-                pageClassName="mx-1"
-                pageLinkClassName="py-2 px-3 bg-white border border-gray-300 text-gray-500 hover:bg-gray-100"
-                previousLabel="Previous"
-                nextLabel="Next"
-                previousClassName=""
-                previousLinkClassName="py-2 px-3 bg-white border border-gray-300 text-gray-500 hover:bg-gray-100"
-                nextClassName="mx-1"
-                nextLinkClassName="py-2 px-3 bg-white border border-gray-300 text-gray-500 hover:bg-gray-100"
+                <Pagination
+                  totalPages={totalPages}
+                  currentPage={currentPage}
+                  onPageChange={handlePageChange}
                 />
               </div>
                 <form onSubmit={handleSubmit}>
