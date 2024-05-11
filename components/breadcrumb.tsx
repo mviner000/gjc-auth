@@ -37,9 +37,9 @@ const BreadcrumbComponent: React.FC<BreadcrumbProps> = ({ currentPage,
             </DropdownMenuContent>
           </DropdownMenu>
         </BreadcrumbItem>
-        <BreadcrumbSeparator />
+        <BreadcrumbSeparator className='hidden'/>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/docs/components" className='text-slate-200 dark:text-white'>Dashboard</BreadcrumbLink>
+          <BreadcrumbLink href="/docs/components" className='text-slate-200 dark:text-white hidden'>Dashboard</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>

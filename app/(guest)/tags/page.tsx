@@ -53,6 +53,18 @@ const TagPage: React.FC = () => {
     fetchSubjects(currentPage); // Fetch first page of subjects on component mount
   }, [currentPage]); // Watch for changes in currentPage
 
+  useEffect(() => {
+    const storedTitlesJSON = localStorage.getItem('bookTitles');
+    if (storedTitlesJSON) {
+      setBookTitles(JSON.parse(storedTitlesJSON));
+    }
+
+    const storedCount = localStorage.getItem('bookTitlesCount');
+    if (storedCount) {
+      setBookTitlesCount(parseInt(storedCount, 10));
+    }
+  }, []);
+
   const fetchSubjects = async (page: number): Promise<void> => {
     setLoading(true);
     try {
