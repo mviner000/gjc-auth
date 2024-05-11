@@ -13,6 +13,7 @@ import BreadcrumbComponent from '@/components/breadcrumb';
 import CartSheet from '@/components/cart-sheet';
 import PaginationControls from '@/components/pagination-controls';
 import NavMenu from '@/components/nav-menu';
+import { TopTags } from '@/components/top-tags';
 
 interface Book {
   id: string;
@@ -169,8 +170,9 @@ const BookPage: React.FC = () => {
                         <CartSheet bookTitles={bookTitles} onDeleteTitle={handleDeleteBookTitle} handleEmptyBookCart={handleEmptyBookCart} />
                       </div>
                   </div>
-                <div className='mb-2'>
+                <div className='py-3 mb-2'>
                   <NavMenu />
+                  <TopTags />
                 </div>
                 <div className="space-y-6 mb-5">
                   <h2 className="text-2xl font-bold">BookPage <span className="bg-purple-100 text-purple-800 text-lg font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-purple-400 border border-purple-400">{currentPage}</span></h2>
