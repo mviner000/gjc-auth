@@ -2,42 +2,14 @@
 
 import { useRef, useState, useEffect } from 'react';
 import axios, { AxiosResponse } from 'axios';
-import { BookText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ToastAction } from "@/components/ui/toast"
-import ReactPaginate from 'react-paginate';
 import { useToast } from "@/components/ui/use-toast"
 import { playlists } from "@/actions/playlists"
 
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
-import BookCart from '@/components/books/book-cart';
 import BookCard from '@/components/books/book-card';
 import Pagination from '@/components/pagination';
 import { Input } from '@/components/ui/input';
-import {
-  Breadcrumb,
-  BreadcrumbEllipsis,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Sidebar } from '@/components/sidebar';
 import { FidgetSpinner } from 'react-loader-spinner';
 import BreadcrumbComponent from '@/components/breadcrumb';
@@ -104,7 +76,6 @@ const BookPage: React.FC = () => {
     localStorage.removeItem('bookTitles');
   };
   
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     const pageNumber = parseInt(inputPage, 10);
