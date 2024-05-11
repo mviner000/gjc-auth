@@ -42,7 +42,7 @@ const TagDetails = () => {
 
     const getSubject = async (id: number) => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/subjects/${id}`);
+            const response = await axios.get(`${appUrl}/api/subjects/${id}`);
             setSubject(response.data);
         } catch (error) {
             console.error(error);
