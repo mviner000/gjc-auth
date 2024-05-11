@@ -12,9 +12,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 interface BreadcrumbProps {
   currentPage: number;
+  currentPageText: string;
 }
 
-const BreadcrumbComponent: React.FC<BreadcrumbProps> = ({ currentPage }) => {
+const BreadcrumbComponent: React.FC<BreadcrumbProps> = ({ currentPage, 
+  currentPageText, }) => {
   return (
     <Breadcrumb>
       <BreadcrumbList>
@@ -41,7 +43,7 @@ const BreadcrumbComponent: React.FC<BreadcrumbProps> = ({ currentPage }) => {
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbPage className='text-lime-500 font-semibold'>Books</BreadcrumbPage>
+          <BreadcrumbPage className='text-lime-500 font-semibold'>{currentPageText}</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>

@@ -16,6 +16,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { Sidebar } from '@/components/sidebar';
+
+import { playlists } from "@/actions/playlists"
+import BreadcrumbComponent from '@/components/breadcrumb';
+import CartSheet from '@/components/cart-sheet';
+import Link from 'next/link';
+import NavMenu from '@/components/nav-menu';
 
 const appUrl = process.env.NEXT_PUBLIC_APP;
 
@@ -25,11 +32,25 @@ const AuthorsPage: React.FC = () => {
   const [authors, setAuthors] = useState<Author[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [inputPage, setInputPage] = useState<string>(''); 
+  const [bookTitlesCount, setBookTitlesCount] = useState<number>(0);
+  const [bookTitles, setBookTitles] = useState<string[]>([]);
 
   
   useEffect(() => {
     fetchAuthors(currentPage);
   }, [currentPage]);
+
+  useEffect(() => {
+    const storedTitlesJSON = localStorage.getItem('bookTitles');
+    if (storedTitlesJSON) {
+      setBookTitles(JSON.parse(storedTitlesJSON));
+    }
+
+    const storedCount = localStorage.getItem('bookTitlesCount');
+    if (storedCount) {
+      setBookTitlesCount(parseInt(storedCount, 10));
+    }
+  }, []);
 
   const fetchAuthors = async (page: number): Promise<void> => {
     setLoading(true);
@@ -69,10 +90,39 @@ const AuthorsPage: React.FC = () => {
     setCurrentPage(data.selected + 1);
   };
 
+  const handleDeleteBookTitle = (titleToRemove: string) => {
+    const updatedTitles = bookTitles.filter((title) => title !== titleToRemove);
+    localStorage.setItem('bookTitles', JSON.stringify(updatedTitles));
+    setBookTitles(updatedTitles);
+    setBookTitlesCount(updatedTitles.length);
+  };
+
+  const handleEmptyBookCart = () => {
+    setBookTitles([]);
+    setBookTitlesCount(0);
+    localStorage.removeItem('bookTitles');
+  };
+
+
   return (
-    <div className="container mx-auto h-full mt-3">
+    <div className='bg-gradient-to-t from-emerald-600 via-50% to-emerald-700 to-70%'>
+      <div className="mt-3 h-full ">
+      <div className="text-white flex flex-col items-center justify-center">
+      <div className="grid lg:grid-cols-5">
+      <Sidebar playlists={playlists} className="hidden lg:block" />
+      <div className="col-span-3 lg:col-span-4 lg:border-l">
+      <div className="h-full px-4 py-6 lg:px-8">
+      <div className='flex justify-between'>
+          <BreadcrumbComponent currentPage={currentPage} currentPageText="Authors" />
+          <div className='mr-16'>
+            <CartSheet bookTitles={bookTitles} onDeleteTitle={handleDeleteBookTitle} handleEmptyBookCart={handleEmptyBookCart} />
+          </div>
+      </div>     
+      <div className='mb-2'>
+        <NavMenu />
+      </div>
       <h2 className="text-2xl font-bold mb-4">AuthorsPage <span className="bg-purple-100 text-purple-800 text-lg font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-purple-400 border border-purple-400">{currentPage}</span></h2>
-      {loading ? ( // Render loading spinner if loading is true
+      {loading ? ( 
         <div className='h-full'>
           <FidgetSpinner />
         </div>
@@ -137,6 +187,11 @@ const AuthorsPage: React.FC = () => {
               </Button>
           </div>
         </form>
+        </div>
+        </div>
+        </div>
+    </div>
+    </div>
     </div>
   );
 };

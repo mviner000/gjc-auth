@@ -9,6 +9,7 @@ export const publicRoutes = [
     "/authors",
     "/books",
     "/posts",
+    "/show",
 ];
 
 /**

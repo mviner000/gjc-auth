@@ -17,10 +17,11 @@ interface BookCardProps {
     pagination: string;
     edition: string;
   };
-  onAddToCart: (title: string, thumbnailUrl: string) => void; // Include thumbnailUrl parameter
+  onAddToCart: (title: string, thumbnailUrl: string) => void;
+  setBookTitlesCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const BookCard: React.FC<BookCardProps> = ({ book, onAddToCart }) => {
+const BookCard: React.FC<BookCardProps> = ({ book, onAddToCart, setBookTitlesCount }) => {
   return (
     <>
     <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 md:space-y-1">  
@@ -51,6 +52,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onAddToCart }) => {
         <Button
           onClick={() => {
             onAddToCart(book.title, book.thumbnail_url);
+            setBookTitlesCount(prevCount => prevCount + 1);
           }}
         >Add To Borrow Cart</Button>
         <Button variant="secondary" disabled>Share this Book link</Button>

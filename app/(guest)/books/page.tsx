@@ -2,18 +2,17 @@
 
 import { useRef, useState, useEffect } from 'react';
 import axios, { AxiosResponse } from 'axios';
-import { Button } from '@/components/ui/button';
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
 import { playlists } from "@/actions/playlists"
 
 import BookCard from '@/components/books/book-card';
-import Pagination from '@/components/pagination';
-import { Input } from '@/components/ui/input';
 import { Sidebar } from '@/components/sidebar';
 import { FidgetSpinner } from 'react-loader-spinner';
 import BreadcrumbComponent from '@/components/breadcrumb';
 import CartSheet from '@/components/cart-sheet';
+import PaginationControls from '@/components/pagination-controls';
+import NavMenu from '@/components/nav-menu';
 
 interface Book {
   id: string;
@@ -75,15 +74,6 @@ const BookPage: React.FC = () => {
     setBookTitlesCount(0);
     localStorage.removeItem('bookTitles');
   };
-  
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    const pageNumber = parseInt(inputPage, 10);
-    if (!isNaN(pageNumber) && pageNumber >= 1 && pageNumber <= totalPages) {
-      setCurrentPage(pageNumber); // Update currentPage with the entered valid page number
-    }
-    setInputPage(''); // Clear input field after submission
-  };
 
   const fetchBooks = async (page: number): Promise<void> => {
     setLoading(true);
@@ -103,10 +93,6 @@ const BookPage: React.FC = () => {
     } finally {
       setLoading(false); // Always set loading state to false after fetching
     }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setInputPage(e.target.value); // Update inputPage state with user input
   };
   
   const handlePageChange = (selectedPage: number) => {
@@ -140,6 +126,35 @@ const BookPage: React.FC = () => {
     });
   };
 
+  const renderPagination = () => {
+    return (
+      <div>
+        <PaginationControls
+          totalPages={totalPages}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+          onGoToPage={(pageNumber) => setCurrentPage(pageNumber)}
+        />
+      </div>
+    );
+  };
+
+  const renderBookList = () => {
+    return (
+      <ul>
+      {books.map((book) => (
+        <li key={book.id}>
+          <BookCard
+            book={book}
+            onAddToCart={handleAddToCart}
+            setBookTitlesCount={setBookTitlesCount}
+          />
+        </li>
+      ))}
+    </ul>
+    );
+  };
+
   return (
     <div className='bg-gradient-to-t from-emerald-600 via-50% to-emerald-700 to-70%'>
       <div className="mt-3 h-full ">
@@ -147,12 +162,15 @@ const BookPage: React.FC = () => {
           <div className="grid lg:grid-cols-5">
             <Sidebar playlists={playlists} className="hidden lg:block" />
               <div className="col-span-3 lg:col-span-4 lg:border-l">
-              <div className="h-full px-4 py-6 lg:px-8">
-                <div className='flex justify-between'>
-                <BreadcrumbComponent currentPage={currentPage} />
-                  <div className='mr-16'>
-                  <CartSheet bookTitles={bookTitles} onDeleteTitle={handleDeleteBookTitle} handleEmptyBookCart={handleEmptyBookCart} />
+                <div className="h-full px-4 py-6 lg:px-8">
+                  <div className='flex justify-between'>
+                    <BreadcrumbComponent currentPage={currentPage} currentPageText="Books" />
+                      <div className='mr-16'>
+                        <CartSheet bookTitles={bookTitles} onDeleteTitle={handleDeleteBookTitle} handleEmptyBookCart={handleEmptyBookCart} />
+                      </div>
                   </div>
+                <div className='mb-2'>
+                  <NavMenu />
                 </div>
                 <div className="space-y-6 mb-5">
                   <h2 className="text-2xl font-bold">BookPage <span className="bg-purple-100 text-purple-800 text-lg font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-purple-400 border border-purple-400">{currentPage}</span></h2>
@@ -162,68 +180,14 @@ const BookPage: React.FC = () => {
                     </div>
                   ) : (
                     <div>
-                      <form onSubmit={handleSubmit}>
-                        <div className='mt-4 flex'>
-                            <Input
-                              type="number"
-                              value={inputPage}
-                              onChange={handleInputChange}
-                              placeholder={`Go to page (1 - ${totalPages})`}
-                              min="1"
-                              max={totalPages}
-                              className="w-3/4 bg-neutral-100 border-slate-300 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-300"
-                            />
-                            <Button
-                              type="submit"
-                              className="w-1/4 py-2 px-4 ml-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-                            >
-                              Go
-                            </Button>
-                        </div>
-                      </form>
-                      <div className="my-5 flex justify-left items-center">
-                        <Pagination
-                          totalPages={totalPages}
-                          currentPage={currentPage}
-                          onPageChange={handlePageChange}
-                        />
-                      </div>
-                      <ul>
-                        {books.map((book) => (
-                          <li key={book.id}>
-                            <BookCard book={book} onAddToCart={handleAddToCart} />
-                          </li>
-                        ))}
-                      </ul>
+                      {renderPagination()}
+                      {renderBookList()}
                     </div>
                   )}
                 </div>
-              <div className="mt-4 flex justify-left items-center">
-                <Pagination
-                  totalPages={totalPages}
-                  currentPage={currentPage}
-                  onPageChange={handlePageChange}
-                />
-              </div>
-                <form onSubmit={handleSubmit}>
-                  <div className='mt-4 flex'>
-                    <Input
-                      type="number"
-                      value={inputPage}
-                      onChange={handleInputChange}
-                      placeholder={`Go to page (1 - ${totalPages})`}
-                      min="1"
-                      max={totalPages}
-                      className="w-3/4 bg-neutral-100 border-slate-300 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-300"
-                    />
-                    <Button
-                      type="submit"
-                      className="w-1/4 py-2 px-4 ml-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-                    >
-                      Go
-                    </Button>
-                  </div>
-                </form>
+                <div>
+                  {renderPagination()}
+                </div>
               </div>
             </div>
           </div>
