@@ -18,6 +18,7 @@ import { getTwoFactorConfirmationByUserId } from "./data/two-factor-confirmation
 
 import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
+import Facebook from "next-auth/providers/google";
 
 declare module "next-auth/jwt" {
   interface JWT {
@@ -30,6 +31,7 @@ declare module "next-auth" {
     user: {
       id: string
       role: "ADMIN" | "USER";
+      isTwoFactorEnabled: boolean;
     } & DefaultSession["user"];
   }
 }
@@ -83,6 +85,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.role = token.role;
       }
 
+      if (session.user) {
+        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
+      }
+
       return session;
     },
 
@@ -95,6 +101,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       // Might have to refine the typescript error other than making it not null
       token.role = existingUser.role!;
+      token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
       return token;
     },
@@ -108,6 +115,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Github({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    }),
+    Facebook({
+      clientId: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
     }),
     Credentials({
       async authorize(credentails) {

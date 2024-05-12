@@ -3,12 +3,12 @@
 // import { loginOauth } from "@/actions/login";
 
 import { signIn } from "next-auth/react";
-import { FaGoogle, FaGithub } from "react-icons/fa";
+import { FaGoogle, FaGithub, FaFacebook } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 export const Social = () => {
-  const handleClick = async (provider: "google" | "github") => {
+  const handleClick = async (provider: "google" | "github" | "facebook") => {
     try {
       await signIn(provider, {
         callbackUrl: DEFAULT_LOGIN_REDIRECT,
@@ -34,6 +34,15 @@ export const Social = () => {
         onClick={() => handleClick("github")}
       >
         <FaGithub className="h-5 w-5" />
+      </Button>
+      
+      <Button
+        size="lg"
+        className="w-full bg-blue-500 text-white outline-2 shadow-md outline-black"
+        variant="outline"
+        onClick={() => handleClick("facebook")}
+      >
+        <FaFacebook className="h-5 w-5" />
       </Button>
     </div>
   );
