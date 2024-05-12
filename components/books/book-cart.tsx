@@ -21,7 +21,7 @@ const BookCart: React.FC<BookCartProps> = ({ bookTitles, onDeleteTitle }) => {
             {title}
             <div className='flex justify-between my-2'>
               {thumbnailUrl ? (
-                <Image
+                  <Image
                   src={thumbnailUrl}
                   alt="book_image"
                   width={64}

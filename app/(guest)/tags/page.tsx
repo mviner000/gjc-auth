@@ -6,6 +6,8 @@ import axios, { AxiosResponse } from 'axios';
 import ReactPaginate from 'react-paginate';
 import AuthorTag from '@/components/books/author-tag';
 import SubjectTag from '@/components/books/subject-tag';
+import { ToastAction } from "@/components/ui/toast"
+import { useToast } from "@/components/ui/use-toast"
 import { FidgetSpinner } from 'react-loader-spinner';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -23,8 +25,16 @@ import CartSheet from '@/components/cart-sheet';
 import Link from 'next/link';
 import NavMenu from '@/components/nav-menu';
 import PaginationControls from '@/components/pagination-controls';
+import { Book } from '../authors/types';
 
 const appUrl = process.env.NEXT_PUBLIC_APP;
+
+let modifiedAppUrl = '';
+
+if (appUrl) {
+  // Remove trailing slash if it exists
+  modifiedAppUrl = appUrl.replace(/\/$/, ''); // This regex removes a trailing slash if it exists
+}
 
 interface Subject {
   id: number;
@@ -34,12 +44,9 @@ interface Subject {
   books: Book[];
 }
 
-interface Book {
-  id: number;
-  title: string;
-}
 
 const TagPage: React.FC = () => {
+  const { toast } = useToast()
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [pageCount, setPageCount] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(1);
@@ -122,6 +129,35 @@ const TagPage: React.FC = () => {
     setInputPage(e.target.value); // Update inputPage state with user input
   };
 
+  const handleAddToCart = (title: string, thumbnailUrl: string | null) => {
+    if (bookTitles.includes(title)) {
+      // Display a toast notification for duplicate entry
+      toast({
+        title: "Warning!",
+        variant: "destructive",
+        description: `${title} already added to storage`,
+        action: <ToastAction altText="Go to schedule to undo">Close</ToastAction>,
+      });
+      return;
+    }
+  
+    const updatedTitles = [...bookTitles, title];
+    localStorage.setItem('bookTitles', JSON.stringify(updatedTitles));
+    setBookTitles(updatedTitles);
+    setBookTitlesCount(updatedTitles.length);
+
+    const thumbnailUrlPrefixed = `${modifiedAppUrl}${thumbnailUrl}`
+  
+    const thumbnailToSave = thumbnailUrlPrefixed || 'https://via.placeholder.com/128x185/007bff/ffffff?text=Book';
+    localStorage.setItem(`thumbnail_${title}`, thumbnailToSave);
+  
+    toast({
+      title: "Yehey! Congratulations",
+      description: `"${title}" successfully added`,
+      action: <ToastAction altText="Go to schedule to undo">Close</ToastAction>,
+    });
+  };
+
 
   const renderSubjects = () => {
     return (
@@ -138,7 +174,10 @@ const TagPage: React.FC = () => {
                   {subject.books ? (
                     subject.books.map((book: Book, index: number) => (
                       <li key={book.id || `book-${index}`}>
-                        <AccordionContent>{book.title}</AccordionContent>
+                        <AccordionContent>
+                          {book.title}
+                          <Button className='ml-2' onClick={() => handleAddToCart(book.title, book.thumbnail_url)}>Add</Button>
+                        </AccordionContent>
                       </li>
                     ))
                   ) : (

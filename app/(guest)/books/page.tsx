@@ -117,8 +117,9 @@ const BookPage: React.FC = () => {
     setBookTitles(updatedTitles);
     setBookTitlesCount(updatedTitles.length);
   
-    // Save thumbnail_url to localStorage
-    localStorage.setItem(`thumbnail_${title}`, thumbnailUrl);
+    console.log(`Thumbnail URL: ${thumbnailUrl}`); // Log thumbnail URL before storage
+    const thumbnailToSave = thumbnailUrl || 'https://via.placeholder.com/128x185/007bff/ffffff?text=Book';
+    localStorage.setItem(`thumbnail_${title}`, thumbnailToSave);
   
     toast({
       title: "Yehey! Congratulations",

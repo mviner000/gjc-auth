@@ -57,7 +57,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onAddToCart, setBookTitlesCou
         >Add To Borrow Cart</Button>
         <Button variant="secondary" disabled>Share this Book link</Button>
       </div>
-      <Separator className='mt-2 bg-blue-500'/>
+      <Separator className='my-3 bg-blue-500'/>
       </>
   );
 };
