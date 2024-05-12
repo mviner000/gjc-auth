@@ -11,7 +11,7 @@ export const sendVerificationEmail = async (
     const confirmLink = `${appUrl}/auth/new-verification?token=${token}`; // Include token in the link
   
     await resend.emails.send({
-      from: 'onboarding@resend.dev',
+      from: 'mail@gjclibrary.com',
       to: email,
       subject: 'Verify Your Email Address',
       html: `<p>Click <a href="${confirmLink}">here</a> to verify your email address.</p>`
@@ -24,7 +24,7 @@ export const sendPasswordResetEmail = async (
   ) => {
     const resetLink = `${appUrl}/auth/new-password?token=${token}`;
     await resend.emails.send({
-        from: "onboarding@resend.dev",
+        from: "mail@gjclibrary.com",
         to: email,
         subject: "Reset your password",
         html: `<p>Click <a href="${resetLink}">here</a> to reset password.</p>`
@@ -33,7 +33,7 @@ export const sendPasswordResetEmail = async (
 
 export const sendTwoFactorTokenEmail = async (email: string, token: string) => {
   await resend.emails.send({
-      from: "onboarding@resend.dev",
+      from: "mail@gjclibrary.com",
       to: email,
       subject: "2FA Code",
       html: `<p>Your 2FA code: ${token}</p>`
