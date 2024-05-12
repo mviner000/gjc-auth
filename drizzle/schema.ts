@@ -14,6 +14,8 @@ import { relations } from "drizzle-orm";
 
 export const roleEnum = pgEnum("role", ["USER", "ADMIN"]);
 
+export type UserRole = 'USER' | 'ADMIN';
+
 export const users = pgTable("user", {
   id: uuid("id").defaultRandom().notNull().primaryKey(),
   name: text("name"),

@@ -1,9 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@/components/auth/user-button";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 const Navbar = () => {
+    
+    const user = useCurrentUser();
+
     return (
         <header className=" text-white py-4 md:pl-16 pl-5 pr-8 w-full z-10 border-b border-neutral-400 bg-emerald-800 ">
             
@@ -39,13 +45,28 @@ const Navbar = () => {
                     
                 </ul> 
                 <div className="mt-2 gap-3 flex ">
-                <div className="mt-[-8px]">
-                <UserButton />
-                </div>
-                <Link className="hover:text-blue-500  text-white"  href="/settings">Settings</Link>
-                <Link href="/login">
-                    <Button variant="ghost" className="mr-10 mt-[-2rem] text-white outline outline-[1px] outline-emerald-500">Sign In</Button>
-                </Link>
+
+                {user ? (
+                        <div className="flex gap-3 mt-1">
+                            <Link className="hover:text-blue-500  text-white"  href="/settings">Settings</Link>
+                            <div className="mt-[-8px] mr-10">
+                                <UserButton />
+                            </div>
+                        </div>
+                        ) : (
+                            <>
+                            <Link href="/login">
+                                <Button 
+                                    variant="ghost" 
+                                    className="mr-10 mt-[-2rem] text-white outline outline-[1px] outline-emerald-500"
+                                >
+                                    Sign In
+                                </Button>
+                            </Link>
+                            </>
+                        )}
+                
+               
                 </div>
             </div>
         </div>

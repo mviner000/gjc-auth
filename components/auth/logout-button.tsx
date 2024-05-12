@@ -1,4 +1,7 @@
+"use client";
+
 import React from 'react';
+import { useRouter } from "next/navigation";
 import { logout } from "@/actions/logout";
 
 interface LogoutButtonProps {
@@ -6,8 +9,16 @@ interface LogoutButtonProps {
 }
 
 const LogoutButton = ({ children }: LogoutButtonProps) => {
-    const onClick = () => {
-        logout();
+    const router = useRouter();
+
+    const onClick = async () => {
+        try {
+            await logout(); // Assuming logout() is an asynchronous function
+            router.push('/home'); // Redirect to /home after logout
+        } catch (error) {
+            console.error('Logout error:', error);
+            // Handle error if needed
+        }
     };
 
     return (

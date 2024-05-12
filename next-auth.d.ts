@@ -6,6 +6,7 @@ import { UserRole } from "./drizzle/schema"; // assuming you have a drizzle sche
 export type ExtendedUser = DefaultSession["user"] & {
   role: UserRole;
   isTwoFactorEnabled: boolean;
+  isOAuth: boolean;
 };
 
 // Update the Session interface in the NextAuth module augmentation

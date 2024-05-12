@@ -19,6 +19,7 @@ import { getTwoFactorConfirmationByUserId } from "./data/two-factor-confirmation
 import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 import Facebook from "next-auth/providers/google";
+import { getAccountByUserId } from "./data/account";
 
 declare module "next-auth/jwt" {
   interface JWT {
@@ -32,6 +33,7 @@ declare module "next-auth" {
       id: string
       role: "ADMIN" | "USER";
       isTwoFactorEnabled: boolean;
+      isOAuth: boolean;
     } & DefaultSession["user"];
   }
 }
@@ -89,17 +91,32 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
       }
 
+      if (session.user) {
+        session.user.name = token.name;
+        session.user.email = token.email || '';
+        session.user.isOAuth = token.isOAuth as boolean;
+      }
+
       return session;
     },
 
     async jwt({ token }) {
+      console.log("I am being called");
       if (!token.sub) return token;
 
       const existingUser = await getUserById(token.sub);
 
       if (!existingUser) return token;
 
+      const existingAccount = await getAccountByUserId(
+        existingUser.id
+      )
+
+
       // Might have to refine the typescript error other than making it not null
+      token.isOAuth = !!existingAccount;
+      token.name = existingUser.name;
+      token.email = existingUser.email;
       token.role = existingUser.role!;
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 

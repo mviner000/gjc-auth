@@ -98,15 +98,15 @@ export const LoginForm = () => {
                         {...field}
                         placeholder="Enter 2FA Code"
                         disabled={isPending}
+                        className="text-black dark:text-white"
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            )}
-
-{!showTwoFactor && (
+            )}  
+            {!showTwoFactor && (
               <>
             <FormField
               control={form.control}
