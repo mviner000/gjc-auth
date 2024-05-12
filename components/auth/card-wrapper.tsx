@@ -44,7 +44,7 @@ import Image from "next/image";
       <Card className="mt-12 mb-10 w-[425px] shadow-md border-8 border-emerald-800">
       <CardHeader className="relative">
         <Image
-          className="absolute bottom-24 left-[128px]"
+          className="absolute xxs:left-[98px] bottom-24 left-[128px] xs:left-[128px]"
           src="https://i.imgur.com/yyuB3s5.png"
           width={142}
           height={142}

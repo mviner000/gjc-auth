@@ -36,6 +36,8 @@
     "dayjs": "^1.11.11",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.30.8",
+    "embla-carousel-autoplay": "^8.0.4",
+    "embla-carousel-react": "^8.0.4",
     "framer-motion": "^11.1.5",
     "lucide-react": "^0.371.0",
     "mini-svg-data-uri": "^1.4.4",

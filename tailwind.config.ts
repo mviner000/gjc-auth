@@ -8,6 +8,21 @@ const {
 } = require("tailwindcss/lib/util/flattenColorPalette");
 
 const config = {
+  emerald: {
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: "hsl(var(--emerald-primary))",
+          foreground: "hsl(var(--emerald-primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--emerald-secondary))",
+          foreground: "hsl(var(--emerald-secondary-foreground))",
+        },
+        // update other colors as needed
+      },
+    },
+  },
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",

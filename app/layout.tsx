@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
     <body
       className={cn(
-        "bg-gradient-to-t from-emerald-600 via-50% to-emerald-700 to-70% min-h-screen bg-background font-sans antialiased",
+        " font-sans antialiased",
         inter.className
       )}
     >
@@ -32,6 +32,7 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
+          themes={['light', 'dark', 'emerald']}
         >
         <div className="z-10 absolute top-5 right-5">
           <ModeToggle/>
