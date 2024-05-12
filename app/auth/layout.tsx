@@ -17,7 +17,7 @@ const AuthLayout = ({
 
   return (
     <div className="mt-7 h-full ">
-      <div className="text-white flex flex-col items-center justify-center">
+      <div className="text-black dark:text-white flex flex-col items-center justify-center">
         <h1 className={cn(
           "xxs:text-3xl xs:text-4xl sm:text-4xl md:text-5xl lg:text-6xl",
           myFont.className

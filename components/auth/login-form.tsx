@@ -74,7 +74,7 @@ export const LoginForm = () => {
     });
   };
   
-  const inputClass = "bg-neutral-100 border-slate-300 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-300";
+  const inputClass = "text-black bg-neutral-100 border-slate-300 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-300";
 
   return (
     <CardWrapper

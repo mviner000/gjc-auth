@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { UserButton } from "@/components/auth/user-button";
 
 const Navbar = () => {
     return (
@@ -36,13 +37,16 @@ const Navbar = () => {
                         <Link className="hover:text-blue-500" href="/contacts">Contacts</Link>
                     </li>
                     
-                    <li className="mr-6 mt-[7px] dark:text-white hidden md:block">
-                        <Link className="hover:text-blue-500" href="/faqs">Faqs</Link>
-                    </li>
                 </ul> 
-                <Link className="hover:text-blue-500" href="/login">
-                <Button variant="ghost" className="mr-10 mt-1  text-white outline outline-[1px] outline-emerald-500">Sign In</Button>
+                <div className="mt-2 gap-3 flex ">
+                <div className="mt-[-8px]">
+                <UserButton />
+                </div>
+                <Link className="hover:text-blue-500  text-white"  href="/settings">Settings</Link>
+                <Link href="/login">
+                    <Button variant="ghost" className="mr-10 mt-[-2rem] text-white outline outline-[1px] outline-emerald-500">Sign In</Button>
                 </Link>
+                </div>
             </div>
         </div>
         </header>

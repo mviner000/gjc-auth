@@ -82,7 +82,7 @@ body,
     --popover-foreground: 220 80% 90%;
 
 
-    --white-text-color: hsl(0, 100%, 95%);
+    --white-text-color: hsl(0, 100%, 100%);
 
     * {
       color: var(--white-text-color);
