@@ -18,7 +18,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ subjects, handleAddToCart }) 
             <AccordionItem value={`item-${subject.id}`}>
               <AccordionTrigger>
                 <span className="opacity-90 bg-purple-100 text-purple-500 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-purple-400 border border-purple-500">{subject.subject_name}</span>
-                <span className="text-yellow-200"> {subject.books.length} (books tagged)</span>
+                <span className="text-black dark:text-white"> {subject.books.length} (books tagged)</span>
               </AccordionTrigger>
               <ul>
                 {subject.books ? (

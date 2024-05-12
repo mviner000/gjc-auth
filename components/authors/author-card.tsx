@@ -2,6 +2,7 @@ import React from 'react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Author, Book } from '@/app/(guest)/authors/types';
 import { Button } from '@/components/ui/button';
+import AuthorTag from '@/components/books/author-tag';
 
 interface AuthorCardProps {
   author: Author;
@@ -13,7 +14,8 @@ const AuthorCard: React.FC<AuthorCardProps> = ({ author, handleAddToCart }) => {
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value={`item-${author.id}`}>
         <AccordionTrigger>
-          {author.author_name} <span className="text-yellow-200"> {author.books.length} ( book published)</span>
+          <AuthorTag authorName={author.author_name}></AuthorTag>
+          <span className="text-black dark:text-white"> {author.books.length} ( book published)</span>
         </AccordionTrigger>
         <ul>
           {author.books.map((book: Book) => (

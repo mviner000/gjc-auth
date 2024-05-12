@@ -9,6 +9,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import Link from 'next/link';
 
 interface BreadcrumbProps {
   currentPage: number;
@@ -21,19 +22,25 @@ const BreadcrumbComponent: React.FC<BreadcrumbProps> = ({ currentPage,
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink className='text-slate-200 dark:text-white' href="/">Home</BreadcrumbLink>
+          <BreadcrumbLink className='text-black dark:text-white' href="/">Home</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center gap-1">
-              <BreadcrumbEllipsis className="h-4 w-4 text-slate-200 dark:text-white" />
+              <BreadcrumbEllipsis className="h-4 w-4 text-black dark:text-white" />
               <span className="sr-only">Toggle menu</span>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="text-slate-200 dark:text-white" align="start">
-              <DropdownMenuItem>Documentation</DropdownMenuItem>
-              <DropdownMenuItem>Themes</DropdownMenuItem>
-              <DropdownMenuItem>GitHub</DropdownMenuItem>
+            <DropdownMenuContent className="text-black dark:text-white" align="start">
+              <Link href="/about">
+              <DropdownMenuItem>About</DropdownMenuItem>
+              </Link>
+              <Link href="/contacts">
+              <DropdownMenuItem>Contacts</DropdownMenuItem>
+              </Link>
+              <Link href="/team">
+              <DropdownMenuItem>Team</DropdownMenuItem>
+              </Link>
             </DropdownMenuContent>
           </DropdownMenu>
         </BreadcrumbItem>

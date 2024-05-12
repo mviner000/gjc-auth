@@ -15,6 +15,8 @@ import PaginationControls from '@/components/pagination-controls';
 import CartSheet from '@/components/cart-sheet';
 import NavMenu from '@/components/nav-menu';
 import AuthorCard from '@/components/authors/author-card';
+import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
 
 const appUrl = process.env.NEXT_PUBLIC_APP;
 
@@ -131,7 +133,9 @@ const AuthorsPage: React.FC = () => {
   };
 
   return (
-    <div className='bg-gradient-to-t from-emerald-600 via-50% to-emerald-700 to-70%'>
+    <>
+    <Navbar/>
+    <div className=''>
       <div className="mt-3 h-full ">
         <div className="grid lg:grid-cols-5">
           <Sidebar playlists={playlists} className="hidden lg:block" />
@@ -164,6 +168,8 @@ const AuthorsPage: React.FC = () => {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

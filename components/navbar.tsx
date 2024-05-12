@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -7,8 +8,15 @@ import { UserButton } from "@/components/auth/user-button";
 import { useCurrentUser } from "@/hooks/use-current-user";
 
 const Navbar = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     
     const user = useCurrentUser();
+
+    useEffect(() => {
+        // Update isLoggedIn when user state changes
+        setIsLoggedIn(!!user); // Set isLoggedIn to true if user exists, false otherwise
+    }, [user]);
+
 
     return (
         <header className=" text-white py-4 md:pl-16 pl-5 pr-8 w-full z-10 border-b border-neutral-400 bg-emerald-800 ">
@@ -46,7 +54,7 @@ const Navbar = () => {
                 </ul> 
                 <div className="mt-2 gap-3 flex ">
 
-                {user ? (
+                {isLoggedIn ? (
                         <div className="flex gap-3 mt-1">
                             <Link className="hover:text-blue-500  text-white"  href="/settings">Settings</Link>
                             <div className="mt-[-8px] mr-10">
@@ -55,7 +63,7 @@ const Navbar = () => {
                         </div>
                         ) : (
                             <>
-                            <Link href="/login">
+                            <Link href="auth/login">
                                 <Button 
                                     variant="ghost" 
                                     className="mr-10 mt-[-2rem] text-white outline outline-[1px] outline-emerald-500"

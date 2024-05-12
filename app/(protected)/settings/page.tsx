@@ -158,6 +158,7 @@ const SettingsPage = () => {
                 )}
               />
 
+              <div className="hidden">
               <FormField
                 control={form.control}
                 name="isTwoFactorEnabled"
@@ -181,6 +182,7 @@ const SettingsPage = () => {
                   </FormItem>
                 )}
               />
+              </div>
               </>
               )}
 
