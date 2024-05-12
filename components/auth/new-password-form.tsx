@@ -57,7 +57,7 @@ export const NewPasswordForm = () => {
     form.reset();
   };
   
-  const inputClass = "bg-neutral-100 border-slate-300 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-300";
+  const inputClass = "bg-neutral-100 border-slate-300 dark:bg-slate-800 dark:border-slate-600 text-black dark:text-white";
 
   return (
     <CardWrapper
