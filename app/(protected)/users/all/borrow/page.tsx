@@ -23,6 +23,10 @@ interface BookCart {
   is_borrowed_verified: boolean;
 }
 
+
+const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+
+
 const BookCartForm: React.FC = () => {
   const { register, handleSubmit, reset, formState: { errors }, setValue } = useForm<FormData>();
   const [books, setBooks] = useState<Book[]>([]);
@@ -31,7 +35,7 @@ const BookCartForm: React.FC = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get<any>('http://127.0.0.1:8000/api/books/');
+        const response = await axios.get<any>(`${appUrl}/api/books/`);
         console.log('Fetched books:', response.data); // Log fetched data for inspection
   
         // Assuming 'results' is the array containing books
@@ -64,7 +68,7 @@ const BookCartForm: React.FC = () => {
     try {
       console.log('Form Data to be sent:', formData); // Log the formData before sending
   
-      const response = await axios.post<BookCart>('http://127.0.0.1:8000/api/bookcart/', formData);
+      const response = await axios.post<BookCart>(`${appUrl}/api/bookcart/`, formData);
       console.log('New BookCart added:', response.data);
       reset(); // Reset the form after successful submission
     } catch (error) {

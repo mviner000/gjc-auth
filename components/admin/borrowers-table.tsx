@@ -19,6 +19,8 @@ interface BookCart {
   is_borrowed_verified: boolean;
 }
 
+const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+
 const BorrowersTable = () => {
   const [isPending, setIsPending] = useState(false);
   const [bookCarts, setBookCarts] = useState<BookCart[]>([]);
@@ -28,7 +30,7 @@ const BorrowersTable = () => {
     const fetchData = async () => {
       setIsPending(true);
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/unverified-bookcarts/');
+        const response = await axios.get(`${appUrl}/api/unverified-bookcarts/`);
         setBookCarts(response.data);
       } catch (error) {
         console.error('Error fetching book carts:', error);
@@ -46,7 +48,7 @@ const BorrowersTable = () => {
 
       const bookTitlesWithImagesMap: Record<number, { title: string; thumbnail_url: string }> = {};
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/books/');
+        const response = await axios.get(`${appUrl}/api/books/`);
         const books = response.data.results as Book[];
         books.forEach((book) => {
           if (uniqueBookIds.includes(book.id)) {
@@ -76,7 +78,7 @@ const BorrowersTable = () => {
 
   const handleVerifyBorrowing = async (cartId: number) => {
     try {
-      const response = await axios.put(`http://127.0.0.1:8000/api/bookcarts/${cartId}/`, {
+      const response = await axios.put(`${appUrl}api/bookcarts/${cartId}/`, {
         is_borrowed_verified: true // Update is_borrowed_verified to true
       });
       // Assuming successful update, update local state to reflect the change
@@ -126,7 +128,7 @@ const BorrowersTable = () => {
     },
     {
       accessorKey: 'is_borrowed_verified',
-      header: 'Verified',
+      header: 'Borrowed Verified',
       cell: ({ row }) => (
         <div className="capitalize">
           {row.getValue('is_borrowed_verified') ? (

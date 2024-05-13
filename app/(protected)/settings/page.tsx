@@ -34,6 +34,8 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
+import { Separator } from "@/components/ui/separator";
+import { ProfileForm } from "./profile-form";
 
 
 const SettingsPage = () => {
@@ -81,6 +83,18 @@ const SettingsPage = () => {
 
   return (
     <div>
+      <div className="space-y-6 mb-5">
+      <div>
+        <h3 className="text-lg font-medium">Profile</h3>
+        <p className="text-sm text-muted-foreground">
+          This is how others will see you on the site.
+        </p>
+      </div>
+      <Separator />
+      {/* <ProfileForm /> */}
+    </div>
+
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-6">
 

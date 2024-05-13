@@ -16,13 +16,15 @@ interface BookCart {
   is_borrowed_verified: boolean;
 }
 
+const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+
 const AllPage: React.FC = () => {
   const [bookCarts, setBookCarts] = useState<BookCart[]>([]);
 
   useEffect(() => {
     const fetchBookCarts = async () => {
       try {
-        const response = await axios.get<BookCart[]>('http://127.0.0.1:8000/api/bookcart/');
+        const response = await axios.get<BookCart[]>(`${appUrl}/api/bookcart/`);
         setBookCarts(response.data);
       } catch (error) {
         console.error('Error fetching book carts:', error);

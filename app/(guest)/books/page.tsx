@@ -160,7 +160,6 @@ const BookPage: React.FC = () => {
 
   return (
     <>
-    <Navbar />
     <div className=''>
       <div className="mt-3 h-full ">
           <div className="grid lg:grid-cols-5">

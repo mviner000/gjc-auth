@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import BookDataTable from '@/components/books/book-data-table';
+import PaginationControls from '@/components/pagination-controls';
 
 interface Book {
   id: number;
@@ -15,9 +17,7 @@ interface Book {
   edition: string | null;
 }
 
-const appUrl = process.env.NEXT_PUBLIC_APP_URL;
-
-const StudentBorrowPage: React.FC = () => {
+const BookTable: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
   const defaultStudent = 'John Doe';
@@ -25,7 +25,7 @@ const StudentBorrowPage: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${appUrl}/api/books/`);
+        const response = await axios.get('http://127.0.0.1:8000/api/books/');
         setBooks(response.data.results); // Assuming results is an array of Book objects
       } catch (error) {
         console.error('Error fetching books:', error);
@@ -37,7 +37,7 @@ const StudentBorrowPage: React.FC = () => {
 
   const handleAddToCart = async (bookId: number) => {
     try {
-      const response = await axios.post(`${appUrl}/api/bookcarts/`, {
+      const response = await axios.post('http://127.0.0.1:8000/api/bookcarts/', {
         student: defaultStudent,
         books: [bookId]
       });
@@ -50,34 +50,10 @@ const StudentBorrowPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>All Books</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Thumbnail</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {books.map((book) => (
-            <tr key={book.id}>
-              <td>{book.title}</td>
-              <td>{book.author_name}</td>
-              <td>
-                <img src={book.thumbnail_url} alt={book.title} style={{ maxWidth: '150px' }} />
-              </td>
-              <td>
-                <button onClick={() => handleAddToCart(book.id)}>Add to Cart</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className='w-full'>
+        <BookDataTable />
     </div>
   );
 };
 
-export default StudentBorrowPage;
+export default BookTable;

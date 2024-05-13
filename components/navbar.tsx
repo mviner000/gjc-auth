@@ -41,19 +41,26 @@ const Navbar = () => {
                         </Link>
                     </li>
                     <li className="mr-6 mt-[7px] dark:text-white ">
-                        <Link className="hover:text-blue-500" href="#">GJCLibrary</Link>
+                        <Link className="hover:text-blue-500" href="/books">GJCLibrary</Link>
                     </li>
                     {userRole === 'ADMIN' && (
                     <li className="mr-6 mt-[7px] dark:text-white ">
-                        <Link className="hover:text-blue-500" href="/admin">Admin</Link>
+                        <Link className="hover:text-blue-500" href="/admin/accept/borrow">Admin</Link>
                     </li>
                     )}
                     <li className="mr-6 mt-[7px] dark:text-white ">
-                        <Link className="hover:text-blue-500" href="/students">Students</Link>
+                        <Link className="hover:text-blue-500" href="/dashboard">Dashboard</Link>
                     </li>
                     
                     <li className="mr-6 mt-[7px] dark:text-white hidden md:block">
-                        <Link className="hover:text-blue-500" href="https://gjclibrary.com/">Contacts</Link>
+                        <Link className="hover:text-blue-500" href="/books/table">
+                                <Button 
+                                    variant="ghost" 
+                                    className="mr-10 mt-[-2rem] text-white outline outline-[1px] outline-emerald-500"
+                                >
+                                    Books
+                                </Button>
+                        </Link>
                     </li>
                     
                 </ul> 

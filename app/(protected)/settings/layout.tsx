@@ -28,16 +28,16 @@ const sidebarNavItems = [
   },
 ]
 
-interface StudentLayoutProps {
+interface SettingsLayoutProps {
   children: React.ReactNode
 }
 
-export default function StudentLayout({ children }: StudentLayoutProps) {
+export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <>
       <div className="space-y-6 p-5 pb-16 md:container">
         <div className="space-y-0.5">
-          <h2 className="text-2xl font-bold tracking-tight">Dashboard</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
           <p className="text-muted-foreground">
             Manage your account settings and set e-mail preferences.
           </p>

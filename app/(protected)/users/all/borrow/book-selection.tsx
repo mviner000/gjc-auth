@@ -13,6 +13,9 @@ interface Props {
   onSelect: (selectedBooks: Book[]) => void;
 }
 
+
+const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+
 export const BookSelection: React.FC<Props> = ({ onSelect }) => {
   const [books, setBooks] = useState<Book[]>([]);
   const [selectedIds, setSelectedIds] = useState<number[]>([]); // State for selected book IDs
@@ -20,7 +23,7 @@ export const BookSelection: React.FC<Props> = ({ onSelect }) => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get<Book[]>('http://127.0.0.1:8000/api/books/');
+        const response = await axios.get<Book[]>(`${appUrl}/api/books/`);
         setBooks(response.data);
       } catch (error) {
         console.error('Error fetching books:', error);
