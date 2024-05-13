@@ -27,3 +27,17 @@ export const getUserById = async (id: string) => {
     return null;
   }
 };
+
+
+export const getAllUsers = async () => {
+  try {
+    const allUsers = await db
+      .select()
+      .from(users);
+      
+    return allUsers;
+  } catch (error) {
+    console.error("Error in getAllUsers: ", error);
+    return [];
+  }
+};
