@@ -8,6 +8,7 @@ import { CircleCheck, CircleX } from 'lucide-react';
 
 interface User {
   id: string;
+  student_id: string | null;
   name: string | null;
   first_name: string | null;
   last_name: string | null;
@@ -43,12 +44,16 @@ const UsersTable = () => {
 
   const columns: ColumnDef<User>[] = [
     {
-      accessorKey: "name",
-      header: "Name",
+      accessorKey: "first_name",
+      header: "First Name",
     },
     {
       accessorKey: "email",
       header: "Email",
+    },
+    {
+      accessorKey: "student_id",
+      header: "Student Id",
     },
     {
       accessorKey: "emailVerified",

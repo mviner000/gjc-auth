@@ -18,6 +18,7 @@ export type UserRole = 'USER' | 'ADMIN';
 
 export const users = pgTable("user", {
   id: uuid("id").defaultRandom().notNull().primaryKey(),
+  student_id: text("student_id").unique(),
   name: text("name"),
   first_name: text("first_name"),
   last_name: text("last_name"),

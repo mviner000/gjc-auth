@@ -30,7 +30,9 @@ declare module "next-auth/jwt" {
 declare module "next-auth" {
   interface Session {
     user: {
-      id: string
+      id: string;
+      studentId: string;
+      first_name: string;
       role: "ADMIN" | "USER";
       isTwoFactorEnabled: boolean;
       isOAuth: boolean;
@@ -92,6 +94,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
 
       if (session.user) {
+        session.user.studentId = token.studentId as string || '';
+        session.user.first_name = token.first_name as string || '';
         session.user.name = token.name;
         session.user.email = token.email || '';
         session.user.isOAuth = token.isOAuth as boolean;
@@ -116,7 +120,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // Might have to refine the typescript error other than making it not null
       token.isOAuth = !!existingAccount;
       token.name = existingUser.name;
-      token.email = existingUser.email;
+      token.studentId = existingUser.student_id;
+      token.first_name = existingUser.first_name;
       token.role = existingUser.role!;
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 

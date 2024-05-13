@@ -7,16 +7,21 @@ import { Button } from "@/components/ui/button";
 import { UserButton } from "@/components/auth/user-button";
 import { useCurrentUser } from "@/hooks/use-current-user";
 
+type Role = "USER" | "ADMIN";
+
 const Navbar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+
     
+    const [userRole, setUserRole] = useState<Role>(); 
     const user = useCurrentUser();
 
     useEffect(() => {
-        // Update isLoggedIn when user state changes
+        // Update isLoggedIn and userRole when user state changes
         setIsLoggedIn(!!user); // Set isLoggedIn to true if user exists, false otherwise
+        setUserRole(user?.role as Role); // Set userRole to the user's role if user exists
     }, [user]);
-
+    
 
     return (
         <header className=" text-white py-4 md:pl-16 pl-5 pr-8 w-full z-10 border-b border-neutral-400 bg-emerald-800 ">
@@ -38,17 +43,17 @@ const Navbar = () => {
                     <li className="mr-6 mt-[7px] dark:text-white ">
                         <Link className="hover:text-blue-500" href="#">GJCLibrary</Link>
                     </li>
-                    
-                    <li className="mr-6 mt-[7px] dark:text-white hidden md:block">
-                        <Link className="hover:text-blue-500" href="/about">About</Link>
+                    {userRole === 'ADMIN' && (
+                    <li className="mr-6 mt-[7px] dark:text-white ">
+                        <Link className="hover:text-blue-500" href="/admin">Admin</Link>
+                    </li>
+                    )}
+                    <li className="mr-6 mt-[7px] dark:text-white ">
+                        <Link className="hover:text-blue-500" href="/students">Students</Link>
                     </li>
                     
                     <li className="mr-6 mt-[7px] dark:text-white hidden md:block">
-                        <Link className="hover:text-blue-500" href="/team">Team</Link>
-                    </li>
-                    
-                    <li className="mr-6 mt-[7px] dark:text-white hidden md:block">
-                        <Link className="hover:text-blue-500" href="/contacts">Contacts</Link>
+                        <Link className="hover:text-blue-500" href="https://gjclibrary.com/">Contacts</Link>
                     </li>
                     
                 </ul> 

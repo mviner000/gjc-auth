@@ -7,7 +7,6 @@ const StudentsPage = () => {
   return (
     <div className='h-full w-full'>
       <UsersTable />
-      <DemoPage />
       <Students />
     </div>
   );

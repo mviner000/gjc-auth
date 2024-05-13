@@ -8,7 +8,7 @@ export const sendVerificationEmail = async (
   email: string,
   token: string,
 ) => {
-  const confirmLink = `${appUrl}/auth/verify-email?token=${token}`; // Update link for email verification
+  const confirmLink = `${appUrl}/auth/new-verification?token=${token}`; // Update link for email verification
 
   await resend.emails.send({
       from: 'mail@gjclibrary.com',
@@ -83,7 +83,7 @@ export const sendVerificationEmail = async (
     email: string,
     token: string
 ) => {
-    const resetLink = `${appUrl}/auth/new-password?token=${token}`;
+    const resetLink = `${appUrl}/auth/new-verification?token=${token}`;
     await resend.emails.send({
         from: "mail@gjclibrary.com",
         to: email,

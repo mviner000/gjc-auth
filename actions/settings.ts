@@ -31,6 +31,8 @@ export const settings = async (
         values.email = undefined;
         values.password = undefined;
         values.newPassword = undefined;
+        values.student_id = undefined;
+        values.first_name = undefined;
         values.isTwoFactorEnabled = undefined;
     }
 

@@ -55,10 +55,12 @@ const SettingsPage = () => {
       isTwoFactorEnabled: user?.isTwoFactorEnabled || undefined,
       name: user?.name || undefined,
       email: user?.email || undefined,
+      student_id: user?.studentId || undefined,
+      first_name: user?.first_name || undefined,
       role: defaultRole,
     }
-
   })
+
 
   const onSubmit = (values: z.infer<typeof SettingSchema>) => {
     startTransition(() => {
@@ -81,13 +83,49 @@ const SettingsPage = () => {
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-6">
+
+              <FormField
+                control={form.control}
+                name="student_id"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Student ID No.</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="student id"
+                        disabled={isPending}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+                <FormField
+                control={form.control}
+                name="first_name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>First Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="First Name"
+                        disabled={isPending}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
           
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Username</FormLabel>
                     <FormControl>
                       <Input
                         {...field}

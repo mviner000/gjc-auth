@@ -7,6 +7,8 @@ export enum UserRoleEnum {
 
 export const SettingSchema = z.object({
   name: z.optional(z.string()),
+  first_name: z.optional(z.string().min(6)),
+  student_id: z.optional(z.string().min(6)),
   isTwoFactorEnabled: z.optional(z.boolean()),
   role: z.enum([UserRoleEnum.ADMIN, UserRoleEnum.USER]),
   email: z.optional(z.string().email()),
