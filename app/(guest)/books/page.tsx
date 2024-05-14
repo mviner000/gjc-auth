@@ -12,10 +12,7 @@ import { FidgetSpinner } from 'react-loader-spinner';
 import BreadcrumbComponent from '@/components/breadcrumb';
 import CartSheet from '@/components/cart-sheet';
 import PaginationControls from '@/components/pagination-controls';
-import NavMenu from '@/components/nav-menu';
 import { TopTags } from '@/components/top-tags';
-import Navbar from '@/components/navbar';
-import Footer from '@/components/footer';
 
 interface Book {
   id: string;
@@ -173,7 +170,7 @@ const BookPage: React.FC = () => {
                       </div>
                   </div>
                 <div className='py-3 mb-2'>
-                  <NavMenu />
+                  
                   <TopTags />
                 </div>
                 <div className="space-y-6 mb-5">
@@ -197,7 +194,6 @@ const BookPage: React.FC = () => {
           </div>
       </div>
     </div>
-    <Footer />
     </>
   );
 };

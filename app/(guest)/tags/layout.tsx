@@ -8,7 +8,7 @@ import Footer from "@/components/footer"
 import NavMenu from "@/components/nav-menu"
 
 export const metadata: Metadata = {
-  title: "GJCLibrary - Books",
+  title: "GJCLibrary - Tags",
   description: "Advanced form example using react-hook-form and Zod.",
 }
 
@@ -35,7 +35,7 @@ interface BookLayoutProps {
   children: React.ReactNode
 }
 
-export default function BookLayout({ children }: BookLayoutProps) {
+export default function TagsLayout({ children }: BookLayoutProps) {
   return (
     <>
     <Navbar />
@@ -43,7 +43,7 @@ export default function BookLayout({ children }: BookLayoutProps) {
         <div className="space-y-0.5 text-center justify-center">
           <h2 className="text-2xl font-bold tracking-tight">Books</h2>
           <p className="text-muted-foreground">
-            Find Books at ease
+            Find Specific Book Tagged at ease
           </p>
           <div className="text-left justify-start">
             <NavMenu />

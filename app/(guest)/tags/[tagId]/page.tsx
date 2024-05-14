@@ -44,6 +44,7 @@ const TagDetails = () => {
         try {
             const response = await axios.get(`${appUrl}/api/subjects/${id}`);
             setSubject(response.data);
+            console.log(response.data); // Add this line
         } catch (error) {
             console.error(error);
         }
@@ -93,7 +94,7 @@ const TagDetails = () => {
                         <li key={book.id}>
                             <p>{book.title}</p>
                             <Image
-                      src={`${appUrl}${book.thumbnail_url}`|| 'https://via.placeholder.com/128x185/007bff/ffffff?text=Book'}
+                      src={book.thumbnail_url ? book.thumbnail_url : 'https://via.placeholder.com/128x185/007bff/ffffff?text=Book'}
                       alt="book_image"
                       width={136}
                       height={56}

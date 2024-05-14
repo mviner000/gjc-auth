@@ -17,6 +17,8 @@ interface Book {
   edition: string | null;
 }
 
+const appUrl = process.env.NEXT_PUBLIC_APP;
+
 const BookTable: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
@@ -25,7 +27,7 @@ const BookTable: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/books/');
+        const response = await axios.get(`${appUrl}/api/books/`);
         setBooks(response.data.results); // Assuming results is an array of Book objects
       } catch (error) {
         console.error('Error fetching books:', error);
@@ -37,7 +39,7 @@ const BookTable: React.FC = () => {
 
   const handleAddToCart = async (bookId: number) => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/bookcarts/', {
+      const response = await axios.post(`${appUrl}/api/bookcarts/`, {
         student: defaultStudent,
         books: [bookId]
       });

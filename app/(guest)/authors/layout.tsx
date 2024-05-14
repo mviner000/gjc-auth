@@ -1,14 +1,12 @@
 import { Metadata } from "next"
-import Image from "next/image"
 
 import { Separator } from "@/components/ui/separator"
-import { SidebarNav } from "@/components/settings/sidebar-nav"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import NavMenu from "@/components/nav-menu"
 
 export const metadata: Metadata = {
-  title: "GJCLibrary - Books",
+  title: "GJCLibrary - Authors",
   description: "Advanced form example using react-hook-form and Zod.",
 }
 
@@ -35,15 +33,15 @@ interface BookLayoutProps {
   children: React.ReactNode
 }
 
-export default function BookLayout({ children }: BookLayoutProps) {
+export default function AuthorLayout({ children }: BookLayoutProps) {
   return (
     <>
     <Navbar />
       <div className="p-10">
         <div className="space-y-0.5 text-center justify-center">
-          <h2 className="text-2xl font-bold tracking-tight">Books</h2>
+          <h2 className="text-2xl font-bold tracking-tight">Book Authors</h2>
           <p className="text-muted-foreground">
-            Find Books at ease
+            Find Specific Books by Author at ease
           </p>
           <div className="text-left justify-start">
             <NavMenu />

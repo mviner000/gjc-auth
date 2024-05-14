@@ -10,13 +10,9 @@ import { Sidebar } from '@/components/sidebar';
 import { playlists } from "@/actions/playlists"
 import BreadcrumbComponent from '@/components/breadcrumb';
 import CartSheet from '@/components/cart-sheet';
-import Link from 'next/link';
-import NavMenu from '@/components/nav-menu';
 import PaginationControls from '@/components/pagination-controls';
 import { Book, Subject } from '../authors/types';
 import SubjectCard from '@/components/tags/tag-card';
-import Navbar from '@/components/navbar';
-import Footer from '@/components/footer';
 
 const appUrl = process.env.NEXT_PUBLIC_APP;
 
@@ -144,7 +140,6 @@ const TagPage: React.FC = () => {
 
   return (
     <>
-    <Navbar />
     <div className=''>
       <div className="mt-3 h-full ">
         <div className="grid lg:grid-cols-5">
@@ -158,7 +153,6 @@ const TagPage: React.FC = () => {
                   </div>
                 </div>     
                 <div className='mb-2'>
-                  <NavMenu />
                 </div>
                 <h2 className="text-2xl font-bold mb-4">All Tags <span className="bg-purple-100 text-purple-800 text-lg font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-purple-400 border border-purple-400">{currentPage}</span></h2>
                 {loading ? ( 
@@ -178,7 +172,6 @@ const TagPage: React.FC = () => {
         </div>
       </div>
     </div>
-    <Footer/>
     </>
   );
 };

@@ -42,7 +42,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
             placeholder={`Go to page (1 - ${totalPages})`}
             min="1"
             max={totalPages}
-            className="w-3/4 bg-neutral-100 border-slate-300 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-300"
+            className="w-1/2 md:w-3/4 bg-neutral-100 border-slate-300 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-300"
           />
           <Button type="submit" className="w-1/4 py-2 px-4 ml-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
             Go
