@@ -26,7 +26,7 @@ const Footer = () => {
         <div className="text-white mx-5 my-3 md:my-7">
             <ul>
                 <li>Teams</li>
-                <li>Services</li>
+                <li><Link className="hover:text-blue-500" href="/shop">Shop</Link></li>
                 <li>Contacts</li>
             </ul></div>
        </div>

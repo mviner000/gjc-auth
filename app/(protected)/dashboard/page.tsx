@@ -24,6 +24,7 @@ import TeamSwitcher from "@/components/dashboard/team-switcher"
 import { UserNav } from "@/components/dashboard/user-nav"
 import UserImage from "@/components/user-image"
 import { BookAudio } from "lucide-react"
+import Footer from "@/components/footer"
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -185,6 +186,7 @@ export default function DashboardPage() {
           </Tabs>
         </div>
       </div>
+      <Footer />
     </>
   )
 }
