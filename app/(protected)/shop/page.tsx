@@ -200,7 +200,7 @@ const Shop: React.FC = () => {
           <DialogHeader>
             <DialogTitle>Update Stock</DialogTitle>
             <DialogDescription>
-              Make changes to product stock. Click save when you're done.
+              Make changes to product stock. Click save when done.
             </DialogDescription>
           </DialogHeader>
           <form className="grid items-start gap-4">
