@@ -19,7 +19,7 @@ interface BookCart {
   is_borrowed_verified: boolean;
 }
 
-const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+const appUrl = process.env.NEXT_PUBLIC_APP;
 
 const BorrowersTable = () => {
   const [isPending, setIsPending] = useState(false);
@@ -114,7 +114,14 @@ const BorrowersTable = () => {
                 const { title, thumbnail_url } = bookData;
                 return (
                   <div key={bookId} style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-                    <img src={thumbnail_url} alt={title} style={{ width: '50px', height: '50px', marginRight: '8px' }} />
+                    <img
+                      src={
+                        thumbnail_url ||
+                        'https://via.placeholder.com/128x185/007bff/ffffff?text=Book'
+                      }
+                      alt={`Thumbnail for ${row.getValue('title')}`}
+                      style={{ width: '50px', height: 'auto' }}
+                    />
                     <span>{truncateString(title, 30)}</span>
                   </div>
                 );

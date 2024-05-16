@@ -11,13 +11,15 @@ interface BookCart {
   is_borrowed_verified: boolean;
 }
 
+const appUrl = process.env.NEXT_PUBLIC_APP;
+
 const AcceptBorrowersPage: React.FC = () => {
   const [bookCarts, setBookCarts] = useState<BookCart[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/unverified-bookcarts/');
+        const response = await axios.get(`${appUrl}/api/unverified-bookcarts/`);
         setBookCarts(response.data);
       } catch (error) {
         console.error('Error fetching book carts:', error);

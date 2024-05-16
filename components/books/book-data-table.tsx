@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { DataTable } from './data-table';
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown } from "lucide-react"
 import { Button } from '@/components/ui/button';
-
-import Username from "@/components/username"
 import { useCurrentUser } from '@/hooks/use-current-user';
+import { ToastAction } from "@/components/ui/toast"
+import { useToast } from "@/components/ui/use-toast"
 
 interface Book {
   id: number;
@@ -20,54 +20,91 @@ interface Book {
   edition: string | null;
 }
 
+interface Pagination {
+  count: number;
+  next: string | null;
+  previous: string | null;
+}
+
+const appUrl = process.env.NEXT_PUBLIC_APP;
+
 const BookDataTable = () => {
-  
+  const { toast } = useToast()
   const user = useCurrentUser();
   const [books, setBooks] = useState<Book[]>([]);
+  const [pagination, setPagination] = useState<Pagination>({
+    count: 0,
+    next: null,
+    previous: null,
+  });
   const [isPending, setIsPending] = useState(false);
   const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
-  
-  
-  const defaultStudent = user?.email
+  const defaultStudent = user?.email;
 
   useEffect(() => {
-    const fetchBooksData = async () => {
-      setIsPending(true);
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/api/books/');
-        const fetchedBooks = response.data.results;
-        setBooks(fetchedBooks);
-      } catch (error) {
-        console.error('Error fetching books:', error);
-      } finally {
-        setIsPending(false);
-      }
-    };
-    fetchBooksData();
+    fetchBooks();
   }, []);
+
+  const fetchBooks = async (url = `${appUrl}/api/books/`) => {
+    setIsPending(true);
+    try {
+      const response = await axios.get(url);
+      setBooks(response.data.results);
+      setPagination({
+        count: response.data.count,
+        next: response.data.next,
+        previous: response.data.previous,
+      });
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+  const handlePageChange = (url: string | null) => {
+    if (url) {
+      fetchBooks(url);
+    }
+  };
 
   const handleAddToCart = async (bookId: number) => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/bookcarts/', {
+      // Fetch the specific book by ID
+      const response = await axios.get(`${appUrl}/api/books/${bookId}`);
+      const book = response.data; // Assuming response contains the book details
+
+      // Add the book to the cart
+      await axios.post(`${appUrl}/api/bookcarts/`, {
         student: defaultStudent,
-        books: [bookId]
+        books: [bookId],
       });
-      console.log('Book added to cart:', response.data);
-      // Optionally update UI or show a success message
+
+      // Display a toast notification for successful addition
+      toast({
+        title: 'Yehey! Congratulations',
+        description: `"${book.title}" successfully added to cart`,
+        action: <ToastAction altText="Go to schedule to undo">Close</ToastAction>,
+      });
+
+      console.log('Book added to cart:', book);
     } catch (error) {
       console.error('Error adding book to cart:', error);
       // Handle error (e.g., show error message)
     }
   };
 
+
   const columns: ColumnDef<Book>[] = [
     {
       accessorKey: 'thumbnail_url',
       header: 'Thumbnail',
-      // Custom render function for displaying the thumbnail as an image
       cell: ({ row }) => (
         <img
-          src={row.getValue('thumbnail_url')}
+          src={
+            row.getValue('thumbnail_url') ||
+            'https://via.placeholder.com/128x185/007bff/ffffff?text=Book'
+          }
           alt={`Thumbnail for ${row.getValue('title')}`}
           style={{ width: '50px', height: 'auto' }}
         />
@@ -99,23 +136,24 @@ const BookDataTable = () => {
       header: 'Actions',
       id: "actions",
       cell: ({ row }) => {
-        const payment = row.original
-  
         return (
           <Button onClick={() => handleAddToCart(row.original.id)}>Borrow</Button>
         )
       },
-  },
-    // Add more columns as needed
+    },
   ];
 
   return (
-    <div className="h-full w-full">
-      {isPending ? (
-        <p>Loading...</p>
-      ) : (
-        <DataTable columns={columns} data={books} />
-      )}
+    <div className='w-full'>
+      <DataTable
+        columns={columns}
+        data={books}
+        pagination={pagination}
+        selectedRows={selectedBooks}
+        onSelectionChange={setSelectedBooks}
+        isPending={isPending}
+        onPageChange={handlePageChange} // Add this line to pass handlePageChange function
+      />
     </div>
   );
 };
