@@ -1,7 +1,7 @@
 import NextAuth, { type DefaultSession } from "next-auth";
 import { type JWT } from "next-auth/jwt";
 import { authConfig } from "@/auth.config";
-import { sql } from 'drizzle-orm'
+import { sql } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 
@@ -14,7 +14,6 @@ import { getUserByEmail } from "./data/user";
 import { getUserById } from "./data/user";
 import { twoFactorConfirmations, users } from "./drizzle/schema";
 import { getTwoFactorConfirmationByUserId } from "./data/two-factor-confirmation";
-
 
 import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
@@ -33,6 +32,7 @@ declare module "next-auth" {
       id: string;
       studentId: string;
       first_name: string;
+      last_name: string;
       role: "ADMIN" | "USER";
       isTwoFactorEnabled: boolean;
       isOAuth: boolean;
@@ -49,13 +49,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   events: {
     async linkAccount({ user }) {
       await db
-      .update(users)
-      .set({ emailVerified: sql`CURRENT_TIMESTAMP` })
-      .where(sql`id = ${user.id}`)
-    }
+        .update(users)
+        .set({ emailVerified: sql`CURRENT_TIMESTAMP` })
+        .where(sql`id = ${user.id}`);
+    },
   },
   callbacks: {
-    async signIn({ user, account}){
+    async signIn({ user, account }) {
       if (!user?.id) return false;
       if (account?.provider !== "credentials") return true;
 
@@ -94,10 +94,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
 
       if (session.user) {
-        session.user.studentId = token.studentId as string || '';
-        session.user.first_name = token.first_name as string || '';
+        session.user.studentId = (token.studentId as string) || "";
+        session.user.first_name = (token.first_name as string) || "";
+        session.user.last_name = (token.last_name as string) || "";
         session.user.name = token.name;
-        session.user.email = token.email || '';
+        session.user.email = token.email || "";
         session.user.isOAuth = token.isOAuth as boolean;
       }
 
@@ -112,16 +113,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       if (!existingUser) return token;
 
-      const existingAccount = await getAccountByUserId(
-        existingUser.id
-      )
-
+      const existingAccount = await getAccountByUserId(existingUser.id);
 
       // Might have to refine the typescript error other than making it not null
       token.isOAuth = !!existingAccount;
       token.name = existingUser.name;
       token.studentId = existingUser.student_id;
       token.first_name = existingUser.first_name;
+      token.last_name = existingUser.last_name;
       token.role = existingUser.role!;
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
@@ -129,7 +128,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
   providers: [
-    
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,

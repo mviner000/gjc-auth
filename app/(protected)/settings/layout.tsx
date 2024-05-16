@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarNav } from "@/components/settings/sidebar-nav"
 
 export const metadata: Metadata = {
-  title: "Forms",
+  title: "Settings",
   description: "Advanced form example using react-hook-form and Zod.",
 }
 
@@ -19,13 +19,9 @@ const sidebarNavItems = [
     href: "/settings/account",
   },
   {
-    title: "Appearance",
-    href: "/settings/appearance",
-  },
-  {
-    title: "Notifications",
-    href: "/settings/notifications",
-  },
+    title: "Security",
+    href: "/settings/security",
+  }
 ]
 
 interface SettingsLayoutProps {

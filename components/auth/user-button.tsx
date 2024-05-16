@@ -1,6 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
+
+import { Button } from "@/components/ui/button"
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "@/components/ui/avatar";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import LogoutButton from "@/components/auth/logout-button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,18 +21,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu";
-
-import { Button } from "@/components/ui/button"
-import {
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
-} from "@/components/ui/avatar";
-import { FaUser } from "react-icons/fa";
-import { useCurrentUser } from "@/hooks/use-current-user";
-import LogoutButton from "@/components/auth/logout-button";
-import { ExitIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
 
 export const UserButton = () => {
   const user = useCurrentUser();
@@ -36,6 +34,13 @@ export const UserButton = () => {
     }
   }, [user?.image]);
 
+  const getFallbackLetter = () => {
+    if (user?.first_name) return user.first_name.charAt(0).toUpperCase();
+    if (user?.last_name) return user.last_name.charAt(0).toUpperCase();
+    if (user?.email) return user.email.charAt(0).toUpperCase();
+    return 'U'; // Default to 'U' if all else fails
+  };
+
   console.log(user?.image);
   return (<>
 
@@ -44,7 +49,7 @@ export const UserButton = () => {
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
             <AvatarImage src={imageUrl} alt="@shadcn" />
-            <AvatarFallback>SC</AvatarFallback>
+            <AvatarFallback>{getFallbackLetter()}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

@@ -9,7 +9,7 @@ import { SettingSchema, UserRoleEnum } from "@/schemas/formSchema";
 import { logout } from "@/actions/logout";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { settings } from "@/actions/settings";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import {
@@ -29,22 +29,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { Separator } from "@/components/ui/separator";
-import { ProfileForm } from "./profile-form";
 
 
 const SettingsPage = () => {
-  
-  const user =  useCurrentUser();
+
+  const user = useCurrentUser();
   const { update } = useSession();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  const [isPending, startTransition ] = useTransition();
+  const [isPending, startTransition] = useTransition();
   const [loading, setLoading] = useState(false);
 
   const defaultRole: UserRoleEnum = user?.role as UserRoleEnum || UserRoleEnum.USER;
@@ -59,12 +56,29 @@ const SettingsPage = () => {
       email: user?.email || undefined,
       student_id: user?.studentId || undefined,
       first_name: user?.first_name || undefined,
+      last_name: user?.last_name || undefined,
       role: defaultRole,
     }
   })
 
+  useEffect(() => {
+    if (error || success) {
+      const timer = setTimeout(() => {
+        setError("");
+        setSuccess("");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [error, success]);
+
+
 
   const onSubmit = (values: z.infer<typeof SettingSchema>) => {
+
+    setError("");
+    setSuccess("");
+
     startTransition(() => {
       settings(values)
         .then((data) => {
@@ -84,76 +98,58 @@ const SettingsPage = () => {
   return (
     <div>
       <div className="space-y-6 mb-5">
-      <div>
-        <h3 className="text-lg font-medium">Profile</h3>
-        <p className="text-sm text-muted-foreground">
-          This is how others will see you on the site.
-        </p>
+        <div>
+          <h3 className="text-lg font-medium">Profile</h3>
+          <p className="text-sm text-muted-foreground">
+            This is how others will see you on the site.
+          </p>
+        </div>
+        <Separator />
+        {/* <ProfileForm /> */}
       </div>
-      <Separator />
-      {/* <ProfileForm /> */}
-    </div>
 
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-6">
 
-              <FormField
-                control={form.control}
-                name="student_id"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Student ID No.</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="student id"
-                        disabled={isPending}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <FormField
+            control={form.control}
+            name="student_id"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Student ID No.</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="student id"
+                    disabled={isPending}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-                <FormField
-                control={form.control}
-                name="first_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>First Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="First Name"
-                        disabled={isPending}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-          
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Username</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="John Doe"
-                        disabled={isPending}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="John Doe"
+                    disabled={isPending}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-              {user?.isOAuth === false && (
-                <>
+          {user?.isOAuth === false && (
+            <>
               <FormField
                 control={form.control}
                 name="email"
@@ -173,94 +169,33 @@ const SettingsPage = () => {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="*******"
-                        disabled={isPending}
-                        type="password"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="newPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>New Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="*******"
-                        disabled={isPending}
-                        type="password"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
-              <div className="hidden">
-              <FormField
-                control={form.control}
-                name="isTwoFactorEnabled"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center
-                  justify-between rounded-lg border p-3 shadow-sm
-                  ">
-                    <div className="space-y-0.5">
-                      <FormLabel>Two Factor Authentication</FormLabel>
-                      <FormDescription>
-                        Enable two factor authentication for your account
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      disabled={isPending}
-                    />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              </div>
-              </>
-              )}
+            </>
+          )}
 
-              <FormField
-                control={form.control}
-                name="role"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Role</FormLabel>
-                    <Select disabled={isPending} onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger id="framework">
-                          <SelectValue placeholder={user?.isTwoFactorEnabled ? "ON" : "OFF"} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent position="popper">
-                          <SelectItem value={UserRoleEnum.ADMIN}>Admin</SelectItem>
-                          <SelectItem value={UserRoleEnum.USER}>User</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <FormField
+            control={form.control}
+            name="role"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Role</FormLabel>
+                <Select disabled={isPending} onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger id="framework">
+                      <SelectValue placeholder={user?.isTwoFactorEnabled ? "ON" : "OFF"} />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent position="popper">
+                    <SelectItem value={UserRoleEnum.ADMIN}>Admin</SelectItem>
+                    <SelectItem value={UserRoleEnum.USER}>User</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-                
+
           <FormError message={error} />
           <FormSuccess message={success} />
           <Button type="submit">Save</Button>
