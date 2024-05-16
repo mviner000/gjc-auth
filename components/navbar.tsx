@@ -51,6 +51,9 @@ const Navbar = () => {
           <li className="mr-6 mt-[7px] dark:text-white">
             <Link className="hover:text-blue-500" href="/dashboard">Dashboard</Link>
           </li>
+          <li className="mr-6 mt-[7px] dark:text-white">
+            <Link className="hover:text-blue-500" href="/students">Student List</Link>
+          </li>
           <li className="mr-6 mt-[7px] dark:text-white hidden md:block">
             <Link className="hover:text-blue-500" href="/books/table">
               <Button
@@ -71,7 +74,7 @@ const Navbar = () => {
                 <div className="mt-2 gap-3 flex ">
                     {isLoggedIn ? (
                             <div className="flex gap-3 mt-1">
-                                <Link className="hover:text-blue-500  text-white"  href="/settings">Settings</Link>
+                                
                                 <div className="mt-[-8px] mr-10">
                                     <UserButton />
                                 </div>

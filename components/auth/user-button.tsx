@@ -5,9 +5,14 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuGroup,
     DropdownMenuTrigger,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu";
 
+import { Button } from "@/components/ui/button"
 import {
     Avatar,
     AvatarImage,
@@ -17,6 +22,7 @@ import { FaUser } from "react-icons/fa";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import LogoutButton from "@/components/auth/logout-button";
 import { ExitIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 
 export const UserButton = () => {
     const user = useCurrentUser();
@@ -31,26 +37,54 @@ export const UserButton = () => {
     }, [user?.image]);
 
     console.log(user?.image);
-    return (
-        <DropdownMenu>
-            <DropdownMenuTrigger>
-                <Avatar>
-                <AvatarImage src={imageUrl} />
-                    <AvatarFallback className="bg-emerald-500">
-                        <FaUser className="text-white" />
-                   </AvatarFallback>
-                </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-                <DropdownMenuItem>
-                    <LogoutButton>
-                        <div className="flex">
-                        <ExitIcon className="h-4 w-4 mr-2"/>
-                        Logout
-                        </div>
-                    </LogoutButton>
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
+    return (<>
+    
+    <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+            <Avatar className="h-8 w-8">
+              <AvatarImage src={imageUrl} alt="@shadcn" />
+              <AvatarFallback>SC</AvatarFallback>
+            </Avatar>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56" align="end" forceMount>
+          <DropdownMenuLabel className="font-normal">
+            <div className="flex flex-col space-y-1">
+              <p className="text-sm font-medium leading-none">shadcn</p>
+              <p className="text-xs leading-none text-muted-foreground">
+                m@example.com
+              </p>
+            </div>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              Profile
+              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              Billing
+              <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+            <Link className="hover:text-blue-500  text-white"  href="/settings">Settings</Link>
+              <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuItem>New Team</DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            
+          <LogoutButton>
+            Log out
+            
+            </LogoutButton>
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+        
+        </>
     )
 }

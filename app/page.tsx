@@ -30,7 +30,7 @@ export default function Home() {
         <div className="flex ml-4 justify-left text-center md:text-center md:justify-center">
           <LoginButton>
             <Button className="text-lg emerald:text-white" variant="secondary" >
-            Sign in
+            Get Started
             </Button>
           </LoginButton>
         </div>
