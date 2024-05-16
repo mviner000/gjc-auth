@@ -1,55 +1,56 @@
 import { Metadata } from "next"
 import Image from "next/image"
 
-import { Separator } from "@/components/ui/separator"
-import { SidebarNav } from "@/components/settings/sidebar-nav"
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs"
+import { CalendarDateRangePicker } from "@/components/dashboard/date-range-picker"
+import { MainNav } from "@/components/dashboard/main-nav"
+import { Overview } from "@/components/dashboard/overview"
+import { RecentSales } from "@/components/dashboard/recent-sales"
+import { Search } from "@/components/dashboard/search"
+import TeamSwitcher from "@/components/dashboard/team-switcher"
+import { UserNav } from "@/components/dashboard/user-nav"
+import UserImage from "@/components/user-image"
+import { BookAudio } from "lucide-react"
+import { StudentsMainNav } from "./main-nav"
+import UserAvatarInfo from '@/components/user-avatar-info';
 
-export const metadata: Metadata = {
-  title: "Forms",
-  description: "Advanced form example using react-hook-form and Zod.",
+interface DashboardLayoutProps {
+  children: React.ReactNode;
 }
 
-const sidebarNavItems = [
-  {
-    title: "Profile",
-    href: "/settings",
-  },
-  {
-    title: "Account",
-    href: "/settings/account",
-  },
-  {
-    title: "Appearance",
-    href: "/settings/appearance",
-  },
-  {
-    title: "Notifications",
-    href: "/settings/notifications",
-  },
-]
-
-interface StudentLayoutProps {
-  children: React.ReactNode
-}
-
-export default function StudentLayout({ children }: StudentLayoutProps) {
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
-    <>
-      <div className="space-y-6 p-5 pb-16 md:container">
-        <div className="space-y-0.5">
-          <h2 className="text-2xl font-bold tracking-tight">Dashboard</h2>
-          <p className="text-muted-foreground">
-            Manage your account settings and set e-mail preferences.
-          </p>
-        </div>
-        <Separator className="my-6" />
-        <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <aside className="-mx-4 lg:w-1/5">
-            <SidebarNav items={sidebarNavItems} />
-          </aside>
-          <div className="flex-1 lg:max-w-2xl">{children}</div>
+    <div className="h-full">
+
+      <div className='container'>
+        <UserAvatarInfo />
+      </div>
+      <div className="flex-col">
+        <div className="border-b">
+          <div className="flex h-16 items-center px-4">
+            <StudentsMainNav className="mx-6" />
+            <div className="ml-auto flex items-center space-x-4">
+              {/* <Search /> */}
+            </div>
+          </div>
         </div>
       </div>
-    </>
+      {children}
+    </div>
   )
 }
+
+export default DashboardLayout;
