@@ -7,7 +7,7 @@ export default function SecurityAppearancePage() {
             <div>
                 <h3 className="text-lg font-medium">Security</h3>
                 <p className="text-sm text-muted-foreground">
-                    Make sure it's at least 15 characters OR at least 8 characters including a number and a lowercase letter. Learn more.
+                    Make sure password is at least 15 characters OR at least 8 characters including a number and a lowercase letter. Learn more.
                 </p>
             </div>
             <Separator />

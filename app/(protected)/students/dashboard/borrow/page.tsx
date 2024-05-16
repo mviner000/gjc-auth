@@ -15,6 +15,8 @@ interface Book {
   thumbnail_url: string;
 }
 
+const appUrl = process.env.NEXT_PUBLIC_APP;
+
 const StudentsDashBorrowPage = () => {
   const user = useCurrentUser();
   const [filteredBookCarts, setFilteredBookCarts] = useState<any[]>([]);
@@ -23,7 +25,7 @@ const StudentsDashBorrowPage = () => {
   useEffect(() => {
     const fetchBookCarts = async () => {
       try {
-        const responseCarts = await fetch('http://127.0.0.1:8000/api/bookcarts/');
+        const responseCarts = await fetch(`${appUrl}/api/bookcarts/`);
         const dataCarts = await responseCarts.json();
 
         if (Array.isArray(dataCarts)) {
@@ -34,7 +36,7 @@ const StudentsDashBorrowPage = () => {
           const bookIds = Array.from(new Set(filteredCarts.flatMap((cart) => cart.books)));
 
           // Fetch book details based on the extracted IDs
-          const responseBooks = await fetch(`http://127.0.0.1:8000/api/books/?ids=${bookIds.join(',')}`);
+          const responseBooks = await fetch(`${appUrl}api/books/?ids=${bookIds.join(',')}`);
           const dataBooks = await responseBooks.json();
 
           if (Array.isArray(dataBooks.results)) {
