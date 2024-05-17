@@ -3,6 +3,7 @@ import BookCart from '@/components/books/book-cart';
 
 import { Button } from '@/components/ui/button';
 import { BookText } from "lucide-react";
+import Link from "next/link";
 
 interface BookCartSheetProps {
   bookTitles: string[];
@@ -10,7 +11,7 @@ interface BookCartSheetProps {
   handleEmptyBookCart: () => void;
 }
 
-const CartSheet:React.FC<BookCartSheetProps> = ({ bookTitles, onDeleteTitle, handleEmptyBookCart }) => {
+const CartSheet: React.FC<BookCartSheetProps> = ({ bookTitles, onDeleteTitle, handleEmptyBookCart }) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -34,7 +35,11 @@ const CartSheet:React.FC<BookCartSheetProps> = ({ bookTitles, onDeleteTitle, han
           )}
           <SheetClose asChild>
             {bookTitles.length > 0 && (
-              <Button type="submit">Proceed</Button>
+              <Link className="hover:text-blue-500" href="/auth/login">
+                <Button>
+                  Proceed
+                </Button>
+              </Link>
             )}
           </SheetClose>
         </SheetFooter>
