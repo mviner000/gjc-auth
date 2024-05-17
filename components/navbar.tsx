@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@/components/auth/user-button";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import SearchBox from '@/components/searchbox';
 
 type Role = "USER" | "ADMIN";
 
@@ -64,6 +65,7 @@ const Navbar = () => {
                     </Button>
                   </Link>
                 </li>
+                <SearchBox />
               </>
             ) : (
               <li className="mr-6 mt-[7px] dark:text-white">
