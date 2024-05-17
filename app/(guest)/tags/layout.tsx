@@ -38,7 +38,7 @@ interface BookLayoutProps {
 export default function TagsLayout({ children }: BookLayoutProps) {
   return (
     <>
-    <Navbar />
+      <Navbar />
       <div className="p-10">
         <div className="space-y-0.5 text-center justify-center">
           <h2 className="text-2xl font-bold tracking-tight">Books</h2>
@@ -50,9 +50,9 @@ export default function TagsLayout({ children }: BookLayoutProps) {
           </div>
         </div>
         <Separator className="my-6" />
-          <div className="h-full w-full">
-            {children}
-          </div>
+        <div className="h-full w-full">
+          {children}
+        </div>
       </div>
       <Footer />
     </>

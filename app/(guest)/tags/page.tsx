@@ -20,7 +20,7 @@ let modifiedAppUrl = '';
 
 if (appUrl) {
   // Remove trailing slash if it exists
-  modifiedAppUrl = appUrl.replace(/\/$/, ''); 
+  modifiedAppUrl = appUrl.replace(/\/$/, '');
 }
 
 const TagPage: React.FC = () => {
@@ -33,7 +33,7 @@ const TagPage: React.FC = () => {
   const [bookTitlesCount, setBookTitlesCount] = useState<number>(0);
 
   useEffect(() => {
-    fetchSubjects(currentPage); 
+    fetchSubjects(currentPage);
   }, [currentPage]);
 
   useEffect(() => {
@@ -53,14 +53,14 @@ const TagPage: React.FC = () => {
     try {
       const response = await axios.get(`${appUrl}api/subjects/?page=${page}`);
       const { count, results } = response.data;
-  
+
       const updatedResults = results.map((subject: Subject) => {
         if (!subject.books) {
           subject.books = [];
         }
         return subject;
       });
-  
+
       setSubjects(updatedResults);
       setTotalPages(Math.ceil(count / 10));
       setLoading(false);
@@ -86,17 +86,17 @@ const TagPage: React.FC = () => {
       });
       return;
     }
-  
+
     const updatedTitles = [...bookTitles, title];
     localStorage.setItem('bookTitles', JSON.stringify(updatedTitles));
     setBookTitles(updatedTitles);
     setBookTitlesCount(updatedTitles.length);
 
     const thumbnailUrlPrefixed = `${modifiedAppUrl}${thumbnailUrl}`
-  
+
     const thumbnailToSave = thumbnailUrlPrefixed || 'https://via.placeholder.com/128x185/007bff/ffffff?text=Book';
     localStorage.setItem(`thumbnail_${title}`, thumbnailToSave);
-  
+
     toast({
       title: "Yehey! Congratulations",
       description: `"${title}" successfully added`,
@@ -109,8 +109,8 @@ const TagPage: React.FC = () => {
       <SubjectCard subjects={subjects} handleAddToCart={handleAddToCart} />
     );
   };
-  
-  
+
+
   const handleDeleteBookTitle = (titleToRemove: string) => {
     const updatedTitles = bookTitles.filter((title) => title !== titleToRemove);
     localStorage.setItem('bookTitles', JSON.stringify(updatedTitles));
@@ -118,7 +118,7 @@ const TagPage: React.FC = () => {
     setBookTitlesCount(updatedTitles.length);
   };
 
-  
+
   const handleEmptyBookCart = () => {
     setBookTitles([]);
     setBookTitlesCount(0);
@@ -140,38 +140,38 @@ const TagPage: React.FC = () => {
 
   return (
     <>
-    <div className=''>
-      <div className="mt-3 h-full ">
-        <div className="grid lg:grid-cols-5">
-          <Sidebar playlists={playlists} className="hidden lg:block" />
+      <div className=''>
+        <div className="mt-3 h-full ">
+          <div className="grid lg:grid-cols-5">
+            <Sidebar playlists={playlists} className="hidden lg:block" />
             <div className="col-span-3 lg:col-span-4 lg:border-l">
               <div className="h-full px-4 py-6 lg:px-8">
                 <div className='flex justify-between'>
                   <BreadcrumbComponent currentPage={currentPage} currentPageText="Tags" />
                   <div className='mr-16'>
-                  <CartSheet bookTitles={bookTitles} onDeleteTitle={handleDeleteBookTitle} handleEmptyBookCart={handleEmptyBookCart} />
+                    <CartSheet bookTitles={bookTitles} onDeleteTitle={handleDeleteBookTitle} handleEmptyBookCart={handleEmptyBookCart} />
                   </div>
-                </div>     
+                </div>
                 <div className='mb-2'>
                 </div>
                 <h2 className="text-2xl font-bold mb-4">All Tags <span className="bg-purple-100 text-purple-800 text-lg font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-purple-400 border border-purple-400">{currentPage}</span></h2>
-                {loading ? ( 
+                {loading ? (
                   <div className='h-full'>
                     <FidgetSpinner />
                   </div>
                 ) : (
-                <div>
-                  {renderSubjects()}
-                  </div>
-                    )}
                   <div>
-                {renderPagination()}
+                    {renderSubjects()}
+                  </div>
+                )}
+                <div>
+                  {renderPagination()}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 };

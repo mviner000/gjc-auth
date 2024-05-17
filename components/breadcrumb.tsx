@@ -16,15 +16,15 @@ interface BreadcrumbProps {
   currentPageText: string;
 }
 
-const BreadcrumbComponent: React.FC<BreadcrumbProps> = ({ currentPage, 
+const BreadcrumbComponent: React.FC<BreadcrumbProps> = ({ currentPage,
   currentPageText, }) => {
   return (
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink className='text-black dark:text-white' href="/">Home</BreadcrumbLink>
+          <BreadcrumbLink className='text-black dark:text-white' href="/books">Books</BreadcrumbLink>
         </BreadcrumbItem>
-        
+
         <BreadcrumbItem>
           <BreadcrumbLink href="/docs/components" className='text-slate-200 dark:text-white hidden'>Dashboard</BreadcrumbLink>
         </BreadcrumbItem>
