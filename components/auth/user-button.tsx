@@ -69,7 +69,7 @@ export const UserButton = () => {
             <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link className="hover:text-blue-500  text-white" href="/settings">Settings</Link>
+            <Link className="hover:text-blue-50" href="/settings">Settings</Link>
             <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>

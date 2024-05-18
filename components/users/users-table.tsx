@@ -25,7 +25,7 @@ interface User {
 const UsersTable = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [isPending, setIsPending] = useState(false);
-  
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -44,6 +44,10 @@ const UsersTable = () => {
 
   const columns: ColumnDef<User>[] = [
     {
+      accessorKey: "id",
+      header: "ID",
+    },
+    {
       accessorKey: "first_name",
       header: "First Name",
     },
@@ -58,9 +62,9 @@ const UsersTable = () => {
     {
       accessorKey: "emailVerified",
       header: "Verified",
-       // Custom render function to display 'true' or 'false' based on emailVerified
-       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue('emailVerified')? <CircleCheck className='text-emerald-600'/> : <CircleX className='text-rose-400/80'/>}</div>
+      // Custom render function to display 'true' or 'false' based on emailVerified
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue('emailVerified') ? <CircleCheck className='text-emerald-600' /> : <CircleX className='text-rose-400/80' />}</div>
       ),
     },
   ]

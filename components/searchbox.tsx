@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
+import SearchIcon from "@/components/icons/search-icon";
 
 const SearchBox = () => {
   const searchParams = useSearchParams();
@@ -17,22 +17,30 @@ const SearchBox = () => {
     window.location.href = newPathname;
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch(e as any);
+    }
+  };
+
   return (
     <div>
-      <div className="sm:flex items-center rounded-lg bg-transparent overflow-hidden px-2 py-1 justify-between">
+      <div className="xs:hidden hidden md:hidden lg:block sm:flex items-center rounded-lg bg-transparent overflow-hidden px-2 py-1 justify-between">
         <div className="flex rounded-lg border border-1">
           <input
-            className="text-base  ml-3  bg-transparent text-gray-200 flex-grow outline-none dark:bg-transparent"
+            className="text-base ml-3 w-100 bg-transparent text-gray-200 flex-grow outline-none dark:bg-transparent"
             type="text"
             placeholder="Search"
             value={localSearchText}
             onChange={(e) => setLocalSearchText(e.target.value)}
+            style={{ width: '450px' }}
+            onKeyDown={handleKeyDown}
           />
           <button
             className="bg-indigo-500 text-white text-base rounded-r-lg px-6 py-2 font-thin"
             onClick={handleSearch}
           >
-            Search
+            <SearchIcon />
           </button>
         </div>
       </div>

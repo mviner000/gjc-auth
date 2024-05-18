@@ -3,23 +3,31 @@
 import { Dialog, DialogContent, DialogTrigger } from "@radix-ui/react-dialog";
 import { useRouter } from "next/navigation";
 import { LoginForm } from "./login-form";
+import { useState } from "react";
+import { FidgetSpinner } from "react-loader-spinner";
 
 
 type LoginButtonProps = {
-    children: React.ReactNode,
-    mode?: "modal" | "redirect",
-    asChild?: boolean
+    children: React.ReactNode;
+    mode?: "modal" | "redirect";
+    asChild?: boolean;
+    isLoading?: boolean;
 }
 
 export const LoginButton = ({
     children,
     mode = "redirect",
-    asChild
+    asChild,
+    isLoading = false
 }: LoginButtonProps) => {
 
     const router = useRouter();
+    const [isLoadingState, setIsLoadingState] = useState(isLoading);
 
-    const handleClick = () => router.push("/dashboard")
+    const handleClick = () => {
+        setIsLoadingState(true);
+        router.push("/dashboard");
+    };
 
     if (mode === "modal") {
         return (
@@ -36,7 +44,7 @@ export const LoginButton = ({
 
     return (
         <span onClick={handleClick} className="cursor-pointer">
-            {children}
+            {isLoadingState ? <FidgetSpinner /> : children}
         </span>
     )
 }
