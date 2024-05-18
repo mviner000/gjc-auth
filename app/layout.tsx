@@ -11,6 +11,8 @@ import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] });
 import { cn } from "@/lib/utils"
+import LoggingOutDisplay from "@/components/logging-out-display";
+import { LoggingOutProvider } from "@/components/logging-out-context";
 
 export const metadata: Metadata = {
   title: "GJCLibrary",
@@ -25,28 +27,32 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <SessionProvider session={session}>
-    <html lang="en" suppressHydrationWarning>
-    <body
-      className={cn(
-        " font-sans antialiased",
-        inter.className
-      )}
-    >
-    <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-          themes={['light', 'dark', 'emerald']}
-        >
-        <div className="z-10 absolute top-5 right-5">
-          <ModeToggle/>
-        </div>
-        {children}
-        <Toaster />
-    </ThemeProvider>
-      </body>
-    </html>
+      <LoggingOutProvider>
+        <html lang="en" suppressHydrationWarning>
+          <body
+            className={cn(
+              " font-sans antialiased",
+              inter.className
+            )}
+          >
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+              themes={['light', 'dark', 'emerald']}
+            >
+              <div className="z-10 absolute top-5 right-5">
+                <ModeToggle />
+              </div>
+
+              <LoggingOutDisplay />
+              {children}
+              <Toaster />
+            </ThemeProvider>
+          </body>
+        </html>
+      </LoggingOutProvider>
     </SessionProvider>
   );
 }

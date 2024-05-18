@@ -20,8 +20,8 @@ import { BookAudio } from "lucide-react"
 import Footer from "@/components/footer"
 
 export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Example dashboard app built using the components.",
+  title: "Dashboard | GJCLibrary",
+  description: "Dashboard used by General De Jesus Students to access Library Management System",
 }
 
 export default function DashboardPage() {

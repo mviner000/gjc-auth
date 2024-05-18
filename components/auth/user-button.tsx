@@ -64,19 +64,26 @@ export const UserButton = () => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Link className="hover:text-blue-500" href="/dashboard">Dashboard</Link>
+          <DropdownMenuItem className="cursor-pointer">
+            <Link className="hover:text-blue-500" href="/dashboard">
+              Dashboard
+            </Link>
             <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link className="hover:text-blue-50" href="/settings">Settings</Link>
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+          <DropdownMenuItem className="cursor-pointer">
+            <Link className="hover:text-blue-500" href="/settings">
+              Settings
+            </Link>
+            <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
           </DropdownMenuItem>
+
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer hover:text-blue-50">
           <LogoutButton>
-            Log out
+            <span className="hover:text-blue-500">
+              Log out
+            </span>
           </LogoutButton>
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
