@@ -32,7 +32,7 @@ const Navbar = () => {
         <div className='grid grid-cols-3 justify-between'>
           <div>
             <ul className="flex">
-              <li className="mr-1">
+              <li className="lg:block hidden mr-1">
                 <Link className="hover:text-blue-500" href="#">
                   <Image
                     width={38}
