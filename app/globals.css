@@ -8,9 +8,14 @@ body,
   height: 100%;
 }
 
-
-
 @layer base {
+  svg .shadow {
+    cursor: crosshair;
+    -moz-box-shadow: -5px -5px 5px #888;
+    -webkit-box-shadow: -5px -5px 5px #888;
+    box-shadow: -5px -5px 5px #888;
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -77,10 +82,8 @@ body,
     --background: 160 83% 20%;
     --foreground: 220 80% 100%;
 
-
     --popover: 160 83% 20%;
     --popover-foreground: 220 80% 90%;
-
 
     --white-text-color: hsl(0, 100%, 100%);
 

@@ -21,12 +21,14 @@ export const LoginButton = ({
     isLoading = false
 }: LoginButtonProps) => {
 
-    const router = useRouter();
+    // const router = useRouter();
     const [isLoadingState, setIsLoadingState] = useState(isLoading);
 
     const handleClick = () => {
         setIsLoadingState(true);
-        router.push("/dashboard");
+
+        window.location.href = `/dashboard`;
+
     };
 
     if (mode === "modal") {

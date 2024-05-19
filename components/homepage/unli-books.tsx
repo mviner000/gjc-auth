@@ -32,7 +32,7 @@ type Book = {
     publisher: string;
 };
 
-const BookList = () => {
+const UnliBook = () => {
     const [books, setBooks] = useState<Book[]>([]);
     const [cursor, setCursor] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -148,4 +148,4 @@ const BookList = () => {
     );
 };
 
-export default BookList;
+export default UnliBook;

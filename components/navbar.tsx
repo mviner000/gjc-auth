@@ -43,7 +43,7 @@ const Navbar = () => {
                 </Link>
               </li>
               <li className="mr-6 mt-[7px] dark:text-white">
-                <Link className="hover:text-blue-500" href="/books">GJCLibrary</Link>
+                <Link className="hover:text-blue-500" href="/">GJCLibrary</Link>
               </li>
               {isLoggedIn && userRole === 'ADMIN' ? (
                 <>
