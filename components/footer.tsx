@@ -19,22 +19,23 @@ const Footer = () => {
                                     />
                                     <span className="font-bold">GJC</span>
                                 </li>
-                                <li>About</li>
-                                <li>Terms & Agreements</li>
+                                <li><Link className="hover:text-blue-500" href="/static/about">About</Link></li>
+                                <li><Link className="hover:text-blue-500" href="/static/faqs">FAQs</Link></li>
+                                <li><Link className="hover:text-blue-500" href="/static/terms">Terms & Agreements</Link></li>
+
                             </ul>
                         </div>
                         <div className="text-white mx-5 my-3 md:my-7">
                             <ul>
-                                <li>Teams</li>
-                                <li><Link className="hover:text-blue-500" href="/shop">Shop</Link></li>
+                                <li><Link className="hover:text-blue-500" href="/static/contacts">Contacts</Link></li>
+                                <li><Link className="hover:text-blue-500" href="/static/teams">Team</Link></li>
                                 <li><Link className="hover:text-blue-500" href="/">Landing Page</Link></li>
-                                <li>Contacts</li>
                             </ul></div>
                     </div>
                     <div className="text-white w-full justify-center text-center">
                         <span className="text-white font-semibold">❤️ Made with love from GJC.</span>
                         <span> Hope You Liked It. Buy us a coffee ☕</span>
-                        <p> ©️ Copyright</p>
+                        {/* <p> ©️ Copyright</p> */}
                     </div>
                 </div>
             </div>

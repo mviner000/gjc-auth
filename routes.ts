@@ -11,6 +11,11 @@ export const publicRoutes = [
   "/tags",
   "/posts",
   "/not-allowed",
+  "/static/about",
+  "/static/faqs",
+  "/static/team",
+  "/static/contacts",
+  "/static/terms",
 ];
 
 /**
