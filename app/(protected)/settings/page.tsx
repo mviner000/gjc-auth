@@ -34,8 +34,11 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { Separator } from "@/components/ui/separator";
 
+type Role = "USER" | "ADMIN";
 
 const SettingsPage = () => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const user = useCurrentUser();
   const { update } = useSession();
@@ -43,6 +46,14 @@ const SettingsPage = () => {
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
   const [loading, setLoading] = useState(false);
+
+  const [userRole, setUserRole] = useState<Role>();
+
+
+  useEffect(() => {
+    setIsLoggedIn(!!user);
+    setUserRole(user?.role as Role);
+  }, [user]);
 
   const defaultRole: UserRoleEnum = user?.role as UserRoleEnum || UserRoleEnum.USER;
 
@@ -173,27 +184,39 @@ const SettingsPage = () => {
             </>
           )}
 
-          <FormField
-            control={form.control}
-            name="role"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Role</FormLabel>
-                <Select disabled={isPending} onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger id="framework">
-                      <SelectValue placeholder={user?.isTwoFactorEnabled ? "ON" : "OFF"} />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent position="popper">
-                    <SelectItem value={UserRoleEnum.ADMIN}>Admin</SelectItem>
-                    <SelectItem value={UserRoleEnum.USER}>User</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {isLoggedIn && (
+            <>
+              {userRole === 'ADMIN' && (
+                <FormField
+                  control={form.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Role</FormLabel>
+                      <Select disabled={isPending} onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger id="framework">
+                            <SelectValue placeholder={user?.isTwoFactorEnabled ? "ON" : "OFF"} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent position="popper">
+                          <SelectItem value={UserRoleEnum.ADMIN}>Admin</SelectItem>
+                          <SelectItem value={UserRoleEnum.USER}>User</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              {userRole === 'USER' && (
+                <>
+                  <h1>Role: Student Account</h1>
+                </>
+              )}
+            </>
+          )}
 
 
           <FormError message={error} />

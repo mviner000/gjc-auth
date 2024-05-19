@@ -9,10 +9,10 @@ const AdminNavbar = () => {
                 <Link className="hover:text-blue-500" href="/admin/accept/borrow">Admin</Link>
             </li>
             <li className="mr-6 mt-[7px] dark:text-white">
-                <Link className="hover:text-blue-500" href="/students">Dashboard</Link>
+                <Link className="hover:text-blue-500" href="/students">Student List</Link>
             </li>
             <li className="mr-6 mt-[7px] dark:text-white">
-                <Link className="hover:text-blue-500" href="/students">Student List</Link>
+                <Link className="hover:text-blue-500" href="/profile">Profile</Link>
             </li>
             <li className="mr-6 mt-[7px] dark:text-white hidden md:block">
                 <Link className="hover:text-blue-500" href="/auth-book">

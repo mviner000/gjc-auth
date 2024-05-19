@@ -24,6 +24,8 @@ interface BookCart {
     student: string;
     books: number[];
     created_at: string;
+    is_borrowed_verified: boolean | null;
+    is_returned_verified: boolean | null;
 }
 
 // Extend dayjs with the relativeTime plugin
@@ -33,7 +35,9 @@ const appUrl = process.env.NEXT_PUBLIC_APP;
 
 const BookCartTable: React.FC = () => {
     const [bookCarts, setBookCarts] = useState<BookCart[]>([]);
-    const [bookTitlesWithImages, setBookTitlesWithImages] = useState<Record<number, { title: string; thumbnail_url: string }>>({});
+    const [bookTitlesWithImages, setBookTitlesWithImages] = useState<Record<number, { title: string; thumbnail_url: string }>>(
+        {}
+    );
 
     // Fetch all BookCarts and their related Book data on component mount
     useEffect(() => {
@@ -79,7 +83,7 @@ const BookCartTable: React.FC = () => {
     };
 
     const formatCreatedAt = (createdAt: string) => {
-        return dayjs(createdAt).fromNow(); // Format date using Day.js to show "time ago"
+        return dayjs().to(dayjs(createdAt)); // Format date using Day.js to show "time ago"
     };
 
     return (
@@ -93,13 +97,16 @@ const BookCartTable: React.FC = () => {
                         Student
                     </th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Borrowed Verified
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Returned Verified
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Created Date
                     </th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Book Thumbnail
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Action
+                        Books
                     </th>
                 </tr>
             </thead>
@@ -108,6 +115,8 @@ const BookCartTable: React.FC = () => {
                     <tr key={bookCart.id}>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bookCart.id}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bookCart.student}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bookCart.is_borrowed_verified ? 'Yes' : 'No'}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bookCart.is_returned_verified ? 'Yes' : 'No'}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{formatCreatedAt(bookCart.created_at)}</td>
                         <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
@@ -121,19 +130,11 @@ const BookCartTable: React.FC = () => {
                                 ))}
                             </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button
-                                onClick={() => handleDelete(bookCart.id)}
-                                className="text-red-600 hover:text-red-900 focus:outline-none"
-                            >
-                                Delete
-                            </button>
-                        </td>
+
                     </tr>
                 ))}
             </tbody>
         </table>
-
     );
 };
 

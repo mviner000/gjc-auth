@@ -35,16 +35,12 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <div className="h-full">
 
-      <div className='container'>
-        <UserAvatarInfo />
-      </div>
+
       <div className="flex-col">
-        <div className="border-b">
-          <div className="flex h-16 items-center px-4">
-            <StudentsMainNav className="mx-6" />
-            <div className="ml-auto flex items-center space-x-4">
-              {/* <Search /> */}
-            </div>
+        <div className="flex h-16 items-center px-4">
+
+          <div className="ml-auto flex items-center space-x-4">
+            {/* <Search /> */}
           </div>
         </div>
       </div>
