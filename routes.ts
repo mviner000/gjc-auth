@@ -4,13 +4,13 @@
  * @type {string[]}
  */
 export const publicRoutes = [
-    "/",
-    "/auth/new-verification",
-    "/authors",
-    "/books",
-    "/tags",
-    "/posts",
-    "/show",
+  "/",
+  "/auth/new-verification",
+  "/authors",
+  "/books",
+  "/tags",
+  "/posts",
+  "/not-allowed",
 ];
 
 /**
@@ -19,11 +19,11 @@ export const publicRoutes = [
  * @type {string[]}
  */
 export const authRoutes = [
-    "/auth/login", 
-    "/auth/register",
-    "/auth/error",
-    "/auth/reset",
-    "/auth/new-password",
+  "/auth/login",
+  "/auth/register",
+  "/auth/error",
+  "/auth/reset",
+  "/auth/new-password",
 ];
 
 /**
@@ -37,8 +37,7 @@ export const apiAuthPrefix = "/api/auth";
  * The default redirect path after loggin in
  * @type {string}
  */
-export const DEFAULT_LOGIN_REDIRECT = "/continue";
-
+export const DEFAULT_LOGIN_REDIRECT = "/";
 
 /**
  * The default redirect path after registered success

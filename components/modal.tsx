@@ -14,15 +14,15 @@ const ModalContent = (props: React.HTMLAttributes<HTMLDivElement>) => (
 );
 
 const ModalBox = (props: React.HTMLAttributes<HTMLDivElement>) => (
-    <div {...props} className={cn('inline-block', 'align-bottom', 'bg-white', 'rounded-lg', 'text-left', 'overflow-hidden', 'shadow-xl', 'transform', 'transition-all', 'sm:my-8', 'sm:align-middle', 'sm:max-w-lg', 'sm:w-full')} />
+    <div {...props} className={cn('inline-block', 'align-bottom', 'bg-white', 'dark:bg-black/90', 'rounded-lg', 'text-left', 'overflow-hidden', 'shadow-xl', 'transform', 'transition-all', 'sm:my-8', 'sm:align-middle', 'sm:max-w-lg', 'sm:w-full')} />
 );
 
 const ModalHeader = (props: React.HTMLAttributes<HTMLDivElement>) => (
-    <div {...props} className={cn('bg-gray-50', 'px-4', 'py-3', 'border-b', 'border-gray-200', 'sm:flex', 'sm:flex-row', 'sm:justify-between', 'sm:items-center')} />
+    <div {...props} className={cn('bg-gray-50', 'px-4', 'py-3', 'border-b', 'dark:bg-black/90', 'border-gray-200', 'sm:flex', 'sm:flex-row', 'sm:justify-between', 'sm:items-center')} />
 );
 
 const ModalTitle = (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h3 {...props} className={cn('text-lg', 'leading-6', 'font-medium', 'text-gray-900')} />
+    <h3 {...props} className={cn('text-lg', 'leading-6', 'font-medium', 'text-gray-900', 'dark:text-slate-300')} />
 );
 
 const ModalBody = (props: React.HTMLAttributes<HTMLDivElement>) => (
@@ -30,7 +30,7 @@ const ModalBody = (props: React.HTMLAttributes<HTMLDivElement>) => (
 );
 
 const ModalFooter = (props: React.HTMLAttributes<HTMLDivElement>) => (
-    <div {...props} className={cn('bg-gray-50', 'px-4', 'py-3', 'sm:flex', 'sm:flex-row', 'sm:justify-between', 'sm:items-center')} />
+    <div {...props} className={cn('bg-gray-50', 'dark:bg-black/90', 'px-4', 'py-3', 'sm:flex', 'sm:flex-row', 'sm:justify-between', 'sm:items-center')} />
 );
 
 interface ModalProps {
@@ -56,24 +56,32 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
             <ModalContainer>
                 <ModalContent>
                     <ModalBox>
+
                         <ModalHeader>
-                            <ModalTitle>{title}</ModalTitle>
-                            <button onClick={onClose}>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-6 w-6 text-gray-400 hover:text-gray-500"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
+                            <div>
+                                <div className="flex justify-between lg:gap-8">
+                                    <div>  <ModalTitle><div className='xs:text-sm md:text-lg lg:text-lg'>{title}</div></ModalTitle></div>
+
+                                    <button onClick={onClose}>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-6 w-6 text-gray-400 hover:text-gray-500"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M6 18L18 6M6 6l12 12"
+                                            />
+                                        </svg>
+                                    </button>
+                                </div>
+
+
+                            </div>
                         </ModalHeader>
                         <ModalBody>{children}</ModalBody>
                         <ModalFooter>
@@ -81,7 +89,7 @@ const Modal: FC<PropsWithChildren<ModalProps>> = ({
                         </ModalFooter>
                     </ModalBox>
                 </ModalContent>
-            </ModalContainer>
+            </ModalContainer >
         </>
     );
 };
