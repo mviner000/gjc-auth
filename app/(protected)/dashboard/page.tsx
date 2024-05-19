@@ -32,19 +32,19 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
           <div className="flex items-center space-x-2">
-            <CalendarDateRangePicker />
-            <Button>Show</Button>
+            <CalendarDateRangePicker className="hidden md:block" />
+            <Button className="hidden md:block" >Show</Button>
           </div>
         </div>
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="analytics" disabled>
+            {/* <TabsTrigger value="analytics" disabled>
               Analytics
             </TabsTrigger>
             <TabsTrigger value="reports" disabled>
               Reports
-            </TabsTrigger>
+            </TabsTrigger> */}
             <TabsTrigger value="notifications" disabled>
               Notifications
             </TabsTrigger>
@@ -143,14 +143,14 @@ export default function DashboardPage() {
               </Card>
             </div>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-              <Card className="col-span-4">
+              {/* <Card className="col-span-4">
                 <CardHeader>
                   <CardTitle>Overview</CardTitle>
                 </CardHeader>
                 <CardContent className="pl-2">
                   <Overview />
                 </CardContent>
-              </Card>
+              </Card> */}
               <Card className="col-span-3">
                 <CardHeader>
                   <CardTitle>Recent Books Read</CardTitle>
@@ -166,7 +166,6 @@ export default function DashboardPage() {
           </TabsContent>
         </Tabs>
       </div>
-      <Footer />
     </>
   )
 }

@@ -7,7 +7,7 @@ const StudentNavbar = () => {
         <>
 
             <li className="mr-6 mt-[7px] dark:text-white">
-                <Link className="hover:text-blue-500" href="/books/table">Books</Link>
+                <Link className="hover:text-blue-500" href="/auth-book">Books</Link>
             </li>
             <li className="mr-6 mt-[7px] dark:text-white">
                 <Link className="hover:text-blue-500" href="/students/return">Profile</Link>

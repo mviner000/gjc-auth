@@ -15,7 +15,7 @@ const AdminNavbar = () => {
                 <Link className="hover:text-blue-500" href="/students">Student List</Link>
             </li>
             <li className="mr-6 mt-[7px] dark:text-white hidden md:block">
-                <Link className="hover:text-blue-500" href="/books/table">
+                <Link className="hover:text-blue-500" href="/auth-book">
                     <Button
                         variant="ghost"
                         className="mr-10 mt-[-2rem] text-white outline outline-[1px] outline-emerald-500"

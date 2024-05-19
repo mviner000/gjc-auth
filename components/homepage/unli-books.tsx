@@ -32,6 +32,8 @@ type Book = {
     publisher: string;
 };
 
+const appUrl = process.env.NEXT_PUBLIC_APP;
+
 const UnliBook = () => {
     const [books, setBooks] = useState<Book[]>([]);
     const [cursor, setCursor] = useState(null);
@@ -47,7 +49,7 @@ const UnliBook = () => {
     const fetchBooks = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/books/', {
+            const response = await axios.get(`${appUrl}/api/books/`, {
                 params: {
                     page_size: 10,
                     cursor,
@@ -90,7 +92,7 @@ const UnliBook = () => {
                 justify-center p-0 bg-transparent">
                                     {books.map((book, index) => {
                                         return (
-                                            <Link key={index} href={`/books/${book.id}`}>
+                                            <Link key={index} href={`/auth-book/${book.id}`}>
                                                 <div className="shadow-md dark:shadow-none bg-white dark:bg-transparent rounded-md p-0">
                                                     <div className='rounded-lg'>
                                                         <div className='static'>
