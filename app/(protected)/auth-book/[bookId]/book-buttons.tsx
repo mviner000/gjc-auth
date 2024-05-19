@@ -3,10 +3,8 @@
 // import { loginOauth } from "@/actions/login";
 
 import { signIn } from "next-auth/react";
-import { FaGoogle, FaGithub, FaFacebook } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-import Image from "next/image";
 
 
 export const BookButtons = () => {

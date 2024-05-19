@@ -10,6 +10,7 @@ interface Book {
   id: number;
   title: string;
   thumbnail_url: string;
+  stock_quantity: number;
 }
 
 interface BookCart {
@@ -24,7 +25,7 @@ const appUrl = process.env.NEXT_PUBLIC_APP;
 const BorrowersTable = () => {
   const [isPending, setIsPending] = useState(false);
   const [bookCarts, setBookCarts] = useState<BookCart[]>([]);
-  const [bookTitlesWithImages, setBookTitlesWithImages] = useState<Record<number, { title: string; thumbnail_url: string }>>({});
+  const [bookTitlesWithImages, setBookTitlesWithImages] = useState<Record<number, { title: string; thumbnail_url: string; stock_quantity: number }>>({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,7 +47,7 @@ const BorrowersTable = () => {
       const bookIds = bookCarts.flatMap((cart) => cart.books);
       const uniqueBookIds = Array.from(new Set(bookIds)); // Get unique book IDs
 
-      const bookTitlesWithImagesMap: Record<number, { title: string; thumbnail_url: string }> = {};
+      const bookTitlesWithImagesMap: Record<number, { title: string; thumbnail_url: string; stock_quantity: number }> = {};
       try {
         const response = await axios.get(`${appUrl}/api/books/`);
         const books = response.data.results as Book[];
@@ -55,6 +56,7 @@ const BorrowersTable = () => {
             bookTitlesWithImagesMap[book.id] = {
               title: book.title,
               thumbnail_url: book.thumbnail_url,
+              stock_quantity: book.stock_quantity,  // Add stock_quantity
             };
           }
         });
@@ -69,6 +71,7 @@ const BorrowersTable = () => {
     }
   }, [bookCarts]);
 
+
   const truncateString = (str: string, maxLength: number) => {
     if (str.length > maxLength) {
       return str.substring(0, maxLength) + '...';
@@ -78,19 +81,42 @@ const BorrowersTable = () => {
 
   const handleVerifyBorrowing = async (cartId: number) => {
     try {
-      const response = await axios.put(`${appUrl}api/bookcarts/${cartId}/`, {
-        is_borrowed_verified: true // Update is_borrowed_verified to true
+      // Update backend to mark borrowing as verified
+      const response = await axios.put(`${appUrl}/api/bookcarts/${cartId}/`, {
+        is_borrowed_verified: true
       });
-      // Assuming successful update, update local state to reflect the change
+
+      // Update local state to reflect the change in verification status
       setBookCarts((prevBookCarts) =>
         prevBookCarts.map((cart) =>
           cart.id === cartId ? { ...cart, is_borrowed_verified: true } : cart
         )
       );
+
+      // Decrement stock quantity of each book in the cart
+      const updatedBookCarts = await Promise.all(bookCarts.map(async (cart) => {
+        if (cart.id === cartId) {
+          const updatedBooks = await Promise.all(cart.books.map(async (bookId) => {
+            // Update frontend state to reflect the change in stock quantity
+            const updatedTitles = { ...bookTitlesWithImages };
+            if (updatedTitles[bookId]) {
+              updatedTitles[bookId].stock_quantity -= 1;
+              // Update backend to decrement stock quantity
+              await axios.put(`${appUrl}/api/books/${bookId}/`, {
+                stock_quantity: updatedTitles[bookId].stock_quantity
+              });
+            }
+          }));
+        }
+        return cart;
+      }));
+      setBookCarts(updatedBookCarts);
     } catch (error) {
       console.error('Error updating verification status:', error);
     }
   };
+
+
 
   const columns: ColumnDef<BookCart>[] = [
     {
@@ -111,7 +137,7 @@ const BorrowersTable = () => {
             {bookIds.map((bookId) => {
               const bookData = bookTitlesWithImages[bookId];
               if (bookData) {
-                const { title, thumbnail_url } = bookData;
+                const { title, thumbnail_url, stock_quantity } = bookData;  // Destructure stock_quantity
                 return (
                   <div key={bookId} style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
                     <img
@@ -119,7 +145,7 @@ const BorrowersTable = () => {
                         thumbnail_url ||
                         'https://via.placeholder.com/128x185/007bff/ffffff?text=Book'
                       }
-                      alt={`Thumbnail for ${row.getValue('title')}`}
+                      alt={`Thumbnail for ${title}`}
                       style={{ width: '50px', height: 'auto' }}
                     />
                     <span>{truncateString(title, 30)}</span>
@@ -147,6 +173,29 @@ const BorrowersTable = () => {
       ),
     },
     {
+      header: 'Stock Quantity',  // Add new column for stock quantity
+      accessorKey: 'stock_quantity',
+      cell: ({ row }) => {
+        const bookIds = row.getValue('books') as number[];
+        return (
+          <div>
+            {bookIds.map((bookId) => {
+              const bookData = bookTitlesWithImages[bookId];
+              if (bookData) {
+                return (
+                  <div key={bookId} style={{ marginBottom: '8px' }}>
+                    <span>{bookData.stock_quantity}</span>
+                  </div>
+                );
+              } else {
+                return null;
+              }
+            })}
+          </div>
+        );
+      },
+    },
+    {
       header: 'Action',
       id: 'actions',
       enableHiding: false,
@@ -160,6 +209,7 @@ const BorrowersTable = () => {
       },
     },
   ];
+
 
   return (
     <div className="h-full w-full">
