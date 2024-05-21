@@ -2,8 +2,6 @@ import { Metadata } from "next"
 import Image from "next/image"
 
 import { Separator } from "@/components/ui/separator"
-import { SidebarNav } from "@/components/settings/sidebar-nav"
-import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import NavMenu from "@/components/nav-menu"
 
@@ -38,7 +36,6 @@ interface BookLayoutProps {
 export default function BookLayout({ children }: BookLayoutProps) {
   return (
     <>
-    <Navbar />
       <div className="p-10">
         <div className="space-y-0.5 text-center justify-center">
           <h2 className="text-2xl font-bold tracking-tight">Books</h2>
@@ -50,9 +47,9 @@ export default function BookLayout({ children }: BookLayoutProps) {
           </div>
         </div>
         <Separator className="my-6" />
-          <div className="h-full w-full">
-            {children}
-          </div>
+        <div className="h-full w-full">
+          {children}
+        </div>
       </div>
       <Footer />
     </>

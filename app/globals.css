@@ -16,6 +16,13 @@ body,
     box-shadow: -5px -5px 5px #888;
   }
 
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;

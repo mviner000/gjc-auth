@@ -5,6 +5,8 @@ import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import UserAvatarInfo from '@/components/user-avatar-info';
+import Footer from '@/components/footer';
+
 
 interface BookCart {
     id: number;
@@ -79,7 +81,7 @@ const ProfilePage: React.FC = () => {
             setSuccess('Book cart returned successfully');
             setTimeout(() => {
                 setSuccess(null);
-            }, 3000); // Clear success message after 3 seconds
+            }, 3000);
             console.log('Book cart returned successfully!');
         } catch (error) {
             setError('Error returning book cart');
@@ -89,12 +91,12 @@ const ProfilePage: React.FC = () => {
 
     return (
         <>
-            <div className='container'>
+            <div className='container h-full static'>
                 <UserAvatarInfo />
                 {error && <div className="text-red-500 mb-4">{error}</div>}
                 {success && <div className="text-green-500 mb-4">{success}</div>}
-                <div className="mt-10">
-                    <table className="w-full border-collapse border border-gray-300">
+                <div className="mb-10">
+                    <table className="mb-[200px] w-full border-collapse border border-gray-300">
                         <thead className="bg-transparent">
                             <tr>
                                 <th className="border border-gray-300 dark:text-white px-4 py-2">ID</th>
@@ -124,6 +126,7 @@ const ProfilePage: React.FC = () => {
                     </table>
                 </div>
 
+                <div className='h-1'></div>
             </div>
         </>
     );

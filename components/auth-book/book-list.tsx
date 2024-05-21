@@ -3,7 +3,6 @@
 import React, { useState, useEffect, MouseEvent } from 'react';
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import Link from 'next/link';
 
 import { Cloudinary } from '@cloudinary/url-gen';
 import { auto } from '@cloudinary/url-gen/actions/resize';
@@ -114,7 +113,7 @@ const BookList = () => {
                 hasMore={hasMore}
                 loader={
                     <div className="col-span-full text-center p-4">
-                        <span className="text-gray-600">Loading...</span>
+                        <span className="text-gray-600">Load More...</span>
                     </div>
                 }
                 endMessage={

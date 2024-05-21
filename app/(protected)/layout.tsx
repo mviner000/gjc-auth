@@ -11,7 +11,6 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
         <>
             <div className="h-full">
                 <div className="">
-                    <Navbar />
                     <div className="h-screen w-full p-8 items-center justify-center">
 
                         {children}

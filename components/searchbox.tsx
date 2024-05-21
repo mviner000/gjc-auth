@@ -25,10 +25,10 @@ const SearchBox = () => {
 
   return (
     <div>
-      <div className="xs:hidden hidden md:hidden lg:block sm:flex items-center rounded-lg bg-transparent overflow-hidden px-2 py-1 justify-between">
-        <div className="flex rounded-lg border border-1">
+      <div className="xs:hidden hidden md:hidden lg:block sm:flex items-center rounded-lg  bg-transparent overflow-hidden px-2 py-1 justify-between">
+        <div className="flex rounded-lg border-[1.5px] border-emerald-500 mt-[-3px]">
           <input
-            className="text-base ml-3 w-100 bg-transparent text-gray-200 flex-grow outline-none dark:bg-transparent"
+            className="text-base ml-3 w-100 bg-transparent text-gray-200 flex-grow outline-none  dark:bg-transparent"
             type="text"
             placeholder="Search"
             value={localSearchText}

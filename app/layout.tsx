@@ -13,6 +13,7 @@ const inter = Inter({ subsets: ["latin"] });
 import { cn } from "@/lib/utils"
 import LoggingOutDisplay from "@/components/logging-out-display";
 import { LoggingOutProvider } from "@/components/logging-out-context";
+import Navbar from "@/components/navbar";
 
 export const metadata: Metadata = {
   title: "GJCLibrary",
@@ -47,9 +48,11 @@ export default async function RootLayout({
               </div>
 
               <LoggingOutDisplay />
-              <div className="h-1.5 bg-gradient-to-r from-yellow-300 from-10% via-emeral-300 via-30%  to-emerald-500 to-90%"></div>
+
+              <Navbar />
               {children}
               <Toaster />
+
             </ThemeProvider>
           </body>
         </html>

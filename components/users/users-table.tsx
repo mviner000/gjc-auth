@@ -1,10 +1,15 @@
 "use client";
 
-import { useState, useEffect, useMemo } from 'react';
-import { fetchUser } from '@/actions/fetch-users';
-import { DataTable } from './data-table';
+import { useState, useEffect } from 'react';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
 import { ColumnDef } from '@tanstack/react-table';
 import { CircleCheck, CircleX } from 'lucide-react';
+import { fetchUser } from '@/actions/fetch-users';
+import { DataTable } from './data-table';
+
+dayjs.extend(relativeTime);
 
 interface User {
   id: string;
@@ -42,10 +47,15 @@ const UsersTable = () => {
     fetchUsers();
   }, []);
 
+  const formatTimeAgo = (date: Date | null): string => {
+    return date ? dayjs(date).fromNow() : "Unverified user";
+  };
+
+
   const columns: ColumnDef<User>[] = [
     {
-      accessorKey: "id",
-      header: "ID",
+      accessorKey: "student_id",
+      header: "Student Id",
     },
     {
       accessorKey: "first_name",
@@ -56,8 +66,13 @@ const UsersTable = () => {
       header: "Email",
     },
     {
-      accessorKey: "student_id",
-      header: "Student Id",
+      accessorKey: "emailVerified",
+      header: "Joined",
+      cell: ({ row }) => (
+        <div>
+          {formatTimeAgo(row.getValue('emailVerified'))}
+        </div>
+      ),
     },
     {
       accessorKey: "emailVerified",

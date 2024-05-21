@@ -20,9 +20,7 @@ const myFont = localFont({ src: '../app/fonts/Grotesk.woff2' })
 export default function Home() {
   return (
     <main className="h-full items-center justify-center ">
-      <Navbar />
       <HomeWrapper />
-      <Footer />
     </main>
   );
 }

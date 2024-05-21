@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { FidgetSpinner } from 'react-loader-spinner';
 import LandingPage from "@/components/homepage/landing-page";
 import UnliBook from './unli-books';
-import { FidgetSpinner } from 'react-loader-spinner';
 
 const HomeWrapper = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);

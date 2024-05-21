@@ -17,6 +17,7 @@ import { BookButtons } from "./book-buttons";
 import SubjectTag from "@/components/books/subject-tag";
 import { useState } from "react";
 import BookDetailsPage from "./book-details";
+import { SideBarRight } from "@/components/sidebar-right";
 
 interface Book {
     id: number;
@@ -41,13 +42,16 @@ const BookDetails = () => {
 
             <div className=''>
                 <div className="mt-3 h-full ">
-                    <div className="grid lg:grid-cols-5">
+                    <div className="grid lg:grid-cols-7">
                         <Sidebar playlists={playlists} className="hidden lg:block" />
 
-                        <div className="col-span-3 lg:col-span-4 lg:border-l">
+
+                        <div className="col-span-3 lg:col-span-5 lg:border-l lg:border-r">
                             <BookDetailsPage />
 
                         </div>
+
+                        <SideBarRight playlists={playlists} className="hidden lg:block" />
                     </div>
                 </div>
             </div>
