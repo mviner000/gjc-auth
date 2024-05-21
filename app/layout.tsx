@@ -47,6 +47,7 @@ export default async function RootLayout({
               </div>
 
               <LoggingOutDisplay />
+              <div className="h-1.5 bg-gradient-to-r from-yellow-300 from-10% via-emeral-300 via-30%  to-emerald-500 to-90%"></div>
               {children}
               <Toaster />
             </ThemeProvider>

@@ -7,7 +7,7 @@ const continueUrl = process.env.NEXT_PUBLIC_APP_URL;
 const ContinuePage = () => {
     const handleContinueClick = () => {
         // Perform a hard refresh
-        window.location.href = `${continueUrl}/dashboard`;
+        window.location.href = `${continueUrl}/`;
     };
 
     return (

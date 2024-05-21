@@ -13,6 +13,8 @@ import { autoGravity } from '@cloudinary/url-gen/qualifiers/gravity';
 import { AdvancedImage } from '@cloudinary/react';
 import TechImages from './tech-images'
 import { StaticSidebar } from '@/components/static-sidebar'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 const myFont = localFont({ src: '../../../../app/fonts/MonotypeOldEnglish.woff2' })
 
@@ -56,8 +58,27 @@ const TeamPage = () => {
                                                 </div>
                                                 <div className="p-4 text-center text-white bg-teal-500">
                                                     <p className="text-lg font-bold">Melvin E. Nogoy</p>
+                                                    <div className="w-full grid grid-cols-1 space-y-2 md:space-y-2 md:grid-cols-1 lg:space-y-2 lg:grid-cols-1 xl:grid-cols-2  items-center gap-x-2">
 
-                                                    <Social />
+                                                        <Link href="https://facebook.com/mviner000">
+                                                            <Button
+                                                                size="lg"
+                                                                className="w-full bg-gradient-to-r from-purple-500 to-neutral-950 hover:bg-gradient-to-l text-white outline-2 shadow-md outline-black"
+                                                                variant="outline"
+                                                            >
+                                                                Github
+                                                            </Button>
+                                                        </Link>
+                                                        <Link href="https://github.com/mviner000">
+                                                            <Button
+                                                                size="lg"
+                                                                className="w-full bg-gradient-to-l from-blue-500 to-neutral-950 hover:bg-gradient-to-r text-white outline-2 shadow-md outline-black"
+                                                                variant="outline"
+                                                            >
+                                                                Facebook
+                                                            </Button>
+                                                        </Link>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -69,7 +90,28 @@ const TeamPage = () => {
                                                 </div>
                                                 <div className="p-4 text-center text-white bg-teal-500">
                                                     <p className="text-lg font-bold">Jethro Mabeza</p>
-                                                    <Social />
+                                                    <div className="w-full grid grid-cols-1 space-y-2 md:space-y-2 md:grid-cols-1 lg:space-y-2 lg:grid-cols-1 xl:grid-cols-2  items-center gap-x-2">
+
+                                                        <Link href="https://github.com/j3thzki">
+                                                            <Button
+                                                                size="lg"
+                                                                className="w-full bg-gradient-to-r from-purple-500 to-neutral-950 hover:bg-gradient-to-l text-white outline-2 shadow-md outline-black"
+                                                                variant="outline"
+                                                            >
+                                                                Github
+                                                            </Button>
+                                                        </Link>
+                                                        <Link href="https://facebook.com/jethromabeza">
+                                                            <Button
+                                                                size="lg"
+                                                                className="w-full bg-gradient-to-l from-blue-500 to-neutral-950 hover:bg-gradient-to-r text-white outline-2 shadow-md outline-black"
+                                                                variant="outline"
+                                                            >
+                                                                Facebook
+                                                            </Button>
+                                                        </Link>
+
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -79,7 +121,26 @@ const TeamPage = () => {
                                                 </div>
                                                 <div className="p-4 text-center text-white bg-teal-500">
                                                     <p className="text-lg font-bold">Janzen De Asis</p>
-                                                    <Social />
+                                                    <div className="w-full grid grid-cols-1 space-y-2 md:space-y-2 md:grid-cols-1 lg:space-y-2 lg:grid-cols-1 xl:grid-cols-2  items-center gap-x-2">
+                                                        <Link href="https://github.com/paizen">
+                                                            <Button
+                                                                size="lg"
+                                                                className="w-full bg-gradient-to-r from-purple-500 to-neutral-950 hover:bg-gradient-to-l text-white outline-2 shadow-md outline-black"
+                                                                variant="outline"
+                                                            >
+                                                                Github
+                                                            </Button>
+                                                        </Link>
+                                                        <Link href="https://facebook.com/zen.ponce.de.asis">
+                                                            <Button
+                                                                size="lg"
+                                                                className="w-full bg-gradient-to-l from-blue-500 to-neutral-950 hover:bg-gradient-to-r text-white outline-2 shadow-md outline-black"
+                                                                variant="outline"
+                                                            >
+                                                                Facebook
+                                                            </Button>
+                                                        </Link>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -89,7 +150,27 @@ const TeamPage = () => {
                                                 </div>
                                                 <div className="p-4 text-center text-white bg-teal-500">
                                                     <p className="text-lg font-bold">Jonn Esternon</p>
-                                                    <Social />
+                                                    <div className="w-full grid grid-cols-1 space-y-2 md:space-y-2 md:grid-cols-1 lg:space-y-2 lg:grid-cols-1 xl:grid-cols-2  items-center gap-x-2">
+
+                                                        <Link href="https://github.com/esternonjonn">
+                                                            <Button
+                                                                size="lg"
+                                                                className="w-full bg-gradient-to-r from-purple-500 to-neutral-950 hover:bg-gradient-to-l text-white outline-2 shadow-md outline-black"
+                                                                variant="outline"
+                                                            >
+                                                                Github
+                                                            </Button>
+                                                        </Link>
+                                                        <Link href="https://facebook.com/jonn.esternon">
+                                                            <Button
+                                                                size="lg"
+                                                                className="w-full bg-gradient-to-l from-blue-500 to-neutral-950 hover:bg-gradient-to-r text-white outline-2 shadow-md outline-black"
+                                                                variant="outline"
+                                                            >
+                                                                Facebook
+                                                            </Button>
+                                                        </Link>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -99,7 +180,27 @@ const TeamPage = () => {
                                                 </div>
                                                 <div className="p-4 text-center text-white bg-teal-500">
                                                     <p className="text-lg font-bold mx-[0px] md:mx-[0px] lg:mx-[-30px]">Miguel Macabagdal</p>
-                                                    <Social />
+                                                    <div className="w-full grid grid-cols-1 space-y-2 md:space-y-2 md:grid-cols-1 lg:space-y-2 lg:grid-cols-1 xl:grid-cols-2  items-center gap-x-2">
+
+                                                        <Link href="https://github.com/">
+                                                            <Button
+                                                                size="lg"
+                                                                className="w-full bg-gradient-to-r from-purple-500 to-neutral-950 hover:bg-gradient-to-l text-white outline-2 shadow-md outline-black"
+                                                                variant="outline"
+                                                            >
+                                                                Github
+                                                            </Button>
+                                                        </Link>
+                                                        <Link href="https://facebook.com/miguel.macabagdal">
+                                                            <Button
+                                                                size="lg"
+                                                                className="w-full bg-gradient-to-l from-blue-500 to-neutral-950 hover:bg-gradient-to-r text-white outline-2 shadow-md outline-black"
+                                                                variant="outline"
+                                                            >
+                                                                Facebook
+                                                            </Button>
+                                                        </Link>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

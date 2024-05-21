@@ -33,7 +33,7 @@ const SearchBox = () => {
             placeholder="Search"
             value={localSearchText}
             onChange={(e) => setLocalSearchText(e.target.value)}
-            style={{ width: '450px' }}
+
             onKeyDown={handleKeyDown}
           />
           <button

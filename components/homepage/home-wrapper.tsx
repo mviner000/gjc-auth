@@ -1,24 +1,37 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { UserButton } from "@/components/auth/user-button";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import SearchBox from '@/components/searchbox';
 import LandingPage from "@/components/homepage/landing-page";
-import GuestNavbar from "@/components/navbar/guest-navbar";  // Import GuestNavbar
 import UnliBook from './unli-books';
-
+import { FidgetSpinner } from 'react-loader-spinner';
 
 const HomeWrapper = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const user = useCurrentUser();
 
     useEffect(() => {
         setIsLoggedIn(!!user);
+        setIsLoading(false);
     }, [user]);
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <FidgetSpinner
+                    visible={true}
+                    height="80"
+                    width="80"
+                    ariaLabel="loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    ballColors={['#ff0000', '#00ff00', '#0000ff']}
+                    backgroundColor="#F4442E"
+                />
+            </div>
+        );
+    }
 
     return (
         <div>

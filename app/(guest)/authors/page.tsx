@@ -26,7 +26,7 @@ const AuthorsPage: React.FC = () => {
   const [bookTitlesCount, setBookTitlesCount] = useState<number>(0);
   const [bookTitles, setBookTitles] = useState<string[]>([]);
 
-  
+
   useEffect(() => {
     fetchAuthors(currentPage);
   }, [currentPage]);
@@ -90,7 +90,7 @@ const AuthorsPage: React.FC = () => {
   const handlePageChange = (selectedPage: number) => {
     setCurrentPage(selectedPage);
   };
-  
+
   const handleAddToCart = (title: string, thumbnailUrl: string | null) => {
     if (bookTitles.includes(title)) {
       // Display a toast notification for duplicate entry
@@ -102,67 +102,67 @@ const AuthorsPage: React.FC = () => {
       });
       return;
     }
-  
+
     const updatedTitles = [...bookTitles, title];
     localStorage.setItem('bookTitles', JSON.stringify(updatedTitles));
     setBookTitles(updatedTitles);
     setBookTitlesCount(updatedTitles.length);
-  
+
     const thumbnailToSave = thumbnailUrl || 'https://via.placeholder.com/128x185/007bff/ffffff?text=Book';
     localStorage.setItem(`thumbnail_${title}`, thumbnailToSave);
-  
+
     toast({
       title: "Yehey! Congratulations",
       description: `"${title}" successfully added`,
       action: <ToastAction altText="Go to schedule to undo">Close</ToastAction>,
     });
   };
-  
+
 
   const renderAuthorList = () => {
     return (
       <ul>
-      {authors.map((author: Author) => (
-        <AuthorCard key={author.id} author={author} handleAddToCart={handleAddToCart} />
-      ))}
+        {authors.map((author: Author) => (
+          <AuthorCard key={author.id} author={author} handleAddToCart={handleAddToCart} />
+        ))}
       </ul>
     );
   };
 
   return (
     <>
-    <div className=''>
-      <div className="mt-3 h-full ">
-        <div className="grid lg:grid-cols-5">
-          <Sidebar playlists={playlists} className="hidden lg:block" />
-        <div className="col-span-3 lg:col-span-4 lg:border-l">
-        <div className="h-full px-4 py-6 lg:px-8">
-        <div className='flex justify-between'>
-          <BreadcrumbComponent currentPage={currentPage} currentPageText="Authors" />
-        <div className='mr-16'>
-          <CartSheet bookTitles={bookTitles} onDeleteTitle={handleDeleteBookTitle} handleEmptyBookCart={handleEmptyBookCart} />
-        </div>
-      </div>     
-      <div className='mb-2'>
-      </div>
-        <h2 className="text-2xl font-bold mb-4">AuthorsPage <span className="bg-purple-100 text-purple-800 text-lg font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-purple-400 border border-purple-400">{currentPage}</span></h2>
-              {loading ? ( 
-                <div className='h-full'>
-                  <FidgetSpinner />
+      <div className=''>
+        <div className="mt-3 h-full ">
+          <div className="grid lg:grid-cols-5">
+            <Sidebar playlists={playlists} className="hidden lg:block" />
+            <div className="col-span-3 lg:col-span-4 lg:border-l">
+              <div className="h-full px-4 py-6 lg:px-8">
+                <div className='flex justify-between'>
+                  <BreadcrumbComponent currentPage={currentPage} currentPageText="Authors" />
+                  <div className='mr-16'>
+                    <CartSheet bookTitles={bookTitles} onDeleteTitle={handleDeleteBookTitle} handleEmptyBookCart={handleEmptyBookCart} />
+                  </div>
                 </div>
-              ) : ( 
-                <>
-                {renderAuthorList()}
-                </> 
-              )}
-              <div>
-                {renderPagination()}
+                <div className='mb-2'>
+                </div>
+                <h2 className="text-2xl font-bold mb-4">AuthorsPage <span className="bg-purple-100 text-purple-800 text-lg font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-purple-400 border border-purple-400">{currentPage}</span></h2>
+                {loading ? (
+                  <div className='h-full'>
+                    <FidgetSpinner />
+                  </div>
+                ) : (
+                  <>
+                    {renderAuthorList()}
+                  </>
+                )}
+                <div>
+                  {renderPagination()}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 };
