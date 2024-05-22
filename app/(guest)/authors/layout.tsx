@@ -5,6 +5,14 @@ import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import NavMenu from "@/components/nav-menu"
 
+import { playlists } from "@/actions/playlists"
+import BreadcrumbComponent from '@/components/breadcrumb';
+import PaginationControls from '@/components/pagination-controls';
+import CartSheet from '@/components/cart-sheet';
+import AuthorCard from '@/components/authors/author-card';
+import { SideBarRight } from '@/components/sidebar-right';
+import { Sidebar } from "@/components/sidebar"
+
 export const metadata: Metadata = {
   title: "GJCLibrary - Authors",
   description: "Advanced form example using react-hook-form and Zod.",
@@ -36,21 +44,24 @@ interface BookLayoutProps {
 export default function AuthorLayout({ children }: BookLayoutProps) {
   return (
     <>
-    <Navbar />
-      <div className="p-10">
-        <div className="space-y-0.5 text-center justify-center">
-          <h2 className="text-2xl font-bold tracking-tight">Book Authors</h2>
-          <p className="text-muted-foreground">
-            Find Specific Books by Author at ease
-          </p>
-          <div className="text-left justify-start">
-            <NavMenu />
+      <div className="px-10 mt-7">
+        <div className="h-full w-full">
+          <div className=''>
+            <div className="mt-3 h-full ">
+              <div className="grid lg:grid-cols-7">
+                <Sidebar playlists={playlists} className="hidden lg:block" />
+                <div className="col-span-3 lg:col-span-5 lg:border-l lg:border-r">
+                  <div className="h-full px-4 py-6 lg:px-8">
+                    {children}
+                  </div>
+                </div>
+
+                <SideBarRight playlists={playlists} className="hidden lg:block" />
+              </div>
+            </div>
+
           </div>
         </div>
-        <Separator className="my-6" />
-          <div className="h-full w-full">
-            {children}
-          </div>
       </div>
       <Footer />
     </>

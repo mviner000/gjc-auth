@@ -81,7 +81,7 @@ const TagPage: React.FC = () => {
       toast({
         title: "Warning!",
         variant: "destructive",
-        description: `${title} already added to storage`,
+        description: `${title} already added to wishlist`,
         action: <ToastAction altText="Go to schedule to undo">Close</ToastAction>,
       });
       return;

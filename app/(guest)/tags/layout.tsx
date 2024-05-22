@@ -36,7 +36,7 @@ interface BookLayoutProps {
 export default function TagsLayout({ children }: BookLayoutProps) {
   return (
     <>
-      <div className="p-10">
+      <div className="px-10 mt-7">
         <div className="h-full w-full">
           {children}
         </div>

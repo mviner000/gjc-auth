@@ -1,7 +1,7 @@
 // page.tsx
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, MouseEvent } from 'react';
 import axios from 'axios';
 import { Author, Book } from './types';
 import { ToastAction } from "@/components/ui/toast"
@@ -14,10 +14,14 @@ import BreadcrumbComponent from '@/components/breadcrumb';
 import PaginationControls from '@/components/pagination-controls';
 import CartSheet from '@/components/cart-sheet';
 import AuthorCard from '@/components/authors/author-card';
+import { useRouter } from 'next/navigation';
+import { index } from 'drizzle-orm/mysql-core';
 
 const appUrl = process.env.NEXT_PUBLIC_APP;
 
 const AuthorsPage: React.FC = () => {
+
+  const router = useRouter();
   const { toast } = useToast()
   const [totalPages, setTotalPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -25,7 +29,8 @@ const AuthorsPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [bookTitlesCount, setBookTitlesCount] = useState<number>(0);
   const [bookTitles, setBookTitles] = useState<string[]>([]);
-
+  const [totalAuthorsCount, setTotalAuthorsCount] = useState<number>(0);
+  const [bookLoading, setBookLoading] = useState(false);
 
   useEffect(() => {
     fetchAuthors(currentPage);
@@ -51,6 +56,7 @@ const AuthorsPage: React.FC = () => {
 
       const totalPagesCount: number = Math.ceil(count / 10);
       setAuthors(results);
+      setTotalAuthorsCount(count);
       setTotalPages(totalPagesCount);
       setLoading(false);
     } catch (error) {
@@ -97,7 +103,7 @@ const AuthorsPage: React.FC = () => {
       toast({
         title: "Warning!",
         variant: "destructive",
-        description: `${title} already added to storage`,
+        description: `${title} already added to wishlist`,
         action: <ToastAction altText="Go to schedule to undo">Close</ToastAction>,
       });
       return;
@@ -118,12 +124,15 @@ const AuthorsPage: React.FC = () => {
     });
   };
 
-
   const renderAuthorList = () => {
     return (
       <ul>
         {authors.map((author: Author) => (
-          <AuthorCard key={author.id} author={author} handleAddToCart={handleAddToCart} />
+          <AuthorCard
+            key={author.id}
+            author={author}
+            handleAddToCart={handleAddToCart}
+          />
         ))}
       </ul>
     );
@@ -131,37 +140,27 @@ const AuthorsPage: React.FC = () => {
 
   return (
     <>
-      <div className=''>
-        <div className="mt-3 h-full ">
-          <div className="grid lg:grid-cols-5">
-            <Sidebar playlists={playlists} className="hidden lg:block" />
-            <div className="col-span-3 lg:col-span-4 lg:border-l">
-              <div className="h-full px-4 py-6 lg:px-8">
-                <div className='flex justify-between'>
-                  <BreadcrumbComponent currentPage={currentPage} currentPageText="Authors" />
-                  <div className='mr-16'>
-                    <CartSheet bookTitles={bookTitles} onDeleteTitle={handleDeleteBookTitle} handleEmptyBookCart={handleEmptyBookCart} />
-                  </div>
-                </div>
-                <div className='mb-2'>
-                </div>
-                <h2 className="text-2xl font-bold mb-4">AuthorsPage <span className="bg-purple-100 text-purple-800 text-lg font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-purple-400 border border-purple-400">{currentPage}</span></h2>
-                {loading ? (
-                  <div className='h-full'>
-                    <FidgetSpinner />
-                  </div>
-                ) : (
-                  <>
-                    {renderAuthorList()}
-                  </>
-                )}
-                <div>
-                  {renderPagination()}
-                </div>
-              </div>
-            </div>
-          </div>
+      <div className='flex justify-between'>
+        <BreadcrumbComponent currentPage={currentPage} currentPageText="Authors" />
+        <div className='mr-16'>
+          <CartSheet bookTitles={bookTitles} onDeleteTitle={handleDeleteBookTitle} handleEmptyBookCart={handleEmptyBookCart} />
         </div>
+      </div>
+      <div className='mb-2'>
+      </div>
+      <h1 className='text-4xl mb-5 font-semibold'>Total Authors in GJCLibrary<span className="text-orange-400 dark:text-yellow-200"> ({totalAuthorsCount})</span></h1>
+      <h2 className="text-2xl font-bold mb-4">AuthorsPage <span className="bg-purple-100 text-purple-800 text-lg font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-purple-400 border border-purple-400">{currentPage}</span></h2>
+      {loading ? (
+        <div className='h-full'>
+          <FidgetSpinner />
+        </div>
+      ) : (
+        <>
+          {renderAuthorList()}
+        </>
+      )}
+      <div>
+        {renderPagination()}
       </div>
     </>
   );

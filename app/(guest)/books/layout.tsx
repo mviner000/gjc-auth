@@ -36,17 +36,7 @@ interface BookLayoutProps {
 export default function BookLayout({ children }: BookLayoutProps) {
   return (
     <>
-      <div className="p-10">
-        <div className="space-y-0.5 text-center justify-center">
-          <h2 className="text-2xl font-bold tracking-tight">Books</h2>
-          <p className="text-muted-foreground">
-            Find Books at ease
-          </p>
-          <div className="text-left justify-start">
-            <NavMenu />
-          </div>
-        </div>
-        <Separator className="my-6" />
+      <div className="px-10 mt-7">
         <div className="h-full w-full">
           {children}
         </div>

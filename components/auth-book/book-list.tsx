@@ -94,7 +94,7 @@ const BookList = () => {
     return (
         <div>
             {bookLoading && (
-                <div className="fixed inset-0 flex justify-center items-center bg-white bg-opacity-75 z-50">
+                <div className="fixed inset-0 flex justify-center items-center bg-neutral-500/50 z-50">
                     <FidgetSpinner
                         visible={true}
                         height="80"

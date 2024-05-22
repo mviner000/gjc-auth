@@ -16,8 +16,9 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
                         {children}
                     </div>
                 </div>
-                {/* <Footer /> */}
             </div>
+
+            {/* <Footer /> */}
         </>
     )
 }

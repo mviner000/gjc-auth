@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
+import { SideBarRight } from '@/components/sidebar-right';
 
 interface Book {
   id: string;
@@ -52,7 +53,7 @@ const BookPage: React.FC = () => {
   const [bookTitles, setBookTitles] = useState<string[]>([]);
   const [inputPage, setInputPage] = useState<string>('');
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
-
+  const [totalBooksCount, setTotalBooksCount] = useState<number>(0);
 
 
   useEffect(() => {
@@ -100,6 +101,7 @@ const BookPage: React.FC = () => {
       const { count, results } = response.data;
       const totalPagesCount: number = Math.ceil(count / 10);
 
+      setTotalBooksCount(count);
       setBooks(results);
       setTotalPages(totalPagesCount);
       setLoading(false); // Set loading state to false after fetching
@@ -120,7 +122,7 @@ const BookPage: React.FC = () => {
       toast({
         title: "Warning!",
         variant: "destructive",
-        description: `${title} already added to storage`,
+        description: `${title} already added to wishlist`,
         action: <ToastAction altText="Go to schedule to undo">Close</ToastAction>,
       });
       return;
@@ -178,66 +180,60 @@ const BookPage: React.FC = () => {
   return (
     <>
 
-      <div className=''>
-        <div className="mt-3 h-full ">
-          <div className="grid lg:grid-cols-5">
-            <Sidebar playlists={playlists} className="hidden lg:block" />
-            <div className="col-span-3 lg:col-span-4 lg:border-l">
-              <div className="h-full px-4 py-6 lg:px-8">
-                <div className='flex justify-between'>
-                  <BreadcrumbComponent currentPage={currentPage} currentPageText="Books" />
-                  <div className='mr-16'>
-                    <CartSheet bookTitles={bookTitles} onDeleteTitle={handleDeleteBookTitle} handleEmptyBookCart={handleEmptyBookCart} />
-                  </div>
-                </div>
-                <div className='py-3 mb-2'>
-
-                  <TopTags />
-                </div>
-                <div className="space-y-6 mb-5">
-                  <h2 className="text-2xl font-bold">BookPage <span className="bg-purple-100 text-purple-800 text-lg font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-purple-400 border border-purple-400">{currentPage}</span></h2>
-                  {loading ? (
-                    <div className="h-full">
-                      <FidgetSpinner />
-                    </div>
-                  ) : (
-                    <div>
-                      <AlertDialog open={isAlertDialogOpen} onOpenChange={setIsAlertDialogOpen}>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Please log in to continue further?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              <div className="flex items-center p-4 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800" role="alert">
-                                <svg className="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                  <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                                </svg>
-                                <span className="sr-only">Info</span>
-                                <div>
-                                  <span className="font-medium">Warning alert!</span> You Reached maximum books saved.
-                                </div>
-                              </div>
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel onClick={() => setIsAlertDialogOpen(false)}>Cancel</AlertDialogCancel>
-                            <AlertDialogAction>
-                              <Link className="hover:text-blue-500" href="/auth/login">Continue to login</Link>
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                      {renderPagination()}
-                      {renderBookList()}
-                    </div>
-                  )}
-                </div>
-                <div>
-                  {renderPagination()}
-                </div>
+      <div className="grid lg:grid-cols-7">
+        <Sidebar playlists={playlists} className="hidden lg:block" />
+        <div className="col-span-3 lg:col-span-5 lg:border-l lg:border-r">
+          <div className="h-full px-4 lg:px-8">
+            <div className='flex justify-between'>
+              <BreadcrumbComponent currentPage={currentPage} currentPageText={`Page ${currentPage}`} />
+              <div className='mr-16'>
+                <CartSheet bookTitles={bookTitles} onDeleteTitle={handleDeleteBookTitle} handleEmptyBookCart={handleEmptyBookCart} />
               </div>
+            </div>
+            <div className="space-y-6 mb-5">
+              <h1 className='text-4xl mb-5 font-semibold'>Total Books in GJCLibrary<span className="text-orange-400 dark:text-yellow-200"> ({totalBooksCount})</span></h1>
+              <h2 className="text-2xl font-bold">BookPage <span className="bg-purple-100 text-purple-800 text-lg font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-purple-400 border border-purple-400">{currentPage}</span></h2>
+              {loading ? (
+                <div className="h-full">
+                  <FidgetSpinner />
+                </div>
+              ) : (
+                <div>
+                  <AlertDialog open={isAlertDialogOpen} onOpenChange={setIsAlertDialogOpen}>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Please log in to continue further?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          <div className="flex items-center p-4 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800" role="alert">
+                            <svg className="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                            </svg>
+                            <span className="sr-only">Info</span>
+                            <div>
+                              <span className="font-medium">Warning alert!</span> You Reached maximum books saved.
+                            </div>
+                          </div>
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel onClick={() => setIsAlertDialogOpen(false)}>Cancel</AlertDialogCancel>
+                        <AlertDialogAction>
+                          <Link className="hover:text-blue-500" href="/auth/login">Continue to login</Link>
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                  {renderPagination()}
+                  {renderBookList()}
+                </div>
+              )}
+            </div>
+            <div>
+              {renderPagination()}
             </div>
           </div>
         </div>
+        <SideBarRight playlists={playlists} className="hidden lg:block" />
       </div>
     </>
   );

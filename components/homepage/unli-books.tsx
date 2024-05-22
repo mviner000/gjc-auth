@@ -11,7 +11,7 @@ const UnliBook = () => {
 
     return (
         <>
-            <div className="mt-3 h-full">
+            <div className="px-10 mt-7">
                 <div className="grid lg:grid-cols-7">
                     <Sidebar playlists={playlists} className="hidden lg:block " />
                     <div className="col-span-3 lg:col-span-5 lg:border-l">

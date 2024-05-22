@@ -33,7 +33,7 @@ const Tag: React.FC<TagProps> = ({ subject, index }) => {
   return (
     <Link
       href={`/tags/${subject.id}`}
-      className={`font-medium me-2 px-2.5 py-0.5 'bg-blue-100 text-slate-300 text-sm rounded bg-blue-400 text-blue-300', ${(index)} text-xs`}
+      className={`font-medium me-2 px-2.5 py-0.5 'bg-blue-100 text-black dark:text-slate-300 text-sm rounded bg-blue-400 text-blue-300', ${(index)} text-xs`}
     >
       {subject.subject_name}
     </Link>
@@ -89,9 +89,10 @@ export function Sidebar({ className, playlists }: SidebarProps) {
           <Separator className="" />
 
           <div>
-            <h1 className="text-lg text-yellow-600  mb-2">Top Authors</h1>
-
-            <div className="text-sm text-slate-400"><TopAuthors /></div>
+            <Link href="/authors">
+              <h1 className="text-lg text-yellow-600  mb-2">Top Authors</h1>
+            </Link>
+            <div className="text-sm text-black dark:text-slate-400"><TopAuthors /></div>
           </div>
 
           <Separator className="hidden" />
