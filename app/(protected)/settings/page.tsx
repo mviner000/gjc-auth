@@ -184,7 +184,7 @@ const SettingsPage = () => {
             </>
           )}
 
-          {isLoggedIn && (
+          {/* {isLoggedIn && (
             <>
               {userRole === 'ADMIN' && (
                 <FormField
@@ -216,7 +216,7 @@ const SettingsPage = () => {
                 </>
               )}
             </>
-          )}
+          )} */}
 
 
           <FormError message={error} />

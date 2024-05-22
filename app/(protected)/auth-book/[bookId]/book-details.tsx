@@ -5,15 +5,10 @@ import { usePathname } from "next/navigation";
 
 import useSWR from 'swr';
 import { Cloudinary } from '@cloudinary/url-gen';
-import { auto } from '@cloudinary/url-gen/actions/resize';
-import { autoGravity } from '@cloudinary/url-gen/qualifiers/gravity';
 import { AdvancedImage } from '@cloudinary/react';
 import { fill } from '@cloudinary/url-gen/actions/resize';
 import copy from 'copy-to-clipboard';
 
-import { Sidebar } from "@/components/sidebar";
-import { playlists } from "@/actions/playlists"
-import { BookButtons } from "./book-buttons";
 import SubjectTag from "@/components/books/subject-tag";
 import { useState } from "react";
 import { useCurrentUser } from "@/hooks/use-current-user";

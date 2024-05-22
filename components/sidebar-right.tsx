@@ -1,56 +1,93 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { BadgeInfo, CircleHelp, PhoneOutgoing, Sticker, Users } from "lucide-react";
+import { useState } from "react";
+import { FidgetSpinner } from "react-loader-spinner";
 
-import { Playlist } from "@/actions/playlists"
 
-interface SideBarRightProps extends React.HTMLAttributes<HTMLDivElement> {
-    playlists: Playlist[]
-}
+interface SideBarRightProps extends React.HTMLAttributes<HTMLDivElement> { }
 
-export function SideBarRight({ className, playlists }: SideBarRightProps) {
+export function SideBarRight({ className }: SideBarRightProps) {
+    const [loading, setLoading] = useState(false);
+
+    const handleClick = (href: string) => {
+        setLoading(true);
+        // Simulate a delay for the loading state
+        setTimeout(() => {
+            window.location.href = href;
+            setLoading(false);
+        }, 1000);
+    };
+
     return (
-        <div className={cn("pb-12 sidebar", className)}>
-            <div className="space-y-4 py-4">
-                <div className="px-3 py-2">
-                    <div className="space-y-1 text-black dark:text-slate-500">
-                        <Link className="hover:text-blue-500" href="/static/about">
-                            <Button variant="ghost" className="w-full justify-start text-lg ">
+
+        <>
+            {loading && (
+                <div className="fixed inset-0 flex justify-center items-center bg-neutral-500/50 z-50">
+                    <FidgetSpinner
+                        visible={true}
+                        height="80"
+                        width="80"
+                        ariaLabel="loading"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                        ballColors={['#ff0000', '#00ff00', '#0000ff']}
+                        backgroundColor="#F4442E"
+                    />
+                </div>
+            )}
+            <div className={cn("pb-12 sidebar", className)}>
+                <div className="space-y-4 py-4">
+                    <div className="px-3 py-2">
+                        <div className="space-y-1 text-black dark:text-slate-500">
+                            <Button
+                                variant="ghost"
+                                className="w-full justify-start text-lg"
+                                onClick={() => handleClick("/static/about")}
+                            >
                                 <BadgeInfo size={20} className="mr-1.5" />
                                 About
                             </Button>
-                        </Link>
-                        <Link className="hover:text-blue-500" href="/static/faqs">
-                            <Button variant="ghost" className="w-full justify-start text-lg">
+                            <Button
+                                variant="ghost"
+                                className="w-full justify-start text-lg"
+                                onClick={() => handleClick("/static/faqs")}
+                            >
                                 <CircleHelp size={20} className="mr-1.5" />
                                 FAQs
                             </Button>
-                        </Link>
-                        <Link className="hover:text-blue-500" href="/static/team">
-                            <Button variant="ghost" className="w-full justify-start text-lg">
-
+                            <Button
+                                variant="ghost"
+                                className="w-full justify-start text-lg"
+                                onClick={() => handleClick("/static/team")}
+                            >
                                 <Users size={20} className="mr-1.5" />
                                 Team
                             </Button>
-                        </Link>
-                        <Link className="hover:text-blue-500" href="/static/contacts">
-                            <Button variant="ghost" className="w-full justify-start text-lg">
+                            <Button
+                                variant="ghost"
+                                className="w-full justify-start text-lg"
+                                onClick={() => handleClick("/static/contacts")}
+                            >
                                 <PhoneOutgoing size={20} className="mr-1.5" />
                                 Contacts
                             </Button>
-                        </Link>
 
-                        <Link className="hover:text-blue-500" href="/static/terms">
-                            <Button variant="ghost" className="w-full justify-start text-lg">
-
+                            <Button
+                                variant="ghost"
+                                className="w-full justify-start text-lg"
+                                onClick={() => handleClick("/static/terms")}
+                            >
                                 <Sticker size={20} className="mr-1.5" />
                                 Terms
                             </Button>
-                        </Link>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    )
+        </>
+
+    );
 }

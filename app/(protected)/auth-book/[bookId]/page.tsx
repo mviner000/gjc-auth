@@ -46,7 +46,7 @@ const BookDetails = () => {
                         <Sidebar playlists={playlists} className="hidden lg:block" />
 
 
-                        <div className="col-span-3 lg:col-span-5 lg:border-l lg:border-r">
+                        <div className="m-2 col-span-3 lg:col-span-5 lg:border-l lg:border-r">
                             <BookDetailsPage />
 
                         </div>

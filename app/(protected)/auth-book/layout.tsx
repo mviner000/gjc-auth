@@ -36,12 +36,7 @@ interface BookLayoutProps {
 export default function AuthBookLayout({ children }: BookLayoutProps) {
     return (
         <>
-            <div className="px-10 mt-7">
-                <div className="h-full w-full">
-                    {children}
-                </div>
-            </div>
-            <Footer />
+            {children}
         </>
     )
 }

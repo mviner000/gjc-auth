@@ -1,22 +1,11 @@
-import { Metadata } from "next"
-import Image from "next/image"
-
-import { Separator } from "@/components/ui/separator"
-import { SidebarNav } from "@/components/settings/sidebar-nav"
-import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
-import NavMenu from "@/components/nav-menu"
-
-import { playlists } from "@/actions/playlists"
-
-import { StaticSidebar } from '@/components/static-sidebar';
-import DieNot from "@/components/die-not"
+import { SideBarRight } from "@/components/sidebar-right"
+import { Metadata } from "next"
 
 export const metadata: Metadata = {
     title: "GJCLibrary",
-    description: "Advanced form example using react-hook-form and Zod.",
+    description: "More Info about General De Jesus College Library Website",
 }
-
 
 interface BookLayoutProps {
     children: React.ReactNode
@@ -25,11 +14,18 @@ interface BookLayoutProps {
 export default function StaticLayout({ children }: BookLayoutProps) {
     return (
         <>
-            <Navbar />
+            <div className="">
 
+                <div className="text-black dark:text-white text-center">
 
-            {children}
+                    <div className="grid lg:grid-cols-5 ">
+                        <SideBarRight className="hidden lg:block" />
+                        {children}
 
+                    </div>
+                </div>
+            </div>
+            <Footer />
         </>
     )
 }

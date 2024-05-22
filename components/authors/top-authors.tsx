@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Link from 'next/link';
 
 interface Book {
     title: string;
@@ -47,7 +48,12 @@ const TopAuthors: React.FC = () => {
         <div>
             {authors.map(author => (
                 <div key={author.id}>
-                    <h2>{author.author_name}</h2>
+                    <div className='p-1 my-1 hover:bg-yellow-500/70 hover:text-white rounded-md hover:font-semibold
+                    transition duration-150 ease-in-out'>
+                        <Link href={`/authors/${author.id}`}>
+                            <h2>{author.author_name}</h2>
+                        </Link>
+                    </div>
                 </div>
             ))}
         </div>
