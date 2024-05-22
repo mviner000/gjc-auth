@@ -5,6 +5,8 @@ import axios from 'axios';
 import { ColumnDef } from '@tanstack/react-table';
 import { CircleCheck, CircleX } from 'lucide-react';
 import { DataTable } from './data-table';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 interface Book {
   id: number;
@@ -18,6 +20,7 @@ interface BookCart {
   books: number[];
   student: string;
   is_borrowed_verified: boolean;
+  created_at: Date;
 }
 
 const appUrl = process.env.NEXT_PUBLIC_APP;
@@ -116,16 +119,30 @@ const BorrowersTable = () => {
     }
   };
 
+  dayjs.extend(relativeTime);
+
+  const formatDateAgo = (dateString: string) => {
+    return dayjs(dateString).fromNow();
+  };
 
 
   const columns: ColumnDef<BookCart>[] = [
     {
       accessorKey: 'id',
       header: 'ID',
+
     },
     {
       accessorKey: 'student',
       header: 'Student',
+    },
+    {
+      accessorKey: 'created_at',
+      header: 'Date',
+      // Rendering the date as a relative time
+      cell: ({ row }) => (
+        <span>{formatDateAgo(row.getValue('created_at'))}</span>
+      ),
     },
     {
       accessorKey: 'books',
@@ -148,7 +165,7 @@ const BorrowersTable = () => {
                       alt={`Thumbnail for ${title}`}
                       style={{ width: '50px', height: 'auto' }}
                     />
-                    <span>{truncateString(title, 30)}</span>
+                    <span className='ml-1'>{truncateString(title, 30)}</span>
                   </div>
                 );
               } else {
@@ -172,29 +189,29 @@ const BorrowersTable = () => {
         </div>
       ),
     },
-    {
-      header: 'Stock Quantity',  // Add new column for stock quantity
-      accessorKey: 'stock_quantity',
-      cell: ({ row }) => {
-        const bookIds = row.getValue('books') as number[];
-        return (
-          <div>
-            {bookIds.map((bookId) => {
-              const bookData = bookTitlesWithImages[bookId];
-              if (bookData) {
-                return (
-                  <div key={bookId} style={{ marginBottom: '8px' }}>
-                    <span>{bookData.stock_quantity}</span>
-                  </div>
-                );
-              } else {
-                return null;
-              }
-            })}
-          </div>
-        );
-      },
-    },
+    // {
+    //   header: 'Stock Quantity',  // Add new column for stock quantity
+    //   accessorKey: 'stock_quantity',
+    //   cell: ({ row }) => {
+    //     const bookIds = row.getValue('books') as number[];
+    //     return (
+    //       <div>
+    //         {bookIds.map((bookId) => {
+    //           const bookData = bookTitlesWithImages[bookId];
+    //           if (bookData) {
+    //             return (
+    //               <div key={bookId} style={{ marginBottom: '8px' }}>
+    //                 <span>{bookData.stock_quantity}</span>
+    //               </div>
+    //             );
+    //           } else {
+    //             return null;
+    //           }
+    //         })}
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       header: 'Action',
       id: 'actions',

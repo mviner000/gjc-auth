@@ -51,7 +51,7 @@ const BookDetails = () => {
 
                         </div>
 
-                        <SideBarRight playlists={playlists} className="hidden lg:block" />
+                        <SideBarRight className="hidden lg:block" />
                     </div>
                 </div>
             </div>

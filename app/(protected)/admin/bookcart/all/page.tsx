@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { CircleCheckBig, CircleX } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface Book {
     id: number;
@@ -45,6 +47,9 @@ const BookCartTable: React.FC = () => {
             try {
                 const bookCartsResponse = await axios.get<BookCart[]>(`${appUrl}/api/bookcarts/`);
                 const bookCarts = bookCartsResponse.data;
+
+                bookCarts.sort((a: BookCart, b: BookCart) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
 
                 const bookIds = bookCarts.flatMap((cart) => cart.books);
                 const uniqueBookIds = Array.from(new Set(bookIds)); // Get unique book IDs
@@ -91,54 +96,67 @@ const BookCartTable: React.FC = () => {
     };
 
     return (
-        <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-                <tr>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        ID
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Student
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Borrowed Verified
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Returned Verified
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Created Date
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Books
-                    </th>
-                </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-                {bookCarts.map((bookCart) => (
-                    <tr key={bookCart.id}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bookCart.id}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bookCart.student}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bookCart.is_borrowed_verified ? 'Yes' : 'No'}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bookCart.is_returned_verified ? 'Yes' : 'No'}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{formatCreatedAt(bookCart.created_at)}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center">
-                                {bookCart.books.map((bookId) => (
-                                    <img
-                                        key={bookId}
-                                        src={bookTitlesWithImages[bookId]?.thumbnail_url}
-                                        alt={bookTitlesWithImages[bookId]?.title}
-                                        className="w-12 h-12 object-cover"
-                                    />
-                                ))}
-                            </div>
-                        </td>
-
+        <div className='p-10'>
+            <table className="min-w-full divide-y divide-gray-200 outline outline-[1px] outline-slate-600 rounded-lg">
+                <thead className="bg-gray-50 dark:bg-transparent dark:text-slate-400 ">
+                    <tr>
+                        {/* <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-gray-500  dark:text-slate-400 uppercase tracking-wider">
+                            ID
+                        </th> */}
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">
+                            Student
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">
+                            Borrowed Verified
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">
+                            Returned Verified
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">
+                            Created Date
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">
+                            Books
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider">
+                            Action
+                        </th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody className="bg-transparent divide-y divide-slate-700">
+                    {bookCarts.map((bookCart) => (
+                        <tr key={bookCart.id}>
+                            {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-black dark:text-slate-300">{bookCart.id}</td> */}
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-black dark:text-slate-300">{bookCart.student}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-black dark:text-slate-300">{bookCart.is_borrowed_verified ? <CircleCheckBig className='text-emerald-500' /> : <CircleX className='text-red-400' />}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-black dark:text-slate-300">{bookCart.is_returned_verified ? <CircleCheckBig className='text-emerald-500' /> : <CircleX className='text-red-400' />}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-black dark:text-slate-300">{formatCreatedAt(bookCart.created_at)}</td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center">
+                                    {bookCart.books.map((bookId) => (
+                                        <>
+                                            <img
+                                                key={bookId}
+                                                src={bookTitlesWithImages[bookId]?.thumbnail_url}
+                                                alt={bookTitlesWithImages[bookId]?.title}
+                                                className="mr-2 w-12 h-12 object-cover"
+                                            />
+                                            {bookTitlesWithImages[bookId]?.title && bookTitlesWithImages[bookId].title.length > 15 ? `${bookTitlesWithImages[bookId].title.substring(0, 15)}...` : bookTitlesWithImages[bookId]?.title}
+
+
+                                        </>
+                                    ))}
+                                </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-black dark:text-slate-300">
+                                <Button onClick={() => handleDelete(bookCart.id)}>Delete</Button>
+                            </td>
+
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     );
 };
 

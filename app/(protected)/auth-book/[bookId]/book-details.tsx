@@ -10,11 +10,12 @@ import { fill } from '@cloudinary/url-gen/actions/resize';
 import copy from 'copy-to-clipboard';
 
 import SubjectTag from "@/components/books/subject-tag";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast"
 import { Button } from "@/components/ui/button";
+import BookStockUpdateForm from "@/components/auth-book/book-stock-update";
 
 interface Book {
     id: number;
@@ -34,9 +35,16 @@ interface Book {
 
 const appUrl = process.env.NEXT_PUBLIC_APP;
 
+type Role = "USER" | "ADMIN";
+
 const BookDetailsPage = () => {
-    const { toast } = useToast()
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+
+    const [userRole, setUserRole] = useState<Role>();
     const user = useCurrentUser();
+    const { toast } = useToast()
 
     const pathname = usePathname();
     const id = parseInt(pathname.split("/").pop()!);
@@ -49,6 +57,11 @@ const BookDetailsPage = () => {
     const bookUrl = `${appUrl}/auth-book/${id}`
 
     const cld = new Cloudinary({ cloud: { cloudName: 'dqpzvvd0v' } });
+
+    useEffect(() => {
+        setIsLoggedIn(!!user);
+        setUserRole(user?.role as Role);
+    }, [user]);
 
     const handleCopy = () => {
         copy(bookUrl);
@@ -171,37 +184,25 @@ const BookDetailsPage = () => {
                                     >
                                         {data.stock_quantity > 0 ? "Add To Book Cart" : "Out of stock"}
                                     </Button>
-                                    <Button
-                                        size="lg"
-                                        className="w-full bg-gradient-to-l from-blue-500 to-neutral-950 hover:bg-gradient-to-r text-white outline-2 shadow-md outline-black"
-                                        variant="outline"
-                                    >
-                                        Save to Book Collection
-                                    </Button>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="ml-5 space-y-3">
-                        <div className="flex items-center bg-white/70 border border-gray-500 dark:bg-black/70 p-1 px-2 rounded-md">
-                            <svg className="w-4 h-4 text-yellow-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                            </svg>
-                            <p className="ms-2 text-sm font-bold text-gray-900 dark:text-white">4.95</p>
-                            <span className="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
-                            <span className="text-sm font-medium text-gray-900 underline hover:no-underline dark:text-white">73 reviews</span>
-                        </div>
-                        <div>Views: {data.views}</div>
+
+                        <div className="text-lg text-slate-400/90 font-thin">Views: {data.views}</div>
+                        <div className="text-lg text-slate-400/90 font-thin">Stock Quantity: {data.stock_quantity}</div>
+
+
+                        {userRole === 'ADMIN' && (
+                            <BookStockUpdateForm id={data.id} quantity={data.stock_quantity} />
+                        )}
+
                     </div>
                 </div>
 
-                <div className="bg-emerald-500 mt-5">
-                    list of all users borrowed this
-                </div>
 
-                <div className="bg-emerald-500 mt-5">
-                    Tags related to this
-                </div>
             </div>
         </>
     );

@@ -46,15 +46,15 @@ export const columns = ({ bookTitlesWithImages }: ColumnsProps): ColumnDef<Task>
         enableSorting: false,
         enableHiding: false,
     },
-    {
-        accessorKey: "id",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Student ID" />
-        ),
-        cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
-        enableSorting: false,
-        enableHiding: false,
-    },
+    // {
+    //     accessorKey: "id",
+    //     header: ({ column }) => (
+    //         <DataTableColumnHeader column={column} title="Student ID" />
+    //     ),
+    //     cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
+    //     enableSorting: false,
+    //     enableHiding: false,
+    // },
     {
         accessorKey: "email",
         header: ({ column }) => (
@@ -78,6 +78,16 @@ export const columns = ({ bookTitlesWithImages }: ColumnsProps): ColumnDef<Task>
                 )}
             </div>
         )
+    },
+
+    {
+        accessorKey: "status",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Status" />
+        ),
+        cell: ({ row }) => <div className="w-[150px]">{row.getValue("status")}</div>,
+        enableSorting: false,
+        enableHiding: false,
     },
     {
         accessorKey: "books",
@@ -126,8 +136,6 @@ export const columns = ({ bookTitlesWithImages }: ColumnsProps): ColumnDef<Task>
                     <CircleX className="text-red-400" />
                 ) : (
                     <CircleCheckBig className="text-emerald-500" />
-
-
                 )}
             </div>
         )

@@ -5,7 +5,6 @@ import React, { useState, useEffect, MouseEvent } from 'react';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { useCurrentUser } from '@/hooks/use-current-user';
-import UserAvatarInfo from '@/components/user-avatar-info';
 import Footer from '@/components/footer';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -20,6 +19,7 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import UserAvatarInfo from '@/components/user-avatar-info';
 
 
 interface BookCart {
@@ -43,7 +43,7 @@ interface Book {
 
 const appUrl = process.env.NEXT_PUBLIC_APP;
 
-const ProfilePage: React.FC = () => {
+const ProfileBooksRead: React.FC = () => {
     const [bookCarts, setBookCarts] = useState<BookCart[]>([]);
     const [books, setBooks] = useState<Book[]>([]);
     const user = useCurrentUser();
@@ -57,15 +57,12 @@ const ProfilePage: React.FC = () => {
             try {
                 const response = await axios.get(`${appUrl}/api/bookcarts`);
                 const filteredBookCarts = response.data.filter((cart: BookCart) => cart.student === user?.email);
-                // Sort the filteredBookCarts array in descending order based on created_at property
-                filteredBookCarts.sort((a: BookCart, b: BookCart) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
                 setBookCarts(filteredBookCarts);
             } catch (error) {
                 setError('Error fetching bookcarts');
                 console.error('Error fetching bookcarts:', error);
             }
         };
-
 
         const fetchBooks = async () => {
             try {
@@ -124,7 +121,6 @@ const ProfilePage: React.FC = () => {
 
     return (
         <>
-
             {bookLoading && (
                 <div className="fixed inset-0 flex justify-center items-center bg-neutral-500/50 z-50">
                     <FidgetSpinner
@@ -142,6 +138,8 @@ const ProfilePage: React.FC = () => {
 
             <div className='container h-full static'>
                 <UserAvatarInfo />
+                {error && <div className="text-red-500 mb-4">{error}</div>}
+                {success && <div className="text-green-500 mb-4">{success}</div>}
                 <Breadcrumb className='mb-5'>
                     <BreadcrumbList>
 
@@ -156,43 +154,34 @@ const ProfilePage: React.FC = () => {
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                {error && <div className="text-red-500 mb-4">{error}</div>}
-                {success && <div className="text-green-500 mb-4">{success}</div>}
                 <div className="mb-10">
-                    <table className="mb-[200px] w-full border-collapse border border-gray-300">
-                        <thead className="bg-transparent">
-                            <tr>
-                                <th className="border border-gray-300 dark:text-white px-4 py-2">ID</th>
-                                <th className="border border-gray-300 dark:text-white px-4 py-2">Student</th>
-                                <th className="border border-gray-300 dark:text-white px-4 py-2">Books</th>
-                                {!bookCarts.some((cart) => cart.set_to_return) && (
-                                    <th className="border border-gray-300 dark:text-white px-4 py-2">Actions</th>
-                                )}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {bookCarts.map((cart) => (
-                                <tr key={cart.id} className="bg-transparent">
-                                    <td className="border border-gray-300 dark:text-white px-4 py-2">{cart.id}</td>
-                                    <td className="border border-gray-300 dark:text-white px-4 py-2">{cart.student}</td>
-                                    <td className="border border-gray-300 dark:text-white px-4 py-2">
-                                        {cart.books.map((bookId) => getBookTitle(bookId)).join(', ')}
-                                    </td>
-                                    {!cart.set_to_return && cart.is_borrowed_verified && (
-                                        <td className="border border-gray-300 px-4 py-2">
-                                            <Button onClick={() => handleReturn(cart.id)}>Return</Button>
-                                        </td>
-                                    )}
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <div className="space-y-3 grid grid-cols-1 xxs:grid-cols-2 xs:grid-cols-2 md:grid-cols-5 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
+                        {bookCarts.map((cart: BookCart) => (
+                            <div key={cart.id} className="bg-transparent">
+                                {cart.books.map((bookId) => (
+                                    <div key={bookId} className="cursor-pointer shadow-md dark:shadow-none bg-white dark:bg-transparent rounded-md p-0" onClick={(e) => handleViewBook(e, bookId)}>
+                                        <div className="dark:text-slate-300 px-4 py-2">
+                                            {getBookTitle(bookId)}
+                                        </div>
+                                        <div className="px-4 py-2">
+                                            <Image
+                                                src={getBookImage(bookId)}
+                                                width={136}
+                                                height={56}
+                                                alt="book_image"
+                                                className="rounded-md w-auto xxs:size-38 md:w-48 h-56 object-cover transition-all hover:scale-105"
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
                 </div>
-
                 <div className='h-1'></div>
             </div>
         </>
     );
 };
 
-export default ProfilePage;
+export default ProfileBooksRead;

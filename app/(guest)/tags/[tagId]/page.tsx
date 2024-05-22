@@ -112,7 +112,7 @@ const TagDetails = () => {
 
                         {subject.books.length > 0 ? (
                             <ul className="space-y-3 grid grid-cols-1 xxs:grid-cols-2 xs:grid-cols-2 md:grid-cols-5 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
-                                {subject.books.map((book) => (
+                                {subject.books.map((book: Book) => (
                                     <li key={book.id}>
                                         <div
                                             onClick={(e) => handleViewBook(e, book.id)}

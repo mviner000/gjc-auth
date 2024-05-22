@@ -56,7 +56,7 @@ export default function AuthorLayout({ children }: BookLayoutProps) {
                   </div>
                 </div>
 
-                <SideBarRight playlists={playlists} className="hidden lg:block" />
+                <SideBarRight className="hidden lg:block" />
               </div>
             </div>
 
