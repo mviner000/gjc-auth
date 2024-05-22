@@ -49,8 +49,8 @@ const ProfilePage: React.FC = () => {
 
         const fetchBooks = async () => {
             try {
-                const response = await axios.get(`${appUrl}/api/books`);
-                setBooks(response.data.results);
+                const response = await axios.get(`${appUrl}/api/books/all`);
+                setBooks(response.data);
             } catch (error) {
                 setError('Error fetching books');
                 console.error('Error fetching books:', error);

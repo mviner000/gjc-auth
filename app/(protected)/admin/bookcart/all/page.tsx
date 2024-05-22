@@ -51,10 +51,12 @@ const BookCartTable: React.FC = () => {
 
                 const bookTitlesWithImagesMap: Record<number, { title: string; thumbnail_url: string }> = {};
 
-                const booksResponse = await axios.get<{ results: Book[] }>(`${appUrl}/api/books/`);
-                const books = booksResponse.data.results;
+                // Instead of using booksResponse.data.results, directly use booksResponse.data
+                const booksResponse = await axios.get<Book[]>(`${appUrl}/api/books/all`);
+                const books = booksResponse.data; // Accessing the response data directly
 
-                books.forEach((book) => {
+                // Adjust the logic to handle the array directly
+                books.forEach((book: Book) => { // Annotate the type of 'book' parameter explicitly
                     if (uniqueBookIds.includes(book.id)) {
                         bookTitlesWithImagesMap[book.id] = {
                             title: book.title,
@@ -62,6 +64,8 @@ const BookCartTable: React.FC = () => {
                         };
                     }
                 });
+
+
 
                 setBookCarts(bookCarts);
                 setBookTitlesWithImages(bookTitlesWithImagesMap);

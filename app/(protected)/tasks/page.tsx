@@ -10,22 +10,9 @@ import { columns } from "@/components/tasks/columns";
 import { DataTable } from "@/components/tasks/data-table";
 import { UserNav } from "@/components/tasks/user-nav";
 import Footer from "@/components/footer";
+import { Book } from "lucide-react";
 
 dayjs.extend(relativeTime);
-
-interface Book {
-    id: number;
-    title: string;
-    author_code: number;
-    author_name: string;
-    subject1_code: number;
-    subject_name: string;
-    thumbnail_url: string;
-    publisher: string;
-    pubplace: string;
-    pagination: string;
-    edition: string | null;
-}
 
 interface BookCart {
     id: number;
@@ -36,8 +23,10 @@ interface BookCart {
     is_returned_verified: boolean | null;
 }
 
-interface Task {
+interface Book {
     id: number;
+    title: string;
+    thumbnail_url: string;
     books: number[];
     status: string;
     label: string;
@@ -53,7 +42,7 @@ const appUrl = process.env.NEXT_PUBLIC_APP;
 
 
 const TaskPage = () => {
-    const [tasks, setTasks] = useState<Task[]>([]);
+    const [books, setBooks] = useState<Book[]>([]);
     const [bookTitlesWithImages, setBookTitlesWithImages] = useState<Record<number, { title: string; thumbnail_url: string }>>({});
 
     useEffect(() => {
@@ -67,8 +56,8 @@ const TaskPage = () => {
 
                 const bookTitlesWithImagesMap: Record<number, { title: string; thumbnail_url: string }> = {};
 
-                const booksResponse = await axios.get<{ results: Book[] }>(`${appUrl}/api/books/`);
-                const books = booksResponse.data.results;
+                const booksResponse = await axios.get<Book[]>(`${appUrl}/api/books/all`);
+                const books = booksResponse.data; // Accessing the response data directly
 
                 books.forEach(book => {
                     if (uniqueBookIds.includes(book.id)) {
@@ -79,19 +68,21 @@ const TaskPage = () => {
                     }
                 });
 
-                const transformedTasks: Task[] = bookCarts.map(cart => ({
+                const transformedBooks: Book[] = bookCarts.map(cart => ({
                     id: cart.id,
+                    title: '', // or some default title
+                    thumbnail_url: '', // or some default thumbnail_url
                     books: cart.books,
-                    status: "pending", // or any other logic to determine status
-                    label: "Task Label", // or any other logic to determine label
-                    email: cart.student, // Assuming `student` field is the email
+                    status: "pending",
+                    label: "Task Label",
+                    email: cart.student,
                     is_borrowed_verified: cart.is_borrowed_verified ?? false,
                     is_returned_verified: cart.is_returned_verified ?? false,
-                    set_to_return: false, // or any other logic to determine set_to_return
+                    set_to_return: false,
                     created_at: cart.created_at,
                 }));
 
-                setTasks(transformedTasks);
+                setBooks(transformedBooks);
                 setBookTitlesWithImages(bookTitlesWithImagesMap);
             } catch (error) {
                 console.error('Error fetching book carts and related books:', error);
@@ -132,7 +123,7 @@ const TaskPage = () => {
                             <UserNav />
                         </div>
                     </div>
-                    <DataTable data={tasks} columns={columns} />
+                    <DataTable data={books} columns={columns({ bookTitlesWithImages })} />
                 </div>
                 <div className="h-10"></div>
             </div>

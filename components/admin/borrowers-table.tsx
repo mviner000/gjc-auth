@@ -49,8 +49,8 @@ const BorrowersTable = () => {
 
       const bookTitlesWithImagesMap: Record<number, { title: string; thumbnail_url: string; stock_quantity: number }> = {};
       try {
-        const response = await axios.get(`${appUrl}/api/books/`);
-        const books = response.data.results as Book[];
+        const response = await axios.get(`${appUrl}/api/books/all`);
+        const books = response.data as Book[];
         books.forEach((book) => {
           if (uniqueBookIds.includes(book.id)) {
             bookTitlesWithImagesMap[book.id] = {

@@ -10,7 +10,18 @@ import { Task } from "@/components/tasks/data/schema"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { DataTableRowActions } from "./data-table-row-actions"
 import Image from "next/image"
-export const columns: ColumnDef<Task>[] = [
+import { CircleCheckBig, CircleX } from "lucide-react"
+
+interface BookTitleWithImage {
+    title: string;
+    thumbnail_url: string;
+}
+
+interface ColumnsProps {
+    bookTitlesWithImages: Record<number, BookTitleWithImage>;
+}
+
+export const columns = ({ bookTitlesWithImages }: ColumnsProps): ColumnDef<Task>[] => [
     {
         id: "select",
         header: ({ table }) => (
@@ -61,9 +72,9 @@ export const columns: ColumnDef<Task>[] = [
         cell: ({ row }) => (
             <div className="w-[120px]">
                 {row.getValue("is_borrowed_verified") ? (
-                    <span>true</span>
+                    <CircleCheckBig className="text-emerald-500" />
                 ) : (
-                    <span>false</span>
+                    <CircleX className="text-red-400" />
                 )}
             </div>
         )
@@ -73,25 +84,55 @@ export const columns: ColumnDef<Task>[] = [
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Books" />
         ),
-        cell: ({ row }) => <div className="w-[150px]">{row.getValue("books")}</div>,
+        cell: ({ row }) => {
+            const books = row.getValue("books") as number[]; // Type assertion
+
+            return (
+                <div className="flex space-x-2">
+                    {books.map((bookId) => (
+                        <div key={bookId} className="w-[250px]">
+                            <div className="flex gap-4">
+                                <div className="">
+                                    <Image
+                                        width={150}
+                                        height={220}
+                                        src={bookTitlesWithImages[bookId]?.thumbnail_url}
+                                        alt="book image"
+
+                                        className="rounded-md"
+                                    />
+                                </div>
+                                <p className="text-sm font-medium">
+                                    {bookTitlesWithImages[bookId]?.title}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            );
+        },
         enableSorting: false,
         enableHiding: false,
     },
+
     {
         accessorKey: "is_return_verified",
         header: ({ column }) => (
             <DataTableColumnHeader column={column} title="Is Return Verified" />
         ),
         cell: ({ row }) => (
-            <div className="w-[120px]">
+            <div className="w-[120px] text-center justify-center">
                 {row.getValue("is_return_verified") ? (
-                    <span>true</span>
+                    <CircleX className="text-red-400" />
                 ) : (
-                    <span>false</span>
+                    <CircleCheckBig className="text-emerald-500" />
+
+
                 )}
             </div>
         )
     },
+
     {
         accessorKey: "status",
         header: ({ column }) => (

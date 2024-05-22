@@ -60,10 +60,10 @@ const UserAvatarInfo = () => {
 
         const fetchBookData = async () => {
             try {
-                const response = await axios.get<any>('http://127.0.0.1:8000/api/books');
-                if (response.data && Array.isArray(response.data.results)) {
+                const response = await axios.get<any>('http://127.0.0.1:8000/api/books/all');
+                if (response.data && Array.isArray(response.data)) {
                     const bookDataMap: { [key: number]: Book } = {};
-                    response.data.results.forEach((book: Book) => {
+                    response.data.forEach((book: Book) => {
                         bookDataMap[book.id] = book;
                     });
                     setBookData(bookDataMap);
