@@ -38,7 +38,7 @@ const SearchBar: React.FC<SearchProps> = ({ onSearch }) => {
 
     const searchBooks = async () => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/books/search/?q=${searchQuery}`);
+            const response = await axios.get(`http://127.0.0.1:8000/api/books/search/?query=${searchQuery}`);
             onSearch(response.data);
         } catch (error) {
             console.error("Error fetching search results:", error);
