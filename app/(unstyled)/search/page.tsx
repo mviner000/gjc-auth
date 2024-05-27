@@ -11,6 +11,8 @@ interface Book {
     image_url: string; // Update the field name to match the backend
 }
 
+const appUrl = process.env.NEXT_PUBLIC_APP;
+
 const SearchBooks: React.FC = () => {
     const [books, setBooks] = useState<Book[]>([]);
     const [query, setQuery] = useState<string>('');
@@ -27,7 +29,7 @@ const SearchBooks: React.FC = () => {
 
     const searchBooks = async () => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/books/search/?query=${query}`);
+            const response = await axios.get(`${appUrl}/api/books/search/?query=${query}`);
             setBooks(response.data.results);
         } catch (error) {
             console.error('Error searching books:', error);
