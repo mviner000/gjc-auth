@@ -11,20 +11,20 @@ export async function GET(request: Request): Promise<Response> {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get("q");
 
+  async function fetchBooks(query: string | null): Promise<Book[]> {
+    const books: Book[] = await getAllBooks();
+
+    if (query) {
+      const lowercasedQuery = query.toLowerCase();
+      return books.filter((book) =>
+        book.title?.toLowerCase().includes(lowercasedQuery)
+      );
+    }
+
+    return [];
+  }
+
   const books = await fetchBooks(query);
 
   return NextResponse.json({ data: books });
 }
-
-export const fetchBooks = async (query: string | null): Promise<Book[]> => {
-  const books: Book[] = await getAllBooks();
-
-  if (query) {
-    const lowercasedQuery = query.toLowerCase();
-    return books.filter((book) =>
-      book.title?.toLowerCase().includes(lowercasedQuery)
-    );
-  }
-
-  return [];
-};
