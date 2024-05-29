@@ -2,17 +2,17 @@
 
 import { useRef, useState, useEffect } from 'react';
 import axios, { AxiosResponse } from 'axios';
+import { Book } from '@/utils/types/books';
+import { FidgetSpinner } from 'react-loader-spinner';
+import Link from 'next/link';
+
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
-import { playlists } from "@/actions/playlists"
-
 import BookCard from '@/components/books/book-card';
 import { Sidebar } from '@/components/sidebar';
-import { FidgetSpinner } from 'react-loader-spinner';
 import BreadcrumbComponent from '@/components/breadcrumb';
 import CartSheet from '@/components/cart-sheet';
 import PaginationControls from '@/components/pagination-controls';
-import { TopTags } from '@/components/top-tags';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,21 +24,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import Link from 'next/link';
 import { SideBarRight } from '@/components/sidebar-right';
-
-interface Book {
-  id: string;
-  title: string;
-  author_name: string;
-  subject_name: string;
-  thumbnail_url: string;
-  publisher: string;
-  pubplace: string;
-  pagination: string;
-  edition: string;
-}
+import { playlists } from "@/actions/playlists"
 
 const appUrl = process.env.NEXT_PUBLIC_APP;
 
@@ -51,7 +38,6 @@ const BookPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [bookTitles, setBookTitles] = useState<string[]>([]);
-  const [inputPage, setInputPage] = useState<string>('');
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [totalBooksCount, setTotalBooksCount] = useState<number>(0);
 
@@ -64,11 +50,10 @@ const BookPage: React.FC = () => {
   useEffect(() => {
     if (!hasMounted.current) {
       hasMounted.current = true;
-      // Code that should run only once when the component mounts
       const storedTitlesJSON = localStorage.getItem('bookTitles');
       if (storedTitlesJSON) {
         try {
-          const storedTitles = JSON.parse(storedTitlesJSON.trim()); // Trim whitespace characters
+          const storedTitles = JSON.parse(storedTitlesJSON.trim());
           setBookTitles(storedTitles);
           setBookTitlesCount(storedTitles.length);
         } catch (error) {
@@ -104,11 +89,11 @@ const BookPage: React.FC = () => {
       setTotalBooksCount(count);
       setBooks(results);
       setTotalPages(totalPagesCount);
-      setLoading(false); // Set loading state to false after fetching
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching books:', error);
     } finally {
-      setLoading(false); // Always set loading state to false after fetching
+      setLoading(false);
     }
   };
 
@@ -118,7 +103,6 @@ const BookPage: React.FC = () => {
 
   const handleAddToCart = (title: string, thumbnailUrl: string) => {
     if (bookTitles.includes(title)) {
-      // Display a toast notification for duplicate entry
       toast({
         title: "Warning!",
         variant: "destructive",

@@ -19,7 +19,6 @@ const appUrl = process.env.NEXT_PUBLIC_APP;
 let modifiedAppUrl = '';
 
 if (appUrl) {
-  // Remove trailing slash if it exists
   modifiedAppUrl = appUrl.replace(/\/$/, '');
 }
 

@@ -1,13 +1,10 @@
 import { Metadata } from "next"
-import Image from "next/image"
 
-import { Separator } from "@/components/ui/separator"
 import Footer from "@/components/footer"
-import NavMenu from "@/components/nav-menu"
 
 export const metadata: Metadata = {
   title: "GJCLibrary - Tags",
-  description: "Advanced form example using react-hook-form and Zod.",
+  description: "Explore GJCLibrary's extensive tag system to find books and authors quickly and easily.",
 }
 
 const sidebarNavItems = [

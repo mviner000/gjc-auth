@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 import React from 'react'
 import Simeon from './simeon'
-import { StaticSidebar } from '@/components/static-sidebar'
 import Footer from '@/components/footer'
 
 export const metadata: Metadata = {
@@ -13,12 +12,8 @@ export const metadata: Metadata = {
 const AboutPage = () => {
     return (
         <>
-
             <div className="col-span-3 lg:col-span-4 lg:border-l p-10">
                 <div className='grid grid-cols-1 md:grid-cols-2 mb-8'>
-
-
-
                     <div className="text-black dark:text-white text-left mt-7 ml-12 mr-12">
                         <p className="font-medium text-6xl mb-7">About</p>
                         <div className="max-w-4xl mx-auto rounded-lg mb-0.5">

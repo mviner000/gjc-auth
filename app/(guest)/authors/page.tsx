@@ -1,27 +1,24 @@
 // page.tsx
 "use client";
 
-import React, { useState, useEffect, MouseEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Author, Book } from './types';
+import { FidgetSpinner } from 'react-loader-spinner';
+
+import { Author } from '@/utils/types/authors';
+
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast"
-import { FidgetSpinner } from 'react-loader-spinner';
-import { Sidebar } from '@/components/sidebar';
 
-import { playlists } from "@/actions/playlists"
 import BreadcrumbComponent from '@/components/breadcrumb';
 import PaginationControls from '@/components/pagination-controls';
 import CartSheet from '@/components/cart-sheet';
 import AuthorCard from '@/components/authors/author-card';
-import { useRouter } from 'next/navigation';
-import { index } from 'drizzle-orm/mysql-core';
+
 
 const appUrl = process.env.NEXT_PUBLIC_APP;
 
 const AuthorsPage: React.FC = () => {
-
-  const router = useRouter();
   const { toast } = useToast()
   const [totalPages, setTotalPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -30,7 +27,6 @@ const AuthorsPage: React.FC = () => {
   const [bookTitlesCount, setBookTitlesCount] = useState<number>(0);
   const [bookTitles, setBookTitles] = useState<string[]>([]);
   const [totalAuthorsCount, setTotalAuthorsCount] = useState<number>(0);
-  const [bookLoading, setBookLoading] = useState(false);
 
   useEffect(() => {
     fetchAuthors(currentPage);

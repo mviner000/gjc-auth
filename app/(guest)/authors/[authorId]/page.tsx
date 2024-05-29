@@ -1,33 +1,15 @@
 "use client";
 
-import { usePathname } from 'next/navigation';
-import axios from 'axios';
 import React, { useState, useEffect, MouseEvent } from 'react';
-import { Sidebar } from '@/components/sidebar';
-import { playlists } from '@/actions/playlists';
+import axios from 'axios';
+import { usePathname, useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { FidgetSpinner } from 'react-loader-spinner';
+
+import { Author } from '@/utils/types/authors';
+
 import BreadcrumbComponent from '@/components/breadcrumb';
 import CartSheet from '@/components/cart-sheet';
-import Image from 'next/image';
-import { SideBarRight } from '@/components/sidebar-right';
-
-import { useRouter } from 'next/navigation';
-import { FidgetSpinner } from 'react-loader-spinner';
-import { index } from 'drizzle-orm/mysql-core';
-
-interface author {
-    id: number;
-    author_name: string;
-    temp_id: number | null;
-    author_code: string;
-    books: Book[];
-}
-
-interface Book {
-    id: number;
-    title: string;
-    author_name: string;
-    thumbnail_url: string;
-}
 
 
 const appUrl = process.env.NEXT_PUBLIC_APP;
@@ -35,7 +17,7 @@ const appUrl = process.env.NEXT_PUBLIC_APP;
 const AuthorDetails = () => {
     const pathname = usePathname();
     const id = parseInt(pathname.split("/").pop()!);
-    const [author, setauthor] = useState<author | null>(null);
+    const [author, setauthor] = useState<Author | null>(null);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [bookTitles, setBookTitles] = useState<string[]>([]);
     const [bookTitlesCount, setBookTitlesCount] = useState<number>(0);

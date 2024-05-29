@@ -1,9 +1,5 @@
-import Footer from '@/components/footer'
-import { StaticSidebar } from '@/components/static-sidebar'
-
-import { Metadata } from 'next'
 import React from 'react'
-
+import { Metadata } from 'next'
 
 export const metadata: Metadata = {
     title: "GJCLibrary - FAQs",

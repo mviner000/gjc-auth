@@ -1,33 +1,21 @@
 "use client";
 
+import React, { useState, useEffect, MouseEvent } from 'react';
 import { usePathname } from 'next/navigation';
 import axios from 'axios';
-import React, { useState, useEffect, MouseEvent } from 'react';
-import { Sidebar } from '@/components/sidebar';
-import { playlists } from '@/actions/playlists';
-import BreadcrumbComponent from '@/components/breadcrumb';
-import CartSheet from '@/components/cart-sheet';
 import Image from 'next/image';
-import { SideBarRight } from '@/components/sidebar-right';
-
 import { useRouter } from 'next/navigation';
 import { FidgetSpinner } from 'react-loader-spinner';
-import { index } from 'drizzle-orm/mysql-core';
 
-interface Subject {
-    id: number;
-    subject_name: string;
-    temp_id: number | null;
-    subject_code: string;
-    books: Book[];
-}
+import { Book } from '@/utils/types/subjects';
+import { Subject } from '@/utils/types/subjects';
 
-interface Book {
-    id: number;
-    title: string;
-    author_name: string;
-    thumbnail_url: string;
-}
+import { Sidebar } from '@/components/sidebar';
+import BreadcrumbComponent from '@/components/breadcrumb';
+import CartSheet from '@/components/cart-sheet';
+import { SideBarRight } from '@/components/sidebar-right';
+
+import { playlists } from '@/actions/playlists';
 
 
 const appUrl = process.env.NEXT_PUBLIC_APP;

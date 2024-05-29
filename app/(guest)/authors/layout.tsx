@@ -1,21 +1,13 @@
 import { Metadata } from "next"
 
-import { Separator } from "@/components/ui/separator"
-import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
-import NavMenu from "@/components/nav-menu"
-
 import { playlists } from "@/actions/playlists"
-import BreadcrumbComponent from '@/components/breadcrumb';
-import PaginationControls from '@/components/pagination-controls';
-import CartSheet from '@/components/cart-sheet';
-import AuthorCard from '@/components/authors/author-card';
 import { SideBarRight } from '@/components/sidebar-right';
 import { Sidebar } from "@/components/sidebar"
 
 export const metadata: Metadata = {
   title: "GJCLibrary - Authors",
-  description: "Advanced form example using react-hook-form and Zod.",
+  description: "Explore the diverse collection of authors at GJCLibrary. Discover the unique contributions each author has made to the literary world.",
 }
 
 const sidebarNavItems = [
@@ -55,11 +47,9 @@ export default function AuthorLayout({ children }: BookLayoutProps) {
                     {children}
                   </div>
                 </div>
-
                 <SideBarRight className="hidden lg:block" />
               </div>
             </div>
-
           </div>
         </div>
       </div>
