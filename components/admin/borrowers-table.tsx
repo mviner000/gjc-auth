@@ -3,25 +3,16 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ColumnDef } from '@tanstack/react-table';
-import { CircleCheck, CircleX } from 'lucide-react';
-import { DataTable } from './data-table';
 import dayjs from 'dayjs';
+import { CircleCheck, CircleX } from 'lucide-react';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
-interface Book {
-  id: number;
-  title: string;
-  thumbnail_url: string;
-  stock_quantity: number;
-}
+import { Book } from '@/utils/types/authors';
+import { BookCart } from '@/utils/types/bookcart';
 
-interface BookCart {
-  id: number;
-  books: number[];
-  student: string;
-  is_borrowed_verified: boolean;
-  created_at: Date;
-}
+import { DataTable } from './data-table';
+
+
 
 const appUrl = process.env.NEXT_PUBLIC_APP;
 
@@ -52,7 +43,7 @@ const BorrowersTable = () => {
 
       const bookTitlesWithImagesMap: Record<number, { title: string; thumbnail_url: string; stock_quantity: number }> = {};
       try {
-        const response = await axios.get(`${appUrl}/api/books/all`);
+        const response = await axios.get(`/api/books/all`);
         const books = response.data as Book[];
         books.forEach((book) => {
           if (uniqueBookIds.includes(book.id)) {

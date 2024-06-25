@@ -3,32 +3,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { CircleCheckBig, CircleX } from 'lucide-react';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+import { Book } from '@/utils/types/authors';
+import { BookCart } from '@/utils/types/bookcart';
+
 import { Button } from '@/components/ui/button';
 
-interface Book {
-    id: number;
-    title: string;
-    author_code: number;
-    author_name: string;
-    subject1_code: number;
-    subject_name: string;
-    thumbnail_url: string;
-    publisher: string;
-    pubplace: string;
-    pagination: string;
-    edition: string | null;
-}
-
-interface BookCart {
-    id: number;
-    student: string;
-    books: number[];
-    created_at: string;
-    is_borrowed_verified: boolean | null;
-    is_returned_verified: boolean | null;
-}
 
 // Extend dayjs with the relativeTime plugin
 dayjs.extend(relativeTime);
@@ -57,7 +39,7 @@ const BookCartTable: React.FC = () => {
                 const bookTitlesWithImagesMap: Record<number, { title: string; thumbnail_url: string }> = {};
 
                 // Instead of using booksResponse.data.results, directly use booksResponse.data
-                const booksResponse = await axios.get<Book[]>(`${appUrl}/api/books/all`);
+                const booksResponse = await axios.get<Book[]>(`/api/books/all`);
                 const books = booksResponse.data; // Accessing the response data directly
 
                 // Adjust the logic to handle the array directly

@@ -3,7 +3,6 @@
 import { useCurrentRole } from "@/hooks/use-current-role";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useEffect, useState } from "react";
-import { roleEnum } from "@/drizzle/schema"; // Import the roleEnum from your schema
 import {
     Breadcrumb,
     BreadcrumbEllipsis,
@@ -13,13 +12,6 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
 
 type Role = "USER" | "ADMIN";
 

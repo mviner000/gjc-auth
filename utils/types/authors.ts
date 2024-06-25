@@ -18,6 +18,7 @@ export interface AuthorsPageState {
 export interface Book {
   id: number;
   title: string;
+  author_code: number;
   author_name: string;
   subject_name: string;
   thumbnail_url: string;
@@ -25,6 +26,7 @@ export interface Book {
   pubplace: string;
   pagination: string;
   edition: string;
+  stock_quantity: number;
 }
 
 export interface Subject {

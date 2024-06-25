@@ -9,28 +9,15 @@ import { AdvancedImage } from '@cloudinary/react';
 import { fill } from '@cloudinary/url-gen/actions/resize';
 import copy from 'copy-to-clipboard';
 
-import SubjectTag from "@/components/books/subject-tag";
 import { useEffect, useState } from "react";
 import { useCurrentUser } from "@/hooks/use-current-user";
+
+import SubjectTag from "@/components/books/subject-tag";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast"
 import { Button } from "@/components/ui/button";
 import BookStockUpdateForm from "@/components/auth-book/book-stock-update";
 
-interface Book {
-    id: number;
-    title: string;
-    author_name: string;
-    thumbnail_url: string;
-    subject_name: string;
-    publisher: string;
-    pubplace: string;
-    pagination: string;
-    edition: string;
-    copyright: string;
-    views: string;
-    stock_quantity: string;
-}
 
 
 const appUrl = process.env.NEXT_PUBLIC_APP;

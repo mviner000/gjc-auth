@@ -2,22 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+
+import { Book } from '@/utils/types/authors';
+import { BookCart } from '@/utils/types/bookcart';
+
 import { Button } from '@/components/ui/button';
 
-type Book = {
-  id: number;
-  title: string;
-  thumbnail_url: string;
-  // add other properties if needed
-};
-
-interface BookCart {
-  id: number;
-  books: number[];
-  student: string;
-  is_returned_verified: boolean;
-  set_to_return: boolean;
-}
 
 const appUrl = process.env.NEXT_PUBLIC_APP;
 
@@ -31,7 +21,7 @@ const AcceptReturnersPage: React.FC = () => {
   useEffect(() => {
     const fetchBookData = async () => {
       try {
-        const response = await axios.get<Book[]>(`${appUrl}/api/books/all`);
+        const response = await axios.get<Book[]>(`/api/books/all`);
         const bookDataMap = response.data.reduce((acc: Record<number, Book>, book: Book) => {
           acc[book.id] = book;
           return acc;
@@ -48,7 +38,7 @@ const AcceptReturnersPage: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get<BookCart[]>('http://127.0.0.1:8000/api/bookcarts');
+        const response = await axios.get<BookCart[]>(`${appUrl}/api/bookcarts`);
         const filtered = response.data.filter((item: BookCart) => {
           return item.set_to_return === true && item.is_returned_verified === is_returned_verified;
         });

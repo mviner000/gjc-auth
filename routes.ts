@@ -10,6 +10,7 @@ export const publicRoutes = [
   "/books",
   "/tags",
   "/posts",
+  "/practice",
   "/not-allowed",
   "/static/about",
   "/static/faqs",

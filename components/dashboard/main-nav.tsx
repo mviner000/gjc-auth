@@ -18,13 +18,13 @@ export function MainNav({
         Overview
       </Link>
       <Link
-        href="students/dashboard/borrow"
+        href="admin/accept/borrow"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Borrowed Books
       </Link>
       <Link
-        href="students/dashboard/return"
+        href="admin/accept/return"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Returned

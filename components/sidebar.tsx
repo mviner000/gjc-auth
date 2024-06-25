@@ -66,7 +66,6 @@ export function Sidebar({ className, playlists }: SidebarProps) {
 
       <div className="space-y-3 pr-2">
 
-        <div>Searchbox</div>
 
         <div className="space-y-5 ">
           <div className="justify-center text-left">

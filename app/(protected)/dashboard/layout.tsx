@@ -1,29 +1,4 @@
-import { Metadata } from "next"
-import Image from "next/image"
-
-import { Button } from "@/components/ui/button"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
-import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-} from "@/components/ui/tabs"
-import { CalendarDateRangePicker } from "@/components/dashboard/date-range-picker"
 import { MainNav } from "@/components/dashboard/main-nav"
-import { Overview } from "@/components/dashboard/overview"
-import { RecentSales } from "@/components/dashboard/recent-sales"
-import { Search } from "@/components/dashboard/search"
-import TeamSwitcher from "@/components/dashboard/team-switcher"
-import { UserNav } from "@/components/dashboard/user-nav"
-import UserImage from "@/components/user-image"
-import { BookAudio } from "lucide-react"
 
 interface DashboardLayoutProps {
     children: React.ReactNode;

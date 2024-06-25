@@ -3,43 +3,24 @@
 
 import React, { useState, useEffect, MouseEvent } from 'react';
 import axios from 'axios';
-import { Button } from '@/components/ui/button';
-import { useCurrentUser } from '@/hooks/use-current-user';
-import UserAvatarInfo from '@/components/user-avatar-info';
-import Footer from '@/components/footer';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { FidgetSpinner } from 'react-loader-spinner';
 
+import { useCurrentUser } from '@/hooks/use-current-user';
+
+import { BookCart } from '@/utils/types/bookcart';
+import { Book } from '@/utils/types/authors';
+
+import { Button } from '@/components/ui/button';
+import UserAvatarInfo from '@/components/user-avatar-info';
 import {
     Breadcrumb,
-    BreadcrumbEllipsis,
     BreadcrumbItem,
     BreadcrumbLink,
     BreadcrumbList,
-    BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 
-
-interface BookCart {
-    id: number;
-    books: number[];
-    student: string;
-    is_borrowed_verified: boolean;
-    borrowed_verified_by: string | null;
-    is_returned_verified: boolean;
-    set_to_return: boolean;
-    returned_verified_by: string | null;
-    created_at: string;
-    updated_at: string;
-}
-
-interface Book {
-    id: number;
-    title: string;
-    thumbnail_url: string;
-}
 
 const appUrl = process.env.NEXT_PUBLIC_APP;
 
