@@ -33,6 +33,7 @@ import { Input } from "@/components/ui/input";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { Separator } from "@/components/ui/separator";
+import error from "next/error";
 
 type Role = "USER" | "ADMIN";
 
@@ -65,7 +66,7 @@ const SettingsPage = () => {
       isTwoFactorEnabled: user?.isTwoFactorEnabled || undefined,
       name: user?.name || undefined,
       email: user?.email || undefined,
-      student_id: user?.studentId || undefined,
+      student_id: user?.student_id || undefined,
       first_name: user?.first_name || undefined,
       last_name: user?.last_name || undefined,
       role: defaultRole,
@@ -184,7 +185,7 @@ const SettingsPage = () => {
             </>
           )}
 
-          {/* {isLoggedIn && (
+          {isLoggedIn && (
             <>
               {userRole === 'ADMIN' && (
                 <FormField
@@ -216,7 +217,7 @@ const SettingsPage = () => {
                 </>
               )}
             </>
-          )} */}
+          )}
 
 
           <FormError message={error} />

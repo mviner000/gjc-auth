@@ -11,6 +11,7 @@ const Footer = () => {
                             <ul>
                                 <li className="inline-block">
                                     <Image
+                                        priority={true}
                                         className="inline-block ml-[-4px] mr-1 mt-[-7px]"
                                         width={22}
                                         height={22}

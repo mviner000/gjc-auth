@@ -5,6 +5,7 @@
  */
 export const publicRoutes = [
   "/",
+  "/unli-book",
   "/auth/new-verification",
   "/authors",
   "/books",

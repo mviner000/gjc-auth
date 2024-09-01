@@ -8,4 +8,5 @@ export interface Book {
   pubplace: string;
   pagination: string;
   edition: string;
+  copyright: string;
 }

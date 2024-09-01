@@ -35,11 +35,12 @@ const HomeWrapper = () => {
 
     return (
         <div>
-            {isLoggedIn ? (
+            {/* {isLoggedIn ? (
                 <UnliBook />
             ) : (
                 <LandingPage />
-            )}
+            )} */}
+            <UnliBook />
         </div>
     );
 }

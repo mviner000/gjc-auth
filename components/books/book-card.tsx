@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import AuthorTag from '@/components/books/author-tag';
 import SubjectTag from '@/components/books/subject-tag';
+import { Copyright } from 'lucide-react';
 
 interface BookCardProps {
   book: {
@@ -16,12 +17,16 @@ interface BookCardProps {
     pubplace: string;
     pagination: string;
     edition: string;
+    copyright: string;
   };
   onAddToCart: (title: string, thumbnailUrl: string) => void;
   setBookTitlesCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
+
 const BookCard: React.FC<BookCardProps> = ({ book, onAddToCart, setBookTitlesCount }) => {
+  const copyrightYear = book.copyright?.match(/\d+/g)?.join('');
+
   return (
     <>
       <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 md:space-y-1">
@@ -47,6 +52,37 @@ const BookCard: React.FC<BookCardProps> = ({ book, onAddToCart, setBookTitlesCou
           <span className="text-sm"><span className='font-bold'>Pagination: </span>{book.pagination}</span>
           <span className="text-sm"><span className='font-bold'>Edition: </span>{book.edition}</span>
         </div>
+        {book.copyright && (
+          <p className="text-sm dark:text-slate-300">
+            <div className='flex gap-2'>
+              <Copyright size={18} />
+
+              {book.copyright}
+
+              {copyrightYear ? (
+                isNaN(parseInt(copyrightYear)) ? (
+                  <span className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-400">
+                    Invalid Copyright
+                  </span>
+                ) : parseInt(copyrightYear) <= 2014 ? (
+                  <span className="bg-red-100/50 text-red-800/50 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                    Phased Out
+                  </span>
+                ) : (
+                  <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
+                    Available
+                  </span>
+                )
+              ) : (
+                <span className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-400">
+                  Invalid Copyright
+                </span>
+              )}
+            </div>
+
+          </p>
+        )}
+
       </div>
       <div className='space-x-2 my-3'>
         <Button
@@ -54,7 +90,8 @@ const BookCard: React.FC<BookCardProps> = ({ book, onAddToCart, setBookTitlesCou
             onAddToCart(book.title, book.thumbnail_url);
             setBookTitlesCount(prevCount => prevCount + 1);
           }}
-        >Add To Wish List</Button>
+        >Add To Wish List
+        </Button>
         <Button variant="secondary" disabled>Copy this Book link</Button>
       </div>
       <Separator className='my-3' />

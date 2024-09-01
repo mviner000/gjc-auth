@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils"
 import LoggingOutDisplay from "@/components/logging-out-display";
 import { LoggingOutProvider } from "@/components/logging-out-context";
 import Navbar from "@/components/navbar";
+import SearchBox from "@/components/searchbox";
 
 export const metadata: Metadata = {
   title: "GJCLibrary",
@@ -50,6 +51,9 @@ export default async function RootLayout({
               <LoggingOutDisplay />
 
               <Navbar />
+              <div className="md:hidden lg:hidden mt-5 mx-2">
+                <SearchBox />
+              </div>
               {children}
               <Toaster />
 

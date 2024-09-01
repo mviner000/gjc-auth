@@ -100,7 +100,7 @@ const ProfilePage: React.FC = () => {
     const handleViewBook = (e: MouseEvent<HTMLDivElement>, bookId: number) => {
         e.preventDefault();
         setBookLoading(true);
-        router.push(`/auth-book/${bookId}`);
+        router.push(`/unli-book/${bookId}`);
     };
 
     return (

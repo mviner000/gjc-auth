@@ -51,7 +51,7 @@ export function SecurityForm() {
             isTwoFactorEnabled: user?.isTwoFactorEnabled || undefined,
             name: user?.name || undefined,
             email: user?.email || undefined,
-            student_id: user?.studentId || undefined,
+            student_id: user?.student_id || undefined,
             first_name: user?.first_name || undefined,
             last_name: user?.last_name || undefined,
             role: defaultRole,

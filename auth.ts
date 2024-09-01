@@ -30,7 +30,7 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      studentId: string;
+      student_id: string;
       first_name: string;
       last_name: string;
       role: "ADMIN" | "USER";
@@ -94,7 +94,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
 
       if (session.user) {
-        session.user.studentId = (token.studentId as string) || "";
+        session.user.student_id = (token.student_id as string) || "";
         session.user.first_name = (token.first_name as string) || "";
         session.user.last_name = (token.last_name as string) || "";
         session.user.name = token.name;
@@ -118,7 +118,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // Might have to refine the typescript error other than making it not null
       token.isOAuth = !!existingAccount;
       token.name = existingUser.name;
-      token.studentId = existingUser.student_id;
+      token.student_id = existingUser.student_id;
       token.first_name = existingUser.first_name;
       token.last_name = existingUser.last_name;
       token.role = existingUser.role!;

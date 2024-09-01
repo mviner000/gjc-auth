@@ -129,4 +129,6 @@ export const books = pgTable("books", {
   author_code: integer("author_code").references(() => authors.id, {
     onDelete: "cascade",
   }),
+  copyright: integer("copyright"), // Add field for copyright
+  callno: text("callno"), // Add field for Callno
 });

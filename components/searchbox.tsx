@@ -24,26 +24,22 @@ const SearchBox = () => {
   };
 
   return (
-    <div>
-      <div className="xs:hidden hidden md:hidden lg:block sm:flex items-center rounded-lg  bg-transparent overflow-hidden px-2 py-1 justify-between">
-        <div className="flex rounded-lg border-[1.5px] border-emerald-500 mt-[-3px]">
-          <input
-            className="text-base ml-3 w-100 bg-transparent text-gray-200 flex-grow outline-none  dark:bg-transparent"
-            type="text"
-            placeholder="Search"
-            value={localSearchText}
-            onChange={(e) => setLocalSearchText(e.target.value)}
+    <div className="flex rounded-lg border-[1.5px] border-emerald-500 mt-[-3px]">
+      <input
+        className="text-base ml-3 w-100 bg-transparent text-gray-200 flex-grow outline-none  dark:bg-transparent"
+        type="text"
+        placeholder="Search"
+        value={localSearchText}
+        onChange={(e) => setLocalSearchText(e.target.value)}
 
-            onKeyDown={handleKeyDown}
-          />
-          <button
-            className="bg-indigo-500 text-white text-base rounded-r-lg px-6 py-2 font-thin"
-            onClick={handleSearch}
-          >
-            <SearchIcon />
-          </button>
-        </div>
-      </div>
+        onKeyDown={handleKeyDown}
+      />
+      <button
+        className="bg-indigo-500 text-white text-base rounded-r-lg px-6 md:px-2 py-2 font-thin"
+        onClick={handleSearch}
+      >
+        <SearchIcon />
+      </button>
     </div>
   );
 };

@@ -61,7 +61,7 @@ const AdminNavbar = () => {
             <li className="  dark:text-white hidden md:block">
                 <Button variant="ghost"
                     className="ml-3 outline outline-[1px] outline-emerald-500"
-                    onClick={() => handleClick("/auth-book")}>
+                    onClick={() => handleClick("/unli-book")}>
                     Books
                 </Button>
             </li>

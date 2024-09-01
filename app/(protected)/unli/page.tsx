@@ -92,7 +92,7 @@ const BookList = () => {
                 justify-center p-0 bg-transparent">
                                     {books.map((book, index) => {
                                         return (
-                                            <Link key={index} href={`/auth-books/${book.id}`}>
+                                            <Link key={index} href={`/unli-books/${book.id}`}>
                                                 <div className="shadow-md dark:shadow-none bg-white dark:bg-transparent rounded-md p-0">
                                                     <div className='rounded-lg'>
                                                         <div className='static'>

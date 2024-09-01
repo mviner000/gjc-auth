@@ -37,7 +37,7 @@ const StudentNavbar = () => {
             <li className="dark:text-white">
                 <Button variant="ghost"
                     className="hover:text-blue-500 hover:bg-transparent"
-                    onClick={() => handleClick("/auth-book")}>
+                    onClick={() => handleClick("/unli-book")}>
                     Books
                 </Button>
             </li>

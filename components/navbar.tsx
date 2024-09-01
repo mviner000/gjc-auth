@@ -65,12 +65,23 @@ const Navbar = () => {
                     <Button variant="ghost"
                       className="hover:text-blue-500 hover:bg-transparent"
                       onClick={() => handleClick("/")}>
-                      <Image
+                      {/* <Image
+                        priority={false}
                         width={38}
                         height={38}
                         src="https://i.imgur.com/yyuB3s5.png"
                         alt="General De Jesus Logo"
                         className='mr-1'
+                      /> */}
+
+                      <Image
+                        className='mr-1'
+                        priority={true}
+                        src="/gjc-logo-nav.png"
+                        width={38}
+                        height={38}
+                        sizes="20vw"
+                        alt="Logo"
                       />
                       GJCLibrary
                     </Button>
@@ -89,8 +100,10 @@ const Navbar = () => {
                   )}
                 </ul>
               </div>
-              <div className='justify-center text-center'>
-                <SearchBox />
+              <div className='justify-center text-center '>
+                <div className='xs:hidden hidden  lg:block sm:flex items-center rounded-lg  bg-transparent overflow-hidden px-2 py-1 justify-between'>
+                  <SearchBox />
+                </div>
               </div>
               <div className='justify-right text-right'>
                 {isLoggedIn ? (
