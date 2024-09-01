@@ -41,7 +41,7 @@ const BookDetailsPage = () => {
 
     const { data, error } = useSWR(`${appUrl}/api/books/${id}`, fetcher);
 
-    const bookUrl = `${appUrl}/auth-book/${id}`
+    const bookUrl = `${appUrl}/unli-book/${id}`
 
     const cld = new Cloudinary({ cloud: { cloudName: 'dqpzvvd0v' } });
 
@@ -160,7 +160,7 @@ const BookDetailsPage = () => {
                                     </button>
                                 </div>
                             </div>
-                            <div className="mt-3">
+                            {/* <div className="mt-3">
                                 <div className="w-full grid grid-cols-1 gap-y-2 md:gap-y-2 md:grid-cols-1 lg:gap-y-2 lg:grid-cols-1 xl:grid-cols-2  items-center gap-x-2">
                                     <Button
                                         size="lg"
@@ -173,7 +173,7 @@ const BookDetailsPage = () => {
                                     </Button>
 
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <div className="ml-5 space-y-3">

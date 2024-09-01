@@ -16,7 +16,8 @@ const BookDetails = () => {
     return (
         <div>
 
-            <div className=''>
+
+            <div className="px-10 mt-7">
                 <div className="mt-3 h-full ">
                     <div className="grid lg:grid-cols-7">
                         <Sidebar playlists={playlists} className="hidden lg:block" />

@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import axios, { AxiosResponse } from 'axios';
-import { Book } from '@/utils/types/books';
+import { Book, BookNumber } from '@/utils/types/books';
 import { FidgetSpinner } from 'react-loader-spinner';
 import Link from 'next/link';
 
@@ -32,7 +32,7 @@ const appUrl = process.env.NEXT_PUBLIC_APP;
 const BookPage: React.FC = () => {
   const { toast } = useToast()
   const hasMounted = useRef(false);
-  const [books, setBooks] = useState<Book[]>([]);
+  const [books, setBooks] = useState<BookNumber[]>([]);
   const [bookTitlesCount, setBookTitlesCount] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -79,7 +79,7 @@ const BookPage: React.FC = () => {
   const fetchBooks = async (page: number): Promise<void> => {
     setLoading(true);
     try {
-      const response: AxiosResponse<{ count: number; results: Book[] }> = await axios.get(
+      const response: AxiosResponse<{ count: number; results: BookNumber[] }> = await axios.get(
         `${appUrl}api/books/?page=${page}`
       );
 

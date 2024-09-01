@@ -18,13 +18,11 @@ const AuthorCard: React.FC<AuthorCardProps> = ({ author, handleAddToCart }) => {
   const router = useRouter();
   const [bookLoading, setBookLoading] = useState(false);
 
-
   const handleViewBook = (e: MouseEvent<HTMLDivElement>, bookId: number) => {
     e.preventDefault();
     setBookLoading(true);
     router.push(`/unli-book/${bookId}`);
   };
-
 
   return (
     <>
