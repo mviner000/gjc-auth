@@ -54,7 +54,6 @@ const AboutPage = () => {
                 </details>
             </div>
 
-            <Footer />
         </>
 
     )

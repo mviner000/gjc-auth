@@ -31,7 +31,7 @@ interface Book {
 
 interface User {
     email: string;
-    studentId: number;
+    student_id: number;
     image: string | null;
 }
 
@@ -104,7 +104,7 @@ const UserAvatarInfo = () => {
                             </div>
                             <div className='h-full content-center col-span-6 pb-6 px-6'>
                                 <ul className='space-y-2'>
-                                    <li><div className='flex text-2xl font-semibold mb-[-10px]'><h1 className='mr-1'>Student ID: </h1>{user?.studentId}</div></li>
+                                    <li><div className='flex text-2xl font-semibold mb-[-10px]'><h1 className='mr-1'>Student ID: </h1>{user?.student_id}</div></li>
                                     <li>{user?.email}</li>
                                     <ul className="flex space-x-[-5px]">
                                         {bookCarts.map((cart, index) => (
