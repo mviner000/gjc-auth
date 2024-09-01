@@ -9,6 +9,7 @@ export interface Book {
   pagination: string;
   edition: string;
   copyright: string;
+  callno: string;
 }
 
 export interface BookNumber {
@@ -22,4 +23,5 @@ export interface BookNumber {
   pagination: string;
   edition: string;
   copyright: string;
+  callno: string;
 }

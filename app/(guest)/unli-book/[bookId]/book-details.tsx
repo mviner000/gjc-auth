@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import useSWR from 'swr';
 import { Cloudinary } from '@cloudinary/url-gen';
@@ -9,7 +9,7 @@ import { AdvancedImage } from '@cloudinary/react';
 import { fill } from '@cloudinary/url-gen/actions/resize';
 import copy from 'copy-to-clipboard';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, MouseEvent } from "react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 
 import SubjectTag from "@/components/books/subject-tag";
@@ -17,14 +17,25 @@ import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast"
 import { Button } from "@/components/ui/button";
 import BookStockUpdateForm from "@/components/auth-book/book-stock-update";
+import TagPage from "../../tags/page";
+import TagDetails from "../../tags/[tagId]/page";
+import SubjectList from "../../tags/[tagId]/_components/subject_list";
+import { Separator } from "@/components/ui/separator";
+import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 
 
 
 const appUrl = process.env.NEXT_PUBLIC_APP;
+const copyUrl = process.env.NEXT_PUBLIC_APP_URL;
 
 type Role = "USER" | "ADMIN";
 
 const BookDetailsPage = () => {
+
+    const [bookTitles, setBookTitles] = useState<string[]>([]);
+    const [bookTitlesCount, setBookTitlesCount] = useState<number>(0);
+    const router = useRouter();
+    const [bookLoading, setBookLoading] = useState(false);
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -41,7 +52,9 @@ const BookDetailsPage = () => {
 
     const { data, error } = useSWR(`${appUrl}/api/books/${id}`, fetcher);
 
-    const bookUrl = `${appUrl}/unli-book/${id}`
+    const bookUrl = `${copyUrl}/unli-book/${id}`
+
+    const generateBookUrl = (offset: number) => `${copyUrl}/unli-book/${id + offset}`;
 
     const cld = new Cloudinary({ cloud: { cloudName: 'dqpzvvd0v' } });
 
@@ -54,6 +67,28 @@ const BookDetailsPage = () => {
         copy(bookUrl);
         setIsCopied(true);
         setTimeout(() => setIsCopied(false), 2000); // Hide the success message after 2 seconds
+    };
+
+
+    const handleDeleteBookTitle = (titleToRemove: string) => {
+        const updatedTitles = bookTitles.filter((title) => title !== titleToRemove);
+        localStorage.setItem('bookTitles', JSON.stringify(updatedTitles));
+        setBookTitles(updatedTitles);
+        setBookTitlesCount(updatedTitles.length);
+    };
+
+
+    const handleEmptyBookCart = () => {
+        setBookTitles([]);
+        setBookTitlesCount(0);
+        localStorage.removeItem('bookTitles');
+    };
+
+
+    const handleViewBook = (e: MouseEvent<HTMLDivElement>, bookId: number) => {
+        e.preventDefault();
+        setBookLoading(true);
+        router.push(`/unli-book/${bookId}`);
     };
 
     const handleAddToCart = async (bookId: number) => {
@@ -106,11 +141,14 @@ const BookDetailsPage = () => {
                         )}</div>
 
                         <div className="ml-5">
-                            <h1 className="text-3xl font-semibold">
+                            <h1 className="text-4xl font-semibold mb-5">
                                 {data.title}
                             </h1>
                             <h1 className="text-black dark:text-slate-300">
                                 Author: {data.author_name}
+                            </h1>
+                            <h1 className="text-black dark:text-slate-300">
+                                Callno. <span className="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"> {data.callno}</span>
                             </h1>
                             <h1 className="text-black dark:text-slate-300">
                                 Copyright: {data.copyright}
@@ -188,7 +226,33 @@ const BookDetailsPage = () => {
 
                     </div>
                 </div>
-
+                {/* Navigation Buttons */}
+                <div className="mt-10 justify-between w-full flex">
+                    <button
+                        onClick={() => router.push(generateBookUrl(-1))}
+                        type="button"
+                        className="flex items-center justify-center text-white bg-gradient-to-r from-blue-500 to-cyan-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                        <ArrowBigLeft /> Previous
+                    </button>
+                    <button
+                        onClick={() => router.push(generateBookUrl(1))}
+                        type="button"
+                        className="flex items-center justify-center text-white bg-gradient-to-r from-cyan-500 to-blue-500  hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                        Next <ArrowBigRight />
+                    </button>
+                </div>
+                <Separator className="mt-10" />
+                <div className="mt-10">
+                    <SubjectList
+                        bookTotalTaggedText="book related"
+                        subject1_code={data.subject1_code}
+                        bookTitles={bookTitles}
+                        handleDeleteBookTitle={handleDeleteBookTitle}
+                        handleEmptyBookCart={handleEmptyBookCart}
+                        handleViewBook={handleViewBook}
+                        bookLoading={bookLoading}
+                    />
+                </div>
 
             </div>
         </>
