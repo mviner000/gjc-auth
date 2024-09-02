@@ -32,7 +32,7 @@ export const LoginForm = () => {
     ? "Sign in or register with another email provider"
     : "";
 
-    
+
   const [showTwoFactor, setShowTwoFactor] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -73,13 +73,14 @@ export const LoginForm = () => {
         .catch(() => setError("Something went wrong!"));
     });
   };
-  
+
   const inputClass = "text-black bg-neutral-100 border-slate-300 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-300";
 
   return (
     <CardWrapper
       headerTitle="Signin"
-      headerLabel="It's quick and easy."
+      headerLabel="This page is restricted"
+      headerLabelColor="text-rose-400"
       backButtonLabel="Don't have an account?"
       backButtonHref="/auth/register"
       showSocial
@@ -87,7 +88,7 @@ export const LoginForm = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-[-10px">
           <div className="space-y-3 mb-3">
-          {showTwoFactor && (
+            {showTwoFactor && (
               <FormField
                 control={form.control}
                 name="code"
@@ -105,77 +106,77 @@ export const LoginForm = () => {
                   </FormItem>
                 )}
               />
-            )}  
+            )}
             {!showTwoFactor && (
               <>
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className={inputClass}
-                      placeholder="Email"
-                      disabled={isPending}
-                      type="email"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          className={inputClass}
+                          placeholder="Email"
+                          disabled={isPending}
+                          type="email"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      className={inputClass}
-                      placeholder="Password"
-                      disabled={isPending}
-                      type={showPassword ? "text" : "password"}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            </>
-           )}
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          className={inputClass}
+                          placeholder="Password"
+                          disabled={isPending}
+                          type={showPassword ? "text" : "password"}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
           </div>
 
           {!showTwoFactor && (
-          <div className="flex items-center justify-between">
-            <Button
-              variant="link"
-              size="sm"
-              className="h-4 px-0 font-normal text-sm"
-              asChild
-            >
-              <Link href="/auth/reset">Forgot password?</Link>
-            </Button>
-
-            <div className="flex items-center space-x-2 mt-4 mb-2">
-              <Checkbox
-                className="w-3.5 h-3.5 border-gray-400"
-                id="togglepwd"
-                onCheckedChange={() => {
-                  setShowPassword(!showPassword);
-                }}
-              />
-              <label
-                htmlFor="togglepwd"
-                className="text-gray-400 ml-1 text-xs font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            <div className="flex items-center justify-between">
+              <Button
+                variant="link"
+                size="sm"
+                className="h-4 px-0 font-normal text-sm"
+                asChild
               >
-                Show password
-              </label>
+                <Link href="/auth/reset">Forgot password?</Link>
+              </Button>
+
+              <div className="flex items-center space-x-2 mt-4 mb-2">
+                <Checkbox
+                  className="w-3.5 h-3.5 border-gray-400"
+                  id="togglepwd"
+                  onCheckedChange={() => {
+                    setShowPassword(!showPassword);
+                  }}
+                />
+                <label
+                  htmlFor="togglepwd"
+                  className="text-gray-400 ml-1 text-xs font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Show password
+                </label>
+              </div>
             </div>
-          </div>
           )}
 
           <FormError message={error || urlError} />
@@ -190,7 +191,7 @@ export const LoginForm = () => {
               {showTwoFactor ? "Confirm" : "Log in"}
             </Button>
           )}
-          
+
         </form>
       </Form>
     </CardWrapper>

@@ -30,6 +30,7 @@ type CardWrapperProps = {
   backButtonLabel: string;
   backButtonHref: string;
   showSocial?: boolean;
+  headerLabelColor?: string;
 };
 
 export const CardWrapper = ({
@@ -39,23 +40,24 @@ export const CardWrapper = ({
   backButtonLabel,
   backButtonHref,
   showSocial,
+  headerLabelColor
 }: CardWrapperProps) => {
   return (
-    <Card className="mt-12 mb-10 w-[425px] shadow-md border-8 border-emerald-800">
+    <Card className="mt-12 mb-10 md:w-[425px] w-[320px] shadow-md border-8 border-emerald-800">
       <CardHeader className="relative">
         <Image
           priority={false}
-          className="absolute bottom-24 left-[128px] xxs:left-[100px] xs:left-[128px] sm:left-[128px] md:left-[128px] lg:md:left-[128px] xl:left-[128px] 2xl:left-[128px]"
-          src="https://i.imgur.com/yyuB3s5.png"
+          className="absolute bottom-24 md:left-[128px] left-[80px]"
+          src="https://i.imgur.com/XZutH81.png"
           width={142}
           height={142}
           alt="General De Jesus Logo"
         />
         <div className="static inline-block">
-          <h1 className="mt-10 ml-[-8px] text-3xl font-bold mb-2 text-center text-black dark:text-white">{headerTitle}</h1>
+          <div className="mt-10 ml-[-8px] text-3xl font-bold mb-2 text-center text-black dark:text-white">{headerTitle}</div>
           <Separator className="absolute right-0 bg-green-500 h-[1px] w-full" />
         </div>
-        <Header label={headerLabel} />
+        <Header textColor={headerLabelColor} label={headerLabel} />
       </CardHeader>
       <CardContent>
         {children}

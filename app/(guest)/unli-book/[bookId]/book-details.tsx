@@ -22,6 +22,7 @@ import TagDetails from "../../tags/[tagId]/page";
 import SubjectList from "../../tags/[tagId]/_components/subject_list";
 import { Separator } from "@/components/ui/separator";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import { FidgetSpinner } from "react-loader-spinner";
 
 
 
@@ -117,7 +118,19 @@ const BookDetailsPage = () => {
         }
     };
 
-    if (!data) return <div>Loading...</div>;
+    if (!data) return <
+        div className="fixed inset-0 flex justify-center items-center bg-neutral-500/50 z-50">
+        <FidgetSpinner
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            ballColors={['#ff0000', '#00ff00', '#0000ff']}
+            backgroundColor="#F4442E"
+        />
+    </div>;
     return (
         <>
             <div className="h-full px-4 py-6 lg:px-8 dark:bg-slate-900 dark:text-white">
