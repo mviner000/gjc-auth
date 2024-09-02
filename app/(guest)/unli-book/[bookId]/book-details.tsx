@@ -142,8 +142,8 @@ const BookDetailsPage = () => {
 
 
 
-    if (!data) return <
-        div className="fixed inset-0 flex justify-center items-center bg-neutral-500/50 z-50">
+    if (!data) return
+    <div className="fixed inset-0 flex justify-center items-center bg-neutral-500/50 z-50">
         <FidgetSpinner
             visible={true}
             height="80"
@@ -155,28 +155,32 @@ const BookDetailsPage = () => {
             backgroundColor="#F4442E"
         />
     </div>;
+    const bookTotalTaggedText = bookTitlesCount === 1 ? "book related" : "books related";
+
     return (
         <>
             <div className="h-full px-4 py-6 lg:px-8 dark:bg-slate-900 dark:text-white">
                 <div className="grid grid-flow-row-dense grid-cols-3">
                     <div className="col-span-2 flex">
-
-                        <div>{data.thumbnail_url ? (
-                            <AdvancedImage
-                                cldImg={cld.image(`books/${data.controlno}`)
-                                    .quality('auto')
-                                    .resize(fill().height(230))
-                                }
-                            />
-                        ) : (
-                            <AdvancedImage
-                                cldImg={cld.image(`books/no-image`)
-                                    .quality('auto')
-                                    .resize(fill().width(230))
-                                }
-                            />
-                        )}</div>
-
+                        <div>
+                            <div>{data.thumbnail_url ? (
+                                <AdvancedImage
+                                    cldImg={cld.image(`books/${data.controlno}`)
+                                        .quality('auto')
+                                        .resize(fill().height(230))
+                                    }
+                                />
+                            ) : (
+                                <AdvancedImage
+                                    cldImg={cld.image(`books/no-image`)
+                                        .quality('auto')
+                                        .resize(fill().width(230))
+                                    }
+                                />
+                            )}
+                            </div>
+                            <div className="ml-2 mt-2 text-base text-slate-400/90 font-thin">Views: {data.views}</div>
+                        </div>
                         <div className="ml-5">
                             <h1 className="text-4xl font-semibold mb-5">
                                 {data.title}
@@ -188,9 +192,6 @@ const BookDetailsPage = () => {
                                 Callno. <span className="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"> {data.callno}</span>
                             </h1>
                             <h1 className="text-black dark:text-slate-300">
-                                Copyright: {data.copyright}
-                            </h1>
-                            <h1 className="text-black dark:text-slate-300">
                                 Publisher: {data.publisher}
                             </h1>
                             <h1 className="text-black dark:text-slate-300">
@@ -198,6 +199,9 @@ const BookDetailsPage = () => {
                             </h1>
                             <h1 className="text-black dark:text-slate-300">
                                 Pages: {data.pagination}
+                            </h1>
+                            <h1 className="text-black dark:text-slate-300">
+                                Control Number: {data.controlno}
                             </h1>
                             <h1 className="text-black dark:text-slate-300">
                                 Edition: {data.edition}
@@ -252,30 +256,45 @@ const BookDetailsPage = () => {
                         </div>
                     </div>
                     <div className="ml-5 space-y-3">
+                        <div className="flex gap-2">
+                            <h1 className="text-black dark:text-slate-300">
+                                Copyright: {data.copyright}
+                            </h1>
+                            <div>
+                                {copyrightYear ? (
+                                    isNaN(parseInt(copyrightYear)) ? (
+                                        <span className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-400">
+                                            Invalid Copyright
+                                        </span>
+                                    ) : parseInt(copyrightYear) <= 2014 ? (
+                                        <span className="bg-red-100/50 text-red-800/50 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                            Phased Out
+                                        </span>
+                                    ) : (
+                                        <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
+                                            Available
+                                        </span>
+                                    )
+                                ) : (
+                                    <span className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-400">
+                                        Invalid Copyright
+                                    </span>
+                                )}
+                            </div>
+                        </div>
 
-                        <div className="text-lg text-slate-400/90 font-thin">Views: {data.views}</div>
-                        <div className="text-lg text-slate-400/90 font-thin">Stock Quantity: {data.stock_quantity}</div>
+                        <div className="text-lg text-slate-400/90 font-thin">Copies: {data.copies}</div>
+                        <div className="flex flex-col">
+                            <div>Accessions:</div>
+                            {(data.accessions as string[]).map((accession: string, index: number) => (
+                                <span key={index} className="ml-3 text-lg text-slate-400/90 font-bold">
+                                    {accession}
+                                    {/* {index < (data.accessions as string[]).length - 1 ? ', ' : ''} */}
+                                </span>
+                            ))}
+                        </div>
 
-                        <div className="text-lg text-slate-400/90 font-thin">{data.copyright}</div>
-                        {copyrightYear ? (
-                            isNaN(parseInt(copyrightYear)) ? (
-                                <span className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-400">
-                                    Invalid Copyright
-                                </span>
-                            ) : parseInt(copyrightYear) <= 2014 ? (
-                                <span className="bg-red-100/50 text-red-800/50 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
-                                    Phased Out
-                                </span>
-                            ) : (
-                                <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
-                                    Available
-                                </span>
-                            )
-                        ) : (
-                            <span className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-400">
-                                Invalid Copyright
-                            </span>
-                        )}
+
 
                         {userRole === 'ADMIN' && (
                             <BookStockUpdateForm id={data.id} quantity={data.stock_quantity} />
@@ -301,7 +320,7 @@ const BookDetailsPage = () => {
                 <Separator className="mt-10" />
                 <div className="mt-10">
                     <SubjectList
-                        bookTotalTaggedText="book related"
+                        bookTotalTaggedText={bookTotalTaggedText}
                         subject1_code={data.subject1_code}
                         bookTitles={bookTitles}
                         handleDeleteBookTitle={handleDeleteBookTitle}

@@ -143,7 +143,7 @@ const ProfilePage: React.FC = () => {
                     <table className="mb-[200px] w-full border-collapse border border-gray-300">
                         <thead className="bg-transparent">
                             <tr>
-                                <th className="border border-gray-300 dark:text-white px-4 py-2">ID</th>
+
                                 <th className="border border-gray-300 dark:text-white px-4 py-2">Student</th>
                                 <th className="border border-gray-300 dark:text-white px-4 py-2">Books</th>
                                 {!bookCarts.some((cart) => cart.set_to_return) && (
@@ -154,7 +154,7 @@ const ProfilePage: React.FC = () => {
                         <tbody>
                             {bookCarts.map((cart) => (
                                 <tr key={cart.id} className="bg-transparent">
-                                    <td className="border border-gray-300 dark:text-white px-4 py-2">{cart.id}</td>
+
                                     <td className="border border-gray-300 dark:text-white px-4 py-2">{cart.student}</td>
                                     <td className="border border-gray-300 dark:text-white px-4 py-2">
                                         {cart.books.map((bookId) => getBookTitle(bookId)).join(', ')}
