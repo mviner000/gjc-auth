@@ -14,6 +14,8 @@ interface Props {
     bookTotalTaggedText: string;
 }
 
+const appUrl = process.env.NEXT_PUBLIC_APP;
+
 const SubjectList: React.FC<Props> = ({
     subject1_code,
     bookTitles,
@@ -29,7 +31,7 @@ const SubjectList: React.FC<Props> = ({
     useEffect(() => {
         const fetchSubjectData = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/api/subjects/${subject1_code}`);
+                const response = await fetch(`${appUrl}/api/subjects/${subject1_code}`);
                 const data = await response.json();
                 setSubject(data);
             } catch (error) {
