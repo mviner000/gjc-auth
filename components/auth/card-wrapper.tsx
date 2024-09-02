@@ -43,11 +43,11 @@ export const CardWrapper = ({
   headerLabelColor
 }: CardWrapperProps) => {
   return (
-    <Card className="mt-12 mb-10 md:w-[425px] w-[320px] shadow-md border-8 border-emerald-800">
+    <Card className="mt-12 mb-10 md:w-[425px] w-[360px] shadow-md border-8 border-emerald-800">
       <CardHeader className="relative">
         <Image
           priority={false}
-          className="absolute bottom-24 md:left-[128px] left-[80px]"
+          className="absolute bottom-24 md:left-[132px] left-[100px]"
           src="https://i.imgur.com/XZutH81.png"
           width={142}
           height={142}

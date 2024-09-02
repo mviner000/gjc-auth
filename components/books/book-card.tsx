@@ -86,7 +86,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onAddToCart, setBookTitlesCou
           <span className="text-sm"><span className='font-bold'>Edition: </span>{book.edition}</span>
         </div>
         {book.copyright && (
-          <p className="text-sm dark:text-slate-300">
+          <div className="text-sm dark:text-slate-300">
             <div className='flex gap-2'>
               <Copyright size={18} />
 
@@ -113,7 +113,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onAddToCart, setBookTitlesCou
               )}
             </div>
 
-          </p>
+          </div>
         )}
 
       </div>

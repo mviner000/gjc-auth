@@ -59,10 +59,32 @@ const BookDetailsPage = () => {
 
     const cld = new Cloudinary({ cloud: { cloudName: 'dqpzvvd0v' } });
 
+    const [copyrightYear, setCopyrightYear] = useState<string | null>(null);
+
     useEffect(() => {
+        if (data?.copyright) {
+            const yearMatch = data.copyright.match(/\d+/g)?.join('') || null;
+            setCopyrightYear(yearMatch);
+        }
         setIsLoggedIn(!!user);
         setUserRole(user?.role as Role);
-    }, [user]);
+    }, [user, data]);
+
+    useEffect(() => {
+        const handleKey = (event: KeyboardEvent) => {
+            if (event.key === 'ArrowRight') {
+                router.push(generateBookUrl(1));
+            } else if (event.key === 'ArrowLeft') {
+                router.push(generateBookUrl(-1));
+            }
+        };
+
+        document.addEventListener('keydown', handleKey);
+
+        return () => {
+            document.removeEventListener('keydown', handleKey);
+        };
+    }, [router]);
 
     const handleCopy = () => {
         copy(bookUrl);
@@ -117,6 +139,8 @@ const BookDetailsPage = () => {
             // Handle error (e.g., show error message)
         }
     };
+
+
 
     if (!data) return <
         div className="fixed inset-0 flex justify-center items-center bg-neutral-500/50 z-50">
@@ -232,6 +256,26 @@ const BookDetailsPage = () => {
                         <div className="text-lg text-slate-400/90 font-thin">Views: {data.views}</div>
                         <div className="text-lg text-slate-400/90 font-thin">Stock Quantity: {data.stock_quantity}</div>
 
+                        <div className="text-lg text-slate-400/90 font-thin">{data.copyright}</div>
+                        {copyrightYear ? (
+                            isNaN(parseInt(copyrightYear)) ? (
+                                <span className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-400">
+                                    Invalid Copyright
+                                </span>
+                            ) : parseInt(copyrightYear) <= 2014 ? (
+                                <span className="bg-red-100/50 text-red-800/50 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-red-400 border border-red-400">
+                                    Phased Out
+                                </span>
+                            ) : (
+                                <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
+                                    Available
+                                </span>
+                            )
+                        ) : (
+                            <span className="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-400">
+                                Invalid Copyright
+                            </span>
+                        )}
 
                         {userRole === 'ADMIN' && (
                             <BookStockUpdateForm id={data.id} quantity={data.stock_quantity} />
