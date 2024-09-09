@@ -31,7 +31,7 @@ const AuthorDetails = () => {
 
     const getauthor = async (id: number) => {
         try {
-            const response = await axios.get(`${appUrl}/api/authors/${id}`);
+            const response = await axios.get(`${appUrl}/api/authors/${id}/`);
             setauthor(response.data);
             console.log(response.data);
         } catch (error) {
