@@ -51,7 +51,7 @@ const BookDetailsPage = () => {
 
     const [isCopied, setIsCopied] = useState(false);
 
-    const { data, error } = useSWR(`${appUrl}/api/books/${id}`, fetcher);
+    const { data, error } = useSWR(`${appUrl}/api/books/${id}/`, fetcher);
 
     const bookUrl = `${copyUrl}/unli-book/${id}`
 

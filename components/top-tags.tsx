@@ -37,7 +37,7 @@ export const TopTags: React.FC = () => {
   useEffect(() => {
     const fetchTopSubjects = async () => {
       try {
-        const response = await axios.get<Subject[]>(`${appUrl}/api/subjects/top`);
+        const response = await axios.get<Subject[]>(`${appUrl}/api/subjects/top/`);
         setTopSubjects(response.data);
       } catch (error) {
         console.error('Error fetching top subjects:', error);
