@@ -62,7 +62,7 @@ export const TopTags: React.FC = () => {
   
     console.log('subject id is:', subjectId);
   
-    axios.get<Subject>(`${appUrl}/api/subjects/${subjectId}`)
+    axios.get<Subject>(`${appUrl}/api/subjects/${subjectId}/`)
       .then(response => {
         console.log('Subject data:', response.data);
       })

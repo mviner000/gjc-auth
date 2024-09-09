@@ -31,7 +31,7 @@ const SubjectList: React.FC<Props> = ({
     useEffect(() => {
         const fetchSubjectData = async () => {
             try {
-                const response = await fetch(`${appUrl}/api/subjects/${subject1_code}`);
+                const response = await fetch(`${appUrl}/api/subjects/${subject1_code}/`);
                 const data = await response.json();
                 setSubject(data);
             } catch (error) {
